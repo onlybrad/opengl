@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "./lib/cglm/include",
+                "./lib/glad/include",
+                "./lib/glfw/include",
+                "./lib/stb_image"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.17763.0"
+        }
+    ],
+    "version": 4
+}
