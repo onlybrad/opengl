@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Shader.h"
-#include "../util.h"
+#include "../Util/util.h"
 
 static GLuint compile_shader(const GLchar *const shader_source, size_t length, const GLenum shader_type) {
     const GLuint shader = glCreateShader(shader_type);
@@ -86,6 +86,7 @@ GLboolean Shader_init(Shader *const shader, const GLchar *const vertex_shader_pa
     shader->id = id;
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
+    shader->location_count = 0;
     memset(shader->location_cache, 0, sizeof(shader->location_cache));
 
     return GL_TRUE;
@@ -95,9 +96,10 @@ void Shader_free(Shader *const shader) {
     glDeleteProgram(shader->id);
     free(unconst(shader->fragment_shader_src));
     free(unconst(shader->vertex_shader_src));
-    for(int i=0; i<(int)ARRAY_MEMBER_LENGTH(Shader,location_cache); i++) {
-        free(unconst(shader->location_cache[i]));
-        shader->location_cache[i] = NULL;
+    for(unsigned int i=0u; i<shader->location_count; i++) {
+        free(unconst(shader->location_cache[i].uniform));
+        shader->location_cache[i].uniform = NULL;
+        shader->location_cache[i].location = 0;
     }
 }
 
@@ -106,9 +108,9 @@ void Shader_use(const Shader *const shader) {
 }
 
 GLint Shader_get_location(Shader *const shader, const GLchar *const name) {
-    for(GLint i=0; i<(GLint)(ARRAY_MEMBER_LENGTH(Shader, location_cache)); i++) {
-        if(shader->location_cache[i] != NULL && strcmp(name, shader->location_cache[i]) == 0) {
-            return i;
+    for(GLuint i=0u; i<shader->location_count; i++) {
+        if(shader->location_cache[i].uniform != NULL && strcmp(name, shader->location_cache[i].uniform) == 0) {
+            return shader->location_cache[i].location;
         }
     }
 
@@ -118,7 +120,9 @@ GLint Shader_get_location(Shader *const shader, const GLchar *const name) {
         return location;
     }
 
-    shader->location_cache[location] = strdup(name);
+    shader->location_cache[shader->location_count].location = location;
+    shader->location_cache[shader->location_count].uniform = strdup(name);
+    shader->location_count++;
     
     return location;
 }

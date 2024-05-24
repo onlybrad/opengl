@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 
 typedef struct VertexAttribute {
-    GLint count;
+    GLuint count;
     GLboolean normalized;
 } VertexAttribute;
 

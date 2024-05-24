@@ -1,5 +1,5 @@
 #include "VertexArrayObject.h"
-#include "../util.h"
+#include "../Util/util.h"
 
 void VertexArrayObject_init(VertexArrayObject *const vao) {
     glGenVertexArrays(1, &vao->id);
@@ -22,8 +22,8 @@ void VertexArrayObject_add_buffer(VertexArrayObject *const vao, const VertexArra
     for(GLuint i=0; i<layout->attributes_index; i++) {
         const VertexAttribute *const attribute = layout->attributes + i;
         glEnableVertexAttribArray(i);
-        glVertexAttribPointer(i, attribute->count, GL_FLOAT, attribute->normalized, layout->stride, INT_TO_PTR(offset));
-        offset += attribute->count * (GLint)sizeof(GLfloat);
+        glVertexAttribPointer(i, (GLint)attribute->count, GL_FLOAT, attribute->normalized, layout->stride, INT_TO_PTR(offset));
+        offset += (GLint)attribute->count * (GLint)sizeof(GLfloat);
     }
 }
 

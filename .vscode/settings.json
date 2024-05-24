@@ -31,7 +31,11 @@
         "random": "c",
         "atomic": "c",
         "ostream": "c",
-        "*.rh": "c"
+        "*.rh": "c",
+        "limits": "c",
+        "regex": "c",
+        "*.md": "c",
+        "*.idl": "c"
     },
     "C_Cpp.codeAnalysis.exclude": {
         "cglm/call.h": true,

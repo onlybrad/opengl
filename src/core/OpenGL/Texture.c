@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include "Texture.h"
-#include "../util.h"
+#include "../Util/util.h"
 
 const char TEXTURE_UNIFORMS[32][10] = {
     "texture00",
@@ -73,7 +74,7 @@ TextureError Texture_init(Texture *const texture, const char *const name, const 
 
     if(data == NULL) {
         fprintf(stderr, "Couldn't load texture at %s\n", path);
-        Texture_color(texture, DEFAULT_TEXTURE);
+        Texture_color(texture, NULL, NULL);
         return TextureNotFound;
     }
 
@@ -97,11 +98,15 @@ void Texture_use(const Texture *const texture, const GLuint slot) {
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-void Texture_color(Texture *const texture, const unsigned char color[static 4]) {
+void Texture_color(Texture *const texture, const char* const name, Color *const color) {
     texture->channels = 4;
     texture->width = 1;
     texture->height = 1;
-    texture->data = color;
-    texture->name = "default";
+
+    const size_t size = 4 * sizeof(unsigned char);
+    texture->data = malloc(size);
+    memcpy(unconst(texture->data), color == NULL ? DEFAULT_TEXTURE : (unsigned char*)color, size);
+    
+    texture->name = NULL ? "default" : name;
     generate_texture(texture);
 }

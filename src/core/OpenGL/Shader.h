@@ -4,11 +4,17 @@
 #include <glad/glad.h>
 #include <cglm/cglm.h>
 
+typedef struct Location {
+    GLint location;
+    GLchar *uniform;
+} Location;
+
 typedef struct Shader {
     GLuint id;
+    GLuint location_count;
     const GLchar *vertex_shader_src;
     const GLchar *fragment_shader_src;
-    const GLchar *location_cache[32];
+    Location location_cache[32];
 } Shader;
 
 GLboolean Shader_init(Shader *const shader, const GLchar *const vertex_shader_path, const GLchar *const fragment_shader_path);

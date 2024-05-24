@@ -11,8 +11,6 @@ static void GLFW_resize_callback(GLFWwindow *_, int width, int height) {
     OpenGL_set_viewport(width, height);
 }
 
-
-
 void Window_init(Window *const window, int width, int height, const char* const title) {
     window->width = width;
     window->height = height;
@@ -109,5 +107,9 @@ void Window_logic_loop(Window *const window, void(*logic_function)(Window *const
 
 inline void Window_set_input_callback(Window *const window, WindowCallback input_callback) {
     window->input_callback = input_callback;
+}
+
+inline float Window_time(void) {
+    return (float)glfwGetTime();
 }
 

@@ -5,12 +5,14 @@ layout (location = 1) in vec3 a_normal;
 layout (location = 2) in vec4 a_color;
 layout (location = 3) in vec2 a_texture_coordinates;
 layout (location = 4) in float a_texture_slot;
-layout (location = 5) in float a_is_light;
-layout (location = 6) in mat4 a_model;
+layout (location = 5) in float a_shininess;
+layout (location = 6) in float a_is_light;
+layout (location = 7) in mat4 a_model;
 
 out vec2 texture_coordinates;
 out vec3 frag_position;
 out vec4 color;
+flat out float shininess;
 flat out vec3 normal;
 flat out int texture_slot;
 flat out float is_light;
@@ -28,6 +30,7 @@ void main() {
       //normal = normalize(mat3(transpose(inverse(a_model))) * a_normal);
       normal = normalize(a_normal);
       color = a_color;
+      shininess = a_shininess;
       gl_Position = projection * view * a_model * vec4(a_position, 1.0);
    }
 

@@ -15,6 +15,12 @@
 #define GL_CALL(CODE) GLClearError();\
 CODE;\
 GLCheckError();
+#ifndef MIN
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#endif
+#ifndef MAX
+#define MAX(a,b) (((a)>(b))?(a):(b))
+#endif
 
 void GLClearError(void);
 void GLCheckError(void);

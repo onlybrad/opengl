@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 #include <stb_image.h>
+#include "../Util/Color.h"
 
 typedef enum TextureError {
     TextureNoError,
@@ -22,6 +23,6 @@ typedef struct Texture {
 TextureError Texture_init(Texture *const texture, const char *const name, const GLchar *const path);
 void Texture_free(Texture *const texture);
 void Texture_use(const Texture *const texture, const GLuint slot);
-void Texture_color(Texture *const texture, const unsigned char color[static 4]);
+void Texture_color(Texture *const texture, const char* const name, Color *const color);
 
 #endif

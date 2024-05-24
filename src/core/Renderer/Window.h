@@ -34,5 +34,6 @@ void Window_set_updates_per_second(Window *const window, const unsigned int upda
 void Window_drawing_loop(Window *const window, void(*drawing_function)(Window *const));
 void Window_logic_loop(Window *const window, void(*logic_function)(Window *const));
 void Window_set_input_callback(Window *const window, WindowCallback input_callback);
+float Window_time(void);
 
 #endif

@@ -6,11 +6,13 @@ in vec3 frag_position;
 in vec4 color;
 flat in vec3 normal;
 flat in int texture_slot;
+flat in float shininess;
 flat in float is_light;
 
 uniform vec3 camera_position;
 uniform vec3 light_position;
 uniform vec4 light_color;
+uniform float ambiant_strength;
 
 uniform sampler2D texture00;
 uniform sampler2D texture01;
@@ -45,9 +47,6 @@ uniform sampler2D texture29;
 uniform sampler2D texture30;
 uniform sampler2D texture31;
 
-const float ambient_strength = 0.1;
-const float specular_strength = 1.0;
-
 vec4 get_texture(int index, vec2 texture_coordinates);
 
 void main() {
@@ -59,14 +58,15 @@ void main() {
       vec3 camera_direction = normalize(camera_position - frag_position);
       vec3 reflect_direction = reflect(-light_direction, normal);
 
-      vec3 ambient = ambient_strength * light_color.rgb;
-      vec3 diffuse = max(dot(normal, light_direction), 0.0) * light_color.rgb;
-      vec3 specular = specular_strength * pow(max(dot(camera_direction, reflect_direction), 0.0), 64) * light_color.rgb;
+      vec4 diffuse_texture = get_texture(texture_slot, texture_coordinates);
 
-      frag_color = vec4((ambient + diffuse + specular), 1.0) * get_texture(texture_slot, texture_coordinates);
+      vec3 ambient = light_color.rgb * vec3(diffuse_texture) * ambiant_strength;
+      vec3 diffuse = light_color.rgb * max(dot(normal, light_direction), 0.0) * vec3(diffuse_texture);
+      vec3 specular = light_color.rgb * pow(max(dot(camera_direction, reflect_direction), 0.0), shininess) * vec3(diffuse_texture);
+
+      frag_color = vec4((ambient + diffuse + specular), 1.0);
    } else {
-      vec4 red = {1.0, 0.0, 0.0, 1.0};
-      frag_color = red;
+      frag_color = color;
    }
 }
 

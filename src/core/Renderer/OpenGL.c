@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "OpenGL.h"
-#include "../util.h"
+#include "../Util/util.h"
 #include "../OpenGL/VertexLayout.h"
-#include "../Object/Object1.h"
+#include "../Object/Object.h"
 
 GLint OpenGL_width;
 GLint OpenGL_height;
@@ -29,16 +29,14 @@ static void max_values_init(void) {
 
 static void vertex_layout_init(void) {
     VertexAttribute attributes[] = {
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, position)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, normal)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, color)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, texture_coordinate)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, texture_slot)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, is_light)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, model_1)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, model_2)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, model_3)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex1, model_4)}
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, position)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, normal)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, color)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, texture_coordinate)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, texture_slot)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, shininess)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, is_light)},
+        {.count = ARRAY_MEMBER_LENGTH(Vertex, model)}
     };
 
     VertexLayout_init(&OBJECT_VERTEX_LAYOUT);

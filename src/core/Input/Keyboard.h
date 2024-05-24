@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <GLFW/glfw3.h>
 #include "../Renderer/Window.h"
+#include "_Keys.h"
 
 typedef void (*Keyboard_Callback)(Window *const, int key, int scancode, int action, int mods);
 
