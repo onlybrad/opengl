@@ -6,6 +6,15 @@
 void Object_init(Object *const object, Vertex *const vertices, const unsigned int vertices_count) {
     object->texture = NULL;
     object->vertices_count = vertices_count;
+
+    Vertex *vertices_copy = calloc(sizeof(Vertex), (size_t)vertices_count);
+    memcpy(vertices_copy, vertices, sizeof(Vertex) * (size_t)vertices_count);
+    object->vertices = vertices_copy;
+}
+
+void Object_init_move(Object *const object, Vertex *const vertices, const unsigned int vertices_count) {
+    object->texture = NULL;
+    object->vertices_count = vertices_count;
     object->vertices = vertices;
 }
 

@@ -27,6 +27,7 @@ typedef struct Object {
 } Object;
 
 void Object_init(Object *const object, Vertex *const vertices, const unsigned int vertices_count);
+void Object_init_move(Object *const object, Vertex *const vertices, const unsigned int vertices_count);
 void Object_free(Object *const object);
 void Object_set_texture(Object *const object, Texture *const texture);
 void Object_set_rgba_color(Object *const object, Color *const color);

@@ -41,11 +41,7 @@ static void internal_keyboard_callback(int key, int action, int mods) {
     }
 
     if(key == GLFW_KEY_NUM_LOCK && action == GLFW_PRESS) {
-        if(mods & GLFW_MOD_NUM_LOCK) {
-            keyboard.num_lock = true;
-        } else {
-            keyboard.num_lock = false;
-        }
+        keyboard.num_lock = mods & GLFW_MOD_NUM_LOCK ? true : false;
     }
 }
 

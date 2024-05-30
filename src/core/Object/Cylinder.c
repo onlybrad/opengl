@@ -87,7 +87,7 @@ void Cylinder_create(Object *const object, const float radius, const float heigh
     size_t size;
     Vertex *cylinder_vertices = generate_cylinder_vertices(20u, radius, height, &size);
 
-    Object_init(object, cylinder_vertices, (unsigned int)(size/sizeof(*cylinder_vertices)));
+    Object_init_move(object, cylinder_vertices, (unsigned int)(size/sizeof(*cylinder_vertices)));
     mat4 model;
     glm_mat4_identity(model);
     Object_set_model(object, (float*)model);
