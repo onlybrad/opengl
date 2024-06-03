@@ -4,6 +4,11 @@
 #include "Shader.h"
 #include "../Util/util.h"
 
+#define K GLstring
+#define V GLint
+#define HASHMAP_IMPLEMENTATION
+#include "../Template/Hashmap.h"
+
 static GLuint compile_shader(const GLchar *const shader_source, size_t length, const GLenum shader_type) {
     const GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_source, (GLint *)&length);
@@ -86,8 +91,7 @@ GLboolean Shader_init(Shader *const shader, const GLchar *const vertex_shader_pa
     shader->id = id;
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
-    shader->location_count = 0;
-    memset(shader->location_cache, 0, sizeof(shader->location_cache));
+    Hashmap_GLstring_GLint_init(&shader->location_cache, string_hash_function, string_compare);
 
     return GL_TRUE;
 }
@@ -96,11 +100,7 @@ void Shader_free(Shader *const shader) {
     glDeleteProgram(shader->id);
     free(unconst(shader->fragment_shader_src));
     free(unconst(shader->vertex_shader_src));
-    for(unsigned int i=0u; i<shader->location_count; i++) {
-        free(unconst(shader->location_cache[i].uniform));
-        shader->location_cache[i].uniform = NULL;
-        shader->location_cache[i].location = 0;
-    }
+    Hashmap_GLstring_GLint_free(&shader->location_cache);
 }
 
 void Shader_use(const Shader *const shader) {
@@ -108,10 +108,10 @@ void Shader_use(const Shader *const shader) {
 }
 
 GLint Shader_get_location(Shader *const shader, const GLchar *const name) {
-    for(GLuint i=0u; i<shader->location_count; i++) {
-        if(shader->location_cache[i].uniform != NULL && strcmp(name, shader->location_cache[i].uniform) == 0) {
-            return shader->location_cache[i].location;
-        }
+    Result_GLint result = Hashmap_GLstring_GLint_get(&shader->location_cache, name);
+
+    if(result.success) {
+        return result.value;
     }
 
     GLint location = glGetUniformLocation(shader->id, name);
@@ -120,9 +120,7 @@ GLint Shader_get_location(Shader *const shader, const GLchar *const name) {
         return location;
     }
 
-    shader->location_cache[shader->location_count].location = location;
-    shader->location_cache[shader->location_count].uniform = strdup(name);
-    shader->location_count++;
+    Hashmap_GLstring_GLint_insert(&shader->location_cache, name, location);
     
     return location;
 }

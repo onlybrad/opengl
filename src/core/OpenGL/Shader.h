@@ -3,18 +3,22 @@
 
 #include <glad/glad.h>
 #include <cglm/cglm.h>
+#include "../Util/Str.h"
 
+typedef const GLchar *GLstring;
 typedef struct Location {
     GLint location;
     GLchar *uniform;
 } Location;
 
+#define K GLstring
+#define V GLint
+#include "../Template/Hashmap.h"
 typedef struct Shader {
     GLuint id;
-    GLuint location_count;
     const GLchar *vertex_shader_src;
     const GLchar *fragment_shader_src;
-    Location location_cache[32];
+    Hashmap_GLstring_GLint location_cache;
 } Shader;
 
 GLboolean Shader_init(Shader *const shader, const GLchar *const vertex_shader_path, const GLchar *const fragment_shader_path);

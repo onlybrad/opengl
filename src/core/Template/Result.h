@@ -14,12 +14,12 @@ typedef const char *str;
     #error "Missing parameter T"
 #endif
 
-#define RESULT MAKE_NAME(Result, T)
+#define RESULT_T MAKE_NAME(Result, T)
 
-typedef struct RESULT {
+typedef struct RESULT_T {
     bool success;
     T value;
-} RESULT;
+} RESULT_T;
 
-#undef RESULT
+#undef RESULT_T
 #undef T

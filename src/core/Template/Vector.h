@@ -36,6 +36,7 @@ typedef const char *str;
 #define VECTOR_TO_STRING MAKE_NAME(VECTOR, to_string)
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
+#ifndef VECTOR_IMPLEMENTATION
 typedef struct VECTOR {
     T *buffer;
     size_t length;
@@ -58,7 +59,7 @@ void VECTOR_PRINT(const VECTOR *const vector);
 char *VECTOR_TO_STRING(const VECTOR *const vector);
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
-#ifdef VECTOR_IMPLEMENTATION
+#else
 
 #include <string.h>
 #include <assert.h>

@@ -63,7 +63,9 @@
         "memory": "c",
         "propagate_const": "c",
         "stacktrace": "c",
-        "typeindex": "c"
+        "typeindex": "c",
+        "unordered_map": "c",
+        "unordered_set": "c"
     },
     "C_Cpp.codeAnalysis.exclude": {
         "cglm/call.h": true,

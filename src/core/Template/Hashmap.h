@@ -21,8 +21,9 @@ typedef const char *str;
 #endif
 
 #define HASHMAP_INITIAL_CAPACITY 16
-#define HASHMAP MAKE_NAME(Hashmap,MAKE_NAME(K,V))
 #define BUCKET MAKE_NAME(Bucket,MAKE_NAME(K,V))
+#define RESULT MAKE_NAME(Result, V)
+#define HASHMAP MAKE_NAME(Hashmap,MAKE_NAME(K,V))
 #define HASHMAP_RESIZE MAKE_NAME(HASHMAP, resize)
 #define HASHMAP_GET_BUCKET MAKE_NAME(HASHMAP, get_bucket)
 #define HASHMAP_INIT MAKE_NAME(HASHMAP, init)
@@ -31,22 +32,23 @@ typedef const char *str;
 #define HASHMAP_INSERT MAKE_NAME(HASHMAP, insert)
 #define HASHMAP_GET MAKE_NAME(HASHMAP, get)
 #define HASHMAP_REMOVE MAKE_NAME(HASHMAP, remove)
-#define T V
-#include "Result.h"
-#define RESULT MAKE_NAME(Result, V)
+
+#ifndef HASHMAP_IMPLEMENTATION
 
 typedef struct BUCKET {
     K key;
     V value;
     bool used;
 } BUCKET;
-
 typedef struct HASHMAP {
     BUCKET* buckets;
     size_t capacity;
     size_t (*hash_function)(K);
     bool (*compare_function)(K, K);
 } HASHMAP;
+
+#define T V
+#include "Result.h"
 
 void HASHMAP_INIT(HASHMAP *const hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K));
 void HASHMAP_FREE(HASHMAP *const hashmap);
@@ -55,7 +57,7 @@ void HASHMAP_INSERT(HASHMAP *const hashmap, K key, V value);
 RESULT HASHMAP_GET(HASHMAP *const hashmap, K key);
 void HASHMAP_REMOVE(HASHMAP *const hashmap, K key);
 
-#ifdef HASHMAP_IMPLEMENTATION
+#else //HASHMAP_IMPLEMENTATION
 
 static void HASHMAP_RESIZE(HASHMAP *const hashmap, const size_t capacity) {
     BUCKET *const new_buckets = calloc(capacity, sizeof(BUCKET));
@@ -147,7 +149,6 @@ void HASHMAP_REMOVE(HASHMAP *const hashmap, K key) {
 #undef HASHMAP_INITIAL_CAPACITY
 #undef HASHMAP
 #undef BUCKET
-#undef RESULT
 #undef HASHMAP_GET_BUCKET
 #undef HASHMAP_INIT
 #undef HASHMAP_FREE
@@ -158,4 +159,6 @@ void HASHMAP_REMOVE(HASHMAP *const hashmap, K key) {
 
 #ifdef HASHMAP_IMPLEMENTATION
 #undef HASHMAP_IMPLEMENTATION
+#else
+#undef RESULT
 #endif
