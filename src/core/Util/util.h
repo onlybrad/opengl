@@ -1,3 +1,5 @@
+#include "stdlib.h"
+
 #if defined(__clang__) || defined(__GNUC__)
 #define FALLTHROUGH {__attribute__((fallthrough));}
 #elif defined(_MSC_VER)
@@ -8,12 +10,18 @@
 #define FALLTHROUGH
 #endif
 
+#define _MAKE_NAME(a,b) a ## _ ## b
+#define MAKE_NAME(a,b) _MAKE_NAME(a,b)
+
+#define _stringify(a) #a
+#define stringify(a) _stringify(a)
+
 #define INT_TO_PTR(INT) (void *)(uintptr_t)(INT)
-#define ARRAY_LENGTH(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
+#define ARRAY_LEN(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
 #define MEMBER_SIZE(STRUCT, MEMBER) (sizeof(((STRUCT *)0)->MEMBER)) 
 #define ARRAY_MEMBER_LENGTH(STRUCT, MEMBER) (MEMBER_SIZE(STRUCT, MEMBER)/MEMBER_SIZE(STRUCT, MEMBER[0]))
 #define GL_CALL(CODE) GLClearError();\
-CODE;\
+CODE\
 GLCheckError();
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))

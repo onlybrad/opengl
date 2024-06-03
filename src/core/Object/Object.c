@@ -63,6 +63,6 @@ void Object_set_is_light(Object *const object, const bool is_light) {
     }
 }
 
-unsigned int Object_get_texture_slot(Object *const object) {
+inline unsigned int Object_get_texture_slot(Object *const object) {
     return (unsigned int)object->vertices[0].texture_slot[0];
 }

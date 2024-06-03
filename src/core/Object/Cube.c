@@ -6,7 +6,7 @@ static Vertex background_vertices[] = BLACK_CUBE_VERTICES(1.0f);
 static Vertex cube_vertices[] = CUBE_VERTICES(0.5f, CURLY_BRACKETS({1.0f, 0.5f, 0.31f, 1.0f}));
 
 void Cube_create_background(Object *const object) {
-    Object_init(object, background_vertices, (unsigned int)ARRAY_LENGTH(background_vertices));
+    Object_init(object, background_vertices, (unsigned int)ARRAY_LEN(background_vertices));
 
     mat4 model;
     glm_mat4_identity(model);
@@ -14,7 +14,7 @@ void Cube_create_background(Object *const object) {
 }
 
 void Cube_create(Object *const object) {
-    Object_init(object, cube_vertices, (unsigned int)ARRAY_LENGTH(cube_vertices));
+    Object_init(object, cube_vertices, (unsigned int)ARRAY_LEN(cube_vertices));
     
     mat4 model;
     glm_mat4_identity(model);
