@@ -12,9 +12,19 @@ int main(void) {
 }
 
 #define T int
+#define VECTOR_PRINT_FORMAT "%i" 
+#define VECTOR_PRINT_ARGUMENTS(i) i
+#include "../core/Template/Vector.h"
+
+#define T int
 #define VECTOR_IMPLEMENTATION
 #define VECTOR_PRINT_FORMAT "%i" 
 #define VECTOR_PRINT_ARGUMENTS(i) i
+#include "../core/Template/Vector.h"
+
+#define T str
+#define VECTOR_PRINT_FORMAT "%s" 
+#define VECTOR_PRINT_ARGUMENTS(s) s
 #include "../core/Template/Vector.h"
 
 #define T str
@@ -187,6 +197,10 @@ static void vector_test(void) {
 
     Vector_str_free(&vector2);
 }
+
+#define K str
+#define V int
+#include "../core/Template/Hashmap.h"
 
 #define K str
 #define V int
