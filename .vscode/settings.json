@@ -65,7 +65,8 @@
         "stacktrace": "c",
         "typeindex": "c",
         "unordered_map": "c",
-        "unordered_set": "c"
+        "unordered_set": "c",
+        "expected": "c"
     },
     "C_Cpp.codeAnalysis.exclude": {
         "cglm/call.h": true,

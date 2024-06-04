@@ -48,7 +48,7 @@ static void drawing_callback(Window *const window) {
 
     //The index of the light object in the current scene
     const unsigned int light_index = 2;
-    Scene3DObject *const scene_light = Scene3D_object_get(window->scene, light_index);
+    SceneObject3D *const scene_light = Scene3D_object_get(window->scene, light_index);
     Object_set_vec4_color(scene_light->object, (const float*)new_color);
     //Notify the scene that the light object has been updated, this will cause it to update the light object in the vertex buffer the next time Scene3D_update_objects is called.
     Scene3D_object_needs_update(window->scene, light_index);

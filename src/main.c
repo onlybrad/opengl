@@ -79,10 +79,10 @@ int main(void) {
 
     Window_set_scene3D(&window, &scene);
 
-    Scene3D_start1(&scene);
+    Scene3D_start(&scene);
     Window_logic_loop(&window, logic_callback);
     Window_drawing_loop(&window, drawing_callback);
-    Scene3D_end1(&scene);
+    Scene3D_end(&scene);
 
     Texture_free(&space_texture);
     Texture_free(&wood_texture);
