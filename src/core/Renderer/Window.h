@@ -26,7 +26,7 @@ struct Window {
     WindowThreadArgs logic_thread_args;
 };
 
-void Window_init(Window *const window, int width, int height, const char* const title);
+void Window_init(Window *const window, const int width, const int height, const char* const title);
 void Window_free(Window *const window);
 void Window_set_vsync(Window *const window, const bool on);
 void Window_set_scene3D(Window *const window, Scene3D *const scene);
