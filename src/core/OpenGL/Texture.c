@@ -38,8 +38,8 @@ const char TEXTURE_UNIFORMS[32][10] = {
     "texture31",
 };
 
-extern GLint MAX_TEXTURE_IMAGE_UNITS;
-extern GLint MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+extern int MAX_TEXTURE_IMAGE_UNITS;
+extern int MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 
 static const unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
 
@@ -66,7 +66,7 @@ static void generate_texture(Texture *const texture) {
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-TextureError Texture_init(Texture *const texture, const char *const name, const char *const path) {
+void Texture_init(Texture *const texture, const char *const name, const char *const path) {
     int width, height, channels;
 
     stbi_set_flip_vertically_on_load(1);
@@ -75,7 +75,6 @@ TextureError Texture_init(Texture *const texture, const char *const name, const 
     if(data == NULL) {
         fprintf(stderr, "Couldn't load texture at %s\n", path);
         Texture_color(texture, NULL, NULL);
-        return TextureNotFound;
     }
 
     texture->channels = channels;
@@ -84,8 +83,6 @@ TextureError Texture_init(Texture *const texture, const char *const name, const 
     texture->data = data;
     texture->name = name;
     generate_texture(texture);
-
-    return TextureNoError;
 }
 
 void Texture_free(Texture *const texture) {
@@ -93,7 +90,7 @@ void Texture_free(Texture *const texture) {
     texture->data = NULL;
 }
 
-void Texture_use(const Texture *const texture, const GLuint slot) {
+void Texture_use(const Texture *const texture, const unsigned int slot) {
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }

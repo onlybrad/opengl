@@ -39,8 +39,8 @@ void Scene3D_init(Scene3D *const scene, Shader *const shader, PerspectiveCamera 
     scene->texture_slot = 1u;
     scene->perspective_camera = perspective_camera;
     scene->shader = shader;
-    Vector_SceneObject3D_init(&scene->scene_objects, 128);
-    Vector_uint_init(&scene->to_update, 128); 
+    Vector_SceneObject3D_init(&scene->scene_objects, 128LLU);
+    Vector_uint_init(&scene->to_update, 128u); 
     scene->view_id = Shader_get_location(shader, "view");
     scene->projection_id = Shader_get_location(shader, "projection");
     perspective_camera->camera.id = Shader_get_location(shader, "camera_position");
@@ -185,6 +185,6 @@ void Scene3D_update_objects(Scene3D *const scene) {
         VertexArrayBuffer_set(&scene->vab, scene_object->offset * sizeof(*scene_object->object->vertices), scene_object->object->vertices, scene_object->object->vertices_count * sizeof(*scene_object->object->vertices));
         scene_object->needs_update = true;
     }
-    scene->to_update.length = 0;
+    scene->to_update.length = 0llu;
     Lock_unlock(&scene->vab.lock);
 }

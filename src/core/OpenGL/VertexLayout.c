@@ -3,36 +3,36 @@
 extern GLint MAX_VERTEX_ATTRIBS;
 
 void VertexLayout_init(VertexLayout *const layout) {
-    layout->attributes_index = 0;
+    layout->attributes_index = 0u;
     layout->stride = 0;
 }
 
-GLboolean VertexLayout_push(VertexLayout *const layout, const VertexAttribute *const attribute) {
-    if(layout->attributes_index == (GLuint)MAX_VERTEX_ATTRIBS) {
-        return GL_FALSE;
+bool VertexLayout_push(VertexLayout *const layout, const VertexAttribute *const attribute) {
+    if(layout->attributes_index == (unsigned int)MAX_VERTEX_ATTRIBS) {
+        return false;
     }
 
-    if(attribute->count <= 4) {
+    if(attribute->count <= 4u) {
         layout->attributes[layout->attributes_index++] = *attribute;
-        layout->stride += (GLsizei)attribute->count * (GLsizei)sizeof(GLfloat);
+        layout->stride += (int)attribute->count * (int)sizeof(float);
     } else {
         for(unsigned int i=0u; i < attribute->count / 4; i++) {
             layout->attributes[layout->attributes_index++] = (VertexAttribute) {
                 .normalized = attribute->normalized,
-                .count = 4
+                .count = 4u
             };
-            layout->stride += 4 * (GLsizei)sizeof(GLfloat);
+            layout->stride += 4 * (int)sizeof(float);
         }
         
-        GLuint count = attribute->count % 4;
+        unsigned int count = attribute->count % 4u;
         if(count > 0) {
             layout->attributes[layout->attributes_index++] = (VertexAttribute) {
                 .normalized = attribute->normalized,
                 .count = count
             };
-            layout->stride += (GLsizei)count * (GLsizei)sizeof(GLfloat);
+            layout->stride += (int)count * (int)sizeof(float);
         }
     }
 
-    return GL_TRUE;
+    return true;
 }

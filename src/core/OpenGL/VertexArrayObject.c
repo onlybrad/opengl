@@ -17,13 +17,13 @@ void VertexArrayObject_add_buffer(VertexArrayObject *const vao, const VertexArra
         IndexBuffer_bind(ib);
     }
 
-    GLint offset = 0;
+    int offset = 0;
 
-    for(GLuint i=0; i<layout->attributes_index; i++) {
+    for(unsigned int i=0; i<layout->attributes_index; i++) {
         const VertexAttribute *const attribute = layout->attributes + i;
         glEnableVertexAttribArray(i);
-        glVertexAttribPointer(i, (GLint)attribute->count, GL_FLOAT, attribute->normalized, layout->stride, INT_TO_PTR(offset));
-        offset += (GLint)attribute->count * (GLint)sizeof(GLfloat);
+        glVertexAttribPointer(i, (int)attribute->count, GL_FLOAT, attribute->normalized, layout->stride, INT_TO_PTR(offset));
+        offset += (int)attribute->count * (int)sizeof(GLfloat);
     }
 }
 
@@ -33,5 +33,5 @@ void VertexArrayObject_bind(const VertexArrayObject *const vao) {
 
 void VertexArrayObject_unbind(const VertexArrayObject *const vao) {
     (void)vao;
-    glBindVertexArray(0);
+    glBindVertexArray(0u);
 }

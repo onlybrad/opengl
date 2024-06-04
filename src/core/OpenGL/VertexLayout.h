@@ -2,19 +2,20 @@
 #define _VERTEX_LAYOUT
 
 #include <glad/glad.h>
+#include <stdbool.h>
 
 typedef struct VertexAttribute {
-    GLuint count;
-    GLboolean normalized;
+    unsigned int count;
+    bool normalized;
 } VertexAttribute;
 
 typedef struct VertexLayout {
     VertexAttribute attributes[32];
-    GLuint attributes_index;
-    GLsizei stride;
+    unsigned int attributes_index;
+    int stride;
 } VertexLayout;
 
 void VertexLayout_init(VertexLayout *const layout);
-GLboolean VertexLayout_push(VertexLayout *const layout, const VertexAttribute *const attribute);
+bool VertexLayout_push(VertexLayout *const layout, const VertexAttribute *const attribute);
 
 #endif

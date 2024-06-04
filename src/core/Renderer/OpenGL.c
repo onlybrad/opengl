@@ -5,11 +5,11 @@
 #include "../OpenGL/VertexLayout.h"
 #include "../Object/Object.h"
 
-GLint OpenGL_width;
-GLint OpenGL_height;
-GLint MAX_VERTEX_ATTRIBS;
-GLint MAX_COMBINED_TEXTURE_IMAGE_UNITS;
-GLint MAX_TEXTURE_IMAGE_UNITS;
+int OpenGL_width;
+int OpenGL_height;
+int MAX_VERTEX_ATTRIBS;
+int MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+int MAX_TEXTURE_IMAGE_UNITS;
 VertexLayout OBJECT_VERTEX_LAYOUT;
 
 static void opengl_defaults_init(void) {
@@ -58,17 +58,17 @@ void OpenGL_init(GLADloadproc proc_address, void (terminate)(void)) {
     vertex_layout_init();
 }
 
-inline void OpenGL_set_width(const GLint width) {
+inline void OpenGL_set_width(const int width) {
     OpenGL_width = width;
     glViewport(0, 0, width, OpenGL_height);
 }
 
-inline void OpenGL_set_height(const GLint height) {
+inline void OpenGL_set_height(const int height) {
     OpenGL_height = height;
     glViewport(0, 0, OpenGL_width, height);    
 }
 
-inline void OpenGL_set_viewport(const GLint width, const GLint height) {
+inline void OpenGL_set_viewport(const int width, const int height) {
     OpenGL_width = width;
     OpenGL_height = height;
     glViewport(0, 0, width, height);   

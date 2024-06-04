@@ -11,14 +11,14 @@ static void GLFW_resize_callback(GLFWwindow *_, int width, int height) {
     OpenGL_set_viewport(width, height);
 }
 
-void Window_init(Window *const window, int width, int height, const char* const title) {
+void Window_init(Window *const window, const int width, const int height, const char* const title) {
     window->width = width;
     window->height = height;
     window->current_time = 0.0f;
     window->delta_time = 0.0f;
-    window->frame = 0;
+    window->frame = 0llu;
     window->scene = NULL;
-    window->updates_per_second = 30.0;
+    window->updates_per_second = 30u;
     window->shoudClose = false;
     window->input_callback = NULL;
     
@@ -47,7 +47,7 @@ void Window_free(Window *const window) {
     glfwTerminate();
 }
 
-void Window_set_vsync(Window *const window, bool on) {
+void Window_set_vsync(Window *const window, const bool on) {
     glfwMakeContextCurrent(window->glfw_window);
     glfwSwapInterval((int)on);
 }

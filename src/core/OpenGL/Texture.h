@@ -5,24 +5,18 @@
 #include <stb_image.h>
 #include "../Util/Color.h"
 
-typedef enum TextureError {
-    TextureNoError,
-    TextureNotFound,
-    TextureUnsupportedChannels
-} TextureError ;
-
 typedef struct Texture {
-    GLuint id;
-    const GLubyte *data;
-    const char* name;
-    GLint width;
-    GLint height;
-    GLint channels;
+    unsigned int id;
+    const unsigned char *data;
+    const char *name;
+    int width;
+    int height;
+    int channels;
 } Texture;
 
-TextureError Texture_init(Texture *const texture, const char *const name, const GLchar *const path);
+void Texture_init(Texture *const texture, const char *const name, const char *const path);
 void Texture_free(Texture *const texture);
-void Texture_use(const Texture *const texture, const GLuint slot);
+void Texture_use(const Texture *const texture, const unsigned int slot);
 void Texture_color(Texture *const texture, const char* const name, Color *const color);
 
 #endif

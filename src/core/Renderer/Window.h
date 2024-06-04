@@ -28,7 +28,7 @@ struct Window {
 
 void Window_init(Window *const window, int width, int height, const char* const title);
 void Window_free(Window *const window);
-void Window_set_vsync(Window *const window, bool on);
+void Window_set_vsync(Window *const window, const bool on);
 void Window_set_scene3D(Window *const window, Scene3D *const scene);
 void Window_set_updates_per_second(Window *const window, const unsigned int updates_per_seconds);
 void Window_drawing_loop(Window *const window, void(*drawing_function)(Window *const));

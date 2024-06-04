@@ -4,9 +4,9 @@
 #include <glad/glad.h>
 
 void OpenGL_init(GLADloadproc proc_address, void (terminate)(void));
-void OpenGL_set_width(const GLint width);
-void OpenGL_set_height(const GLint height);
-void OpenGL_set_viewport(const GLint width, const GLint height);
+void OpenGL_set_width(const int width);
+void OpenGL_set_height(const int height);
+void OpenGL_set_viewport(const int width, const int height);
 void OpenGL_clear_color(const float r, const float g, const float b, const float a);
 void OpenGL_clear(void);
 void OpenGL_fill_mode(void);
