@@ -99,7 +99,11 @@ void VECTOR_FREE(VECTOR *const vector) {
 }
 
 void VECTOR_COPY(VECTOR *vector_dst, VECTOR *const vector_src) {
-    memcpy(vector_dst, vector_src, sizeof(VECTOR));
+    vector_dst->buffer = malloc(sizeof(T) * vector_src->capacity);
+    assert(vector_dst->buffer != NULL);
+    memcpy(vector_dst->buffer, vector_src->buffer, sizeof(T) * vector_src->capacity);
+    vector_dst->capacity = vector_src->capacity;
+    vector_dst->length = vector_src->length;
 }
 
 void VECTOR_PUSH(VECTOR *const vector, T value) {
