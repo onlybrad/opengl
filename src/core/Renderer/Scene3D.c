@@ -49,7 +49,8 @@ void Scene3D_init(Scene3D *const scene, Shader *const shader, PerspectiveCamera 
 void Scene3D_free(Scene3D *const scene) {
     VertexArrayObject_free(&scene->vao);
     VertexArrayBuffer_free(&scene->vab);
-    memset(scene, 0, sizeof(Scene3D));
+    Vector_SceneObject3D_free(&scene->scene_objects);
+    Vector_uint_free(&scene->to_update);
 }
 
 bool Scene3D_add_object(Scene3D *const scene, Object *const object, const Transform *const transform) {
