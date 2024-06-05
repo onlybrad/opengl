@@ -125,7 +125,7 @@ int Shader_get_location(Shader *const shader, const char *const name) {
     return location;
 }
 
-bool Shader_set_bool(Shader *const shader, const char *const name, bool value) {
+bool Shader_set_bool(Shader *const shader, const char *const name, const bool value) {
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -136,7 +136,7 @@ bool Shader_set_bool(Shader *const shader, const char *const name, bool value) {
     return true;
 }
 
-bool Shader_set_int(Shader *const shader, const char *const name, int value) {
+bool Shader_set_int(Shader *const shader, const char *const name, const int value) {
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -147,7 +147,7 @@ bool Shader_set_int(Shader *const shader, const char *const name, int value) {
     return true;
 }
 
-bool Shader_set_float(Shader *const shader, const char *const name, float value) {
+bool Shader_set_float(Shader *const shader, const char *const name, const float value) {
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -191,17 +191,17 @@ bool Shader_set_vec4(Shader *const shader, const char *const name, const float *
     return true; 
 }
 
-inline void Shader_set_bool_l(Shader *const shader, const int location, bool value) {
+inline void Shader_set_bool_l(Shader *const shader, const int location, const bool value) {
     (void)shader;
     glUniform1i(location, (int)value);
 }
 
-inline void Shader_set_int_l(Shader *const shader, const int location, int value) {
+inline void Shader_set_int_l(Shader *const shader, const int location, const int value) {
     (void)shader;
     glUniform1i(location, value);    
 }
 
-inline void Shader_set_float_l(Shader *const shader, const int location, float value) {
+inline void Shader_set_float_l(Shader *const shader, const int location, const float value) {
     (void)shader;    
     glUniform1f(location, value);
 }
