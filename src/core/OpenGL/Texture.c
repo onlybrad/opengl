@@ -75,6 +75,7 @@ void Texture_init(Texture *const texture, const char *const name, const char *co
     if(data == NULL) {
         fprintf(stderr, "Couldn't load texture at %s\n", path);
         Texture_color(texture, NULL, NULL);
+        return;
     }
 
     texture->channels = channels;
