@@ -28,10 +28,10 @@ void String_free(String str) {
 }
 
 size_t string_hash_function(const char *key) {
-    size_t hash = 0xcbf29ce484222325ULL;
+    size_t hash = 0xcbf29ce484222325;
     size_t str_len = strlen(key);
     for(size_t i=0; i < str_len; i++) {
-        hash = (hash ^ (size_t)key[i]) * 0x100000001b3ULL;
+        hash = (hash ^ (size_t)key[i]) * 0x100000001b3;
     }
 
     return hash;
