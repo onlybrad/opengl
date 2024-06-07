@@ -2,7 +2,7 @@
 
 void VertexArrayBuffer_init(VertexArrayBuffer *const vab, const void *const data, const unsigned int size){
     Lock_init(&vab->lock);
-    vab->index = 0llu;
+    vab->index = 0;
     glGenBuffers(1, &vab->id);
     glBindBuffer(GL_ARRAY_BUFFER, vab->id);
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);

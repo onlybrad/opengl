@@ -101,7 +101,7 @@ void Texture_color(Texture *const texture, const char* const name, Color *const 
     texture->width = 1;
     texture->height = 1;
 
-    const size_t size = 4llu * sizeof(unsigned char);
+    const size_t size = 4 * sizeof(unsigned char);
     texture->data = malloc(size);
     memcpy(unconst(texture->data), color == NULL ? DEFAULT_TEXTURE : (unsigned char*)color, size);
     

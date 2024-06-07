@@ -49,7 +49,7 @@ void Scene3D_free(Scene3D *const scene);
 bool Scene3D_add_object(Scene3D *const scene, Object *const object, const Transform *const transform);
 void Scene3D_object_set_transform(Scene3D *const scene, const unsigned int object_index, Transform *const transform);
 void Scene3D_object_needs_update(Scene3D *const scene, const unsigned int object_index);
-void Scene3D_set_background1(Scene3D *const scene, Object *const background);
+void Scene3D_set_background(Scene3D *const scene, Object *const background);
 SceneObject3D *Scene3D_object_get(Scene3D *const scene, const unsigned int object_index);
 void Scene3D_start(Scene3D *const scene);
 void Scene3D_end(Scene3D *const scene);

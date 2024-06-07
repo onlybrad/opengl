@@ -51,7 +51,7 @@ int main(void) {
     Object background, cube, cylinder, light;
     Cube_create_background(&background);
     Object_set_texture(&background, &space_texture);
-    Scene3D_set_background1(&scene, &background);
+    Scene3D_set_background(&scene, &background);
 
     Cube_create(&cube);
     Object_set_texture(&cube, &wood_texture);

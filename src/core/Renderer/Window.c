@@ -16,7 +16,7 @@ void Window_init(Window *const window, const int width, const int height, const 
     window->height = height;
     window->current_time = 0.0f;
     window->delta_time = 0.0f;
-    window->frame = 0llu;
+    window->frame = 0;
     window->scene = NULL;
     window->updates_per_second = 30u;
     window->shoudClose = false;
