@@ -4,14 +4,14 @@
 
 String Str_init(const char *c_str) {
     return (String){
-        .buffer = unconst(c_str),
+        .buffer = c_str,
         .length = strlen(c_str)
     };
 }
 
 String Str_init_move(const char *c_str, const size_t length) {
     return (String){
-        .buffer = unconst(c_str),
+        .buffer = c_str,
         .length = length
     };
 }
