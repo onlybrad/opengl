@@ -1,8 +1,8 @@
-#include <stdio.h>
 #include <glad/glad.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "util.h"
-#include "stdlib.h"
-#include "string.h"
 
 void GLClearError(void) {
     while(glGetError() != GL_NO_ERROR);
@@ -15,22 +15,27 @@ void GLCheckError(void) {
     }
 }
 
-char *file_get_contents(size_t *const length, const char *const path) {
+String file_get_contents(const char *const path) {
     FILE *const file = fopen(path, "rb");
 
     if (!file) {
         perror(NULL);
-        return NULL;
+        return (String){
+            .buffer = NULL,
+            .length = 0
+        };
     }
 
+    String str;
+
     fseek(file, 0, SEEK_END);
-    *length = (size_t)ftell(file);
+    str.length = (size_t)ftell(file);
     fseek(file, 0, SEEK_SET);
-    char *const buffer = malloc(*length);
-    fread(buffer, 1, *length, file);
+    str.buffer = malloc(str.length * sizeof(char));
+    fread(unconst(str.buffer), 1, str.length, file);
     fclose(file);
     
-    return buffer;
+    return str;
 }
 
 void *unconst(const void *var) {

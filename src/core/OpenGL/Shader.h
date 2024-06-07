@@ -4,22 +4,22 @@
 #include <glad/glad.h>
 #include <cglm/cglm.h>
 #include <stdbool.h>
-#include "../Util/Str.h"
+#include "../Util/String.h"
 
-typedef const char *GLstring;
 typedef struct Location {
     int location;
     char *uniform;
 } Location;
 
-#define K GLstring
+typedef const char *str;
+#define K str
 #define V int
 #include "../Template/Hashmap.h"
 typedef struct Shader {
     unsigned int id;
-    const char *vertex_shader_src;
-    const char *fragment_shader_src;
-    Hashmap_GLstring_int location_cache;
+    String vertex_shader_src;
+    String fragment_shader_src;
+    Hashmap_str_int location_cache;
 } Shader;
 
 bool Shader_init(Shader *const shader, const char *const vertex_shader_path, const char *const fragment_shader_path);

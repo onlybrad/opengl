@@ -1,4 +1,8 @@
-#include "stdlib.h"
+#ifndef _UTIL_H
+#define _UTIL_H
+
+#include <stdlib.h>
+#include "String.h"
 
 #if defined(__clang__) || defined(__GNUC__)
 #define FALLTHROUGH {__attribute__((fallthrough));}
@@ -32,5 +36,7 @@ GLCheckError();
 
 void GLClearError(void);
 void GLCheckError(void);
-char *file_get_contents(size_t *const length, const char *const path);
+String file_get_contents(const char *const path);
 void *unconst(const void *var);
+
+#endif

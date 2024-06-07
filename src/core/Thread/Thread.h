@@ -21,6 +21,11 @@ void Thread_start(Thread *const thread);
 void Thread_join(const Thread *const thread);
 void Thread_exit(void);
 
+#define SYNCHRONIZE(LOCK, CODE)\
+Lock_lock(LOCK);\
+CODE \
+Lock_unlock(LOCK);\
+
 void Lock_init(Lock *const lock);
 void Lock_free(Lock *const lock);
 void Lock_lock(Lock *const lock);

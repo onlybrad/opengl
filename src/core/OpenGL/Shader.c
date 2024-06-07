@@ -3,15 +3,16 @@
 #include <string.h>
 #include "Shader.h"
 #include "../Util/util.h"
+#include "../Util/String.h"
 
-#define K GLstring
+#define K str
 #define V int
 #define HASHMAP_IMPLEMENTATION
 #include "../Template/Hashmap.h"
 
-static unsigned int compile_shader(const char *const shader_source, size_t length, const GLenum shader_type) {
+static unsigned int compile_shader(String shader_source, const GLenum shader_type) {
     const unsigned int shader = glCreateShader(shader_type);
-    glShaderSource(shader, 1, &shader_source, (int *)&length);
+    glShaderSource(shader, 1, &shader_source.buffer, (int *)&(shader_source.length));
     glCompileShader(shader);
 
     int success;
@@ -35,13 +36,13 @@ static unsigned int compile_shader(const char *const shader_source, size_t lengt
     return shader;
 }
 
-static unsigned int create_shader(const char *const vertex_shader_src, const size_t vertex_shader_length, const char *const fragment_shader_src, const size_t fragment_shader_length) {
-    const unsigned int vertex_shader = compile_shader(vertex_shader_src, vertex_shader_length, GL_VERTEX_SHADER);
+static unsigned int create_shader(String vertex_shader_src, String fragment_shader_src) {
+    const unsigned int vertex_shader = compile_shader(vertex_shader_src, GL_VERTEX_SHADER);
     if(vertex_shader == 0u) {
         return 0u;
     }
 
-    const unsigned int fragment_shader = compile_shader(fragment_shader_src, fragment_shader_length, GL_FRAGMENT_SHADER);
+    const unsigned int fragment_shader = compile_shader(fragment_shader_src, GL_FRAGMENT_SHADER);
     if(fragment_shader == 0u) {
         return 0u;
     }
@@ -68,39 +69,37 @@ static unsigned int create_shader(const char *const vertex_shader_src, const siz
 }
 
 bool Shader_init(Shader *const shader, const char *const vertex_shader_path, const char *const fragment_shader_path) {
-    size_t vertex_shader_length;
-    const char* const vertex_shader_src = file_get_contents(&vertex_shader_length, vertex_shader_path);
-    if(vertex_shader_src == NULL) {
+    const String vertex_shader_src = file_get_contents(vertex_shader_path);
+    if(vertex_shader_src.buffer == NULL) {
         return false;
     }
 
-    size_t fragment_shader_length;
-    const char* const fragment_shader_src = file_get_contents(&fragment_shader_length, fragment_shader_path);
-    if(fragment_shader_src == NULL) {
-        free(unconst(vertex_shader_src));
+    const String fragment_shader_src = file_get_contents(fragment_shader_path);
+    if(fragment_shader_src.buffer == NULL) {
+        String_free(vertex_shader_src);
         return false;
     }
 
-    const unsigned int id = create_shader(vertex_shader_src, vertex_shader_length, fragment_shader_src, fragment_shader_length);
+    const unsigned int id = create_shader(vertex_shader_src, fragment_shader_src);
     if(id == 0) {
-        free(unconst(vertex_shader_src));
-        free(unconst(fragment_shader_src));
+        String_free(vertex_shader_src);
+        String_free(fragment_shader_src);
         return false;
     }
 
     shader->id = id;
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
-    Hashmap_GLstring_int_init(&shader->location_cache, string_hash_function, string_compare);
+    Hashmap_str_int_init(&shader->location_cache, string_hash_function, string_compare);
 
     return true;
 }
 
 void Shader_free(Shader *const shader) {
     glDeleteProgram(shader->id);
-    free(unconst(shader->fragment_shader_src));
-    free(unconst(shader->vertex_shader_src));
-    Hashmap_GLstring_int_free(&shader->location_cache);
+    String_free(shader->vertex_shader_src);
+    String_free(shader->fragment_shader_src);
+    Hashmap_str_int_free(&shader->location_cache);
 }
 
 void Shader_use(const Shader *const shader) {
@@ -108,7 +107,7 @@ void Shader_use(const Shader *const shader) {
 }
 
 int Shader_get_location(Shader *const shader, const char *const name) {
-    Result_int result = Hashmap_GLstring_int_get(&shader->location_cache, name);
+    Result_int result = Hashmap_str_int_get(&shader->location_cache, name);
 
     if(result.success) {
         return result.value;
@@ -120,7 +119,7 @@ int Shader_get_location(Shader *const shader, const char *const name) {
         return location;
     }
 
-    Hashmap_GLstring_int_insert(&shader->location_cache, name, location);
+    Hashmap_str_int_insert(&shader->location_cache, name, location);
     
     return location;
 }

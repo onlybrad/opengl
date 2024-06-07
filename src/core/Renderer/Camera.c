@@ -9,17 +9,15 @@ static vec3 UP = {0.0f, 1.0f, 0.0f};
 #define Z 2
 
 static void update_view(Camera *const camera) {
-    Lock_lock(&camera->lock);
+    SYNCHRONIZE(&camera->lock,
     vec3 look_at;
     glm_vec3_add(camera->position, camera->front, look_at);
-    glm_lookat(camera->position, look_at, UP, camera->view);
-    Lock_unlock(&camera->lock);
+    glm_lookat(camera->position, look_at, UP, camera->view);)
 }
 
 static void update_perspective_projection(PerspectiveCamera *const perspective_camera) {
-    Lock_lock(&perspective_camera->camera.lock);
-    glm_perspective(perspective_camera->fov, perspective_camera->aspect, perspective_camera->near_z, perspective_camera->far_z, perspective_camera->camera.projection);
-    Lock_unlock(&perspective_camera->camera.lock);
+    SYNCHRONIZE(&perspective_camera->camera.lock,
+    glm_perspective(perspective_camera->fov, perspective_camera->aspect, perspective_camera->near_z, perspective_camera->far_z, perspective_camera->camera.projection);)
 }
 
 static void Camera_init(Camera *const camera, float x, float y) {
