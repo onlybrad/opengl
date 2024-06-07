@@ -10,8 +10,9 @@ typedef struct Color {
     unsigned char a;
 } Color;
 
-#define COLOR_TO_VEC4(COLOR) (Color_to_vec4((COLOR), (vec4){0}))
-#define VEC4_TO_COLOR(VEC4_COLOR) (vec4_to_Color((VEC4_COLOR), &(Color){0}))
+#define COLOR_TO_VEC4(COLOR) Color_to_vec4((COLOR), (vec4){0})
+#define VEC4_TO_COLOR(VEC4_COLOR) vec4_to_Color((VEC4_COLOR), &(Color){0})
+#define COLOR_GRAYSCALE(COLOR) Color_grayscale((COLOR), &(Color){0})
 
 float *Color_to_vec4(Color *const color, vec4 vec4_color);
 Color *vec4_to_Color(const vec4 vec4_color, Color *color);
