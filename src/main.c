@@ -74,7 +74,7 @@ int main(void) {
     Object_set_rgba_color(&light, &light_color);
     Scene3D_add_object(&scene, &light, &light_transform);
     Shader_set_vec3(&shader, "light_position", light_transform.translate);
-    Shader_set_vec4(&shader, "light_color", Color_to_vec4(&light_color, (vec4){0}));
+    Shader_set_vec4(&shader, "light_color", COLOR_TO_VEC4(&light_color));
     Shader_set_float(&shader, "ambiant_strength", 0.7f);
 
     Window_set_scene3D(&window, &scene);
