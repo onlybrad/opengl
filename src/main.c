@@ -92,6 +92,7 @@ int main(void) {
     Object_free(&background);
     Shader_free(&shader);
     Scene3D_free(&scene);
+    PerspectiveCamera_free(&camera);
     Window_free(&window);
     
     return 0;

@@ -28,6 +28,7 @@ typedef struct PerspectiveCamera {
 } PerspectiveCamera;
 
 void PerspectiveCamera_init(PerspectiveCamera *const perspective_camera, const float x, const float y);
+void PerspectiveCamera_free(PerspectiveCamera *const perspective_camera);
 void PerspectiveCamera_zoom(PerspectiveCamera *const PerspectiveCamera, const float zoom);
 void PerspectiveCamera_set_fov(PerspectiveCamera *const perspective_camera, const float fov);
 void PerspectiveCamera_set_aspect(PerspectiveCamera *const perspective_camera, const float aspect);

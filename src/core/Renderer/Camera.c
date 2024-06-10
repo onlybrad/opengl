@@ -32,6 +32,10 @@ static void Camera_init(Camera *const camera, float x, float y) {
     update_view(camera);
 }
 
+static void Camera_free(Camera *const camera) {
+    Lock_free(&camera->lock);
+}
+
 inline static void Camera_set_id(Camera *const camera, const int id) {
     camera->id = id;
 }
@@ -170,7 +174,11 @@ inline void PerspectiveCamera_init(PerspectiveCamera *const perspective_camera, 
     update_perspective_projection(perspective_camera);
 }
 
-inline void PerspectiveCamera_zoom(PerspectiveCamera *const perspective_camera, const float zoom) {
+inline void PerspectiveCamera_free(PerspectiveCamera *const perspective_camera) {
+    Camera_free(&perspective_camera->camera);
+}
+
+void PerspectiveCamera_zoom(PerspectiveCamera *const perspective_camera, const float zoom) {
     float fov = glm_deg(perspective_camera->fov);
     if(fov >= 1.0f && fov <= 45.0f) {
         fov -= (float)zoom;
@@ -184,27 +192,27 @@ inline void PerspectiveCamera_zoom(PerspectiveCamera *const perspective_camera, 
     PerspectiveCamera_set_fov(perspective_camera, glm_rad(fov));
 }
 
-inline void PerspectiveCamera_set_fov(PerspectiveCamera *const perspective_camera, const float fov) {
+void PerspectiveCamera_set_fov(PerspectiveCamera *const perspective_camera, const float fov) {
     perspective_camera->fov = fov;
     update_perspective_projection(perspective_camera);
 }
 
-inline void PerspectiveCamera_set_aspect(PerspectiveCamera *const perspective_camera, const float aspect) {
+void PerspectiveCamera_set_aspect(PerspectiveCamera *const perspective_camera, const float aspect) {
     perspective_camera->aspect = aspect;
     update_perspective_projection(perspective_camera);
 }
 
-inline void PerspectiveCamera_set_near_z(PerspectiveCamera *const perspective_camera, const float near_z) {
+void PerspectiveCamera_set_near_z(PerspectiveCamera *const perspective_camera, const float near_z) {
     perspective_camera->near_z = near_z;
     update_perspective_projection(perspective_camera);
 }
 
-inline void PerspectiveCamera_set_far_z(PerspectiveCamera *const perspective_camera, const float far_z) {
+void PerspectiveCamera_set_far_z(PerspectiveCamera *const perspective_camera, const float far_z) {
     perspective_camera->far_z = far_z;
     update_perspective_projection(perspective_camera);
 }
 
-inline void PerspectiveCamera_set_id(PerspectiveCamera *const perspective_camera, const int id) {
+void PerspectiveCamera_set_id(PerspectiveCamera *const perspective_camera, const int id) {
     Camera_set_id(&perspective_camera->camera, id);
 }
 
