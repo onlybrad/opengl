@@ -29,7 +29,7 @@ void Window_init(Window *const window, const int width, const int height, const 
 
     window->glfw_window = glfwCreateWindow(width, height, title, NULL, NULL);
     if (window == NULL)  {
-        puts("Failed to create GLFW window");
+        fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
         exit(-1);
     }
