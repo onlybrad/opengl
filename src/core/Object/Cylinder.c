@@ -3,8 +3,8 @@
 static Vertex *generate_cylinder_vertices(const unsigned int segments, const float radius, const float height, size_t *const size) {
     const float step = 2.0f * 3.141593f / (float)segments;
 
-    *size = (size_t)segments * 6ull * sizeof(Vertex);
-    Vertex *vertices = calloc((size_t)segments * 6ull, sizeof(Vertex));
+    *size = (size_t)segments * 6 * sizeof(Vertex);
+    Vertex *vertices = calloc((size_t)segments * 6, sizeof(Vertex));
     
     for (unsigned int i = 0u; i < segments; i++) {
         const float θ = (float)i * step;
