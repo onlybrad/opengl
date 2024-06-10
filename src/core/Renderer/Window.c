@@ -31,7 +31,7 @@ void Window_init(Window *const window, const int width, const int height, const 
     if (window == NULL)  {
         fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
-        exit(-1);
+        exit(1);
     }
 
     glfwSetInputMode(window->glfw_window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
