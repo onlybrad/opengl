@@ -16,6 +16,6 @@ typedef struct VertexLayout {
 } VertexLayout;
 
 void VertexLayout_init(VertexLayout *const layout);
-bool VertexLayout_push(VertexLayout *const layout, const VertexAttribute *const attribute);
+bool VertexLayout_push(VertexLayout *const layout, const VertexAttribute attribute);
 
 #endif
