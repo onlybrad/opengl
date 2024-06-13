@@ -1,7 +1,8 @@
 #include "Cylinder.h"
 
 static Vertex *generate_cylinder_vertices(const unsigned int segments, const float radius, const float height, size_t *const size) {
-    const float step = 2.0f * 3.141593f / (float)segments;
+    const float π = 3.141593f;
+    const float step = 2.0f * π / (float)segments;
 
     *size = (size_t)segments * 6 * sizeof(Vertex);
     Vertex *vertices = calloc((size_t)segments * 6, sizeof(Vertex));

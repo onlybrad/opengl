@@ -50,7 +50,7 @@ void OpenGL_init(GLADloadproc proc_address, void (terminate)(void)) {
     if (! gladLoadGLLoader(proc_address)) {
         fputs("Failed to load OpenGL functions",stderr);
         terminate();
-        exit(-1);
+        exit(1);
     }
 
     opengl_defaults_init();

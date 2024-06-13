@@ -1,4 +1,5 @@
 #include <cglm/cglm.h>
+#include <math.h>
 #include "../core/Object/Object.h"
 #include "../core/OpenGL/Shader.h"
 #include "../core/Renderer/Window.h"
