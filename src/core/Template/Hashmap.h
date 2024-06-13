@@ -55,7 +55,7 @@ void HASHMAP_FREE(HASHMAP *const hashmap);
 bool HASHMAP_EXISTS(HASHMAP *const hashmap, K key);
 void HASHMAP_INSERT(HASHMAP *const hashmap, K key, V value);
 RESULT HASHMAP_GET(HASHMAP *const hashmap, K key);
-void HASHMAP_REMOVE(HASHMAP *const hashmap, K key);
+bool HASHMAP_REMOVE(HASHMAP *const hashmap, K key);
 
 #else //HASHMAP_IMPLEMENTATION
 
@@ -132,14 +132,15 @@ RESULT HASHMAP_GET(HASHMAP *const hashmap, K key) {
         : (RESULT) {.success = true, .value = bucket->value};
 }
 
-void HASHMAP_REMOVE(HASHMAP *const hashmap, K key) {
+bool HASHMAP_REMOVE(HASHMAP *const hashmap, K key) {
     BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
 
     if(bucket == NULL) {
-        return;
+        return false;
     }
 
     memset(bucket, 0, sizeof(BUCKET));
+    return true;
 }
 
 #endif //HASHMAP_IMPLEMENTATION
