@@ -295,4 +295,5 @@ static void queue_test(void) {
     }
     assert(! Queue_str_dequeue(&queue).success);
 
+    Queue_str_free(&queue);
 }
