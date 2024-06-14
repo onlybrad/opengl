@@ -227,7 +227,9 @@ static void hashmap_test(void) {
     Hashmap_str_int_insert(&hashmap, "four", 4);
     Hashmap_str_int_insert(&hashmap, "five", 5);
 
-    assert(strcmp(Hashmap_str_int_to_string(&hashmap), "[three => 3, four => 4, five => 5, two => 2, one => 1]") == 0);
+    char *hashmap_str = Hashmap_str_int_to_string(&hashmap);
+    assert(strcmp(hashmap_str, "[three => 3, four => 4, five => 5, two => 2, one => 1]") == 0);
+    free(hashmap_str);
 
     assert(! Hashmap_str_int_get(&hashmap, "zero").success);
     assert(Hashmap_str_int_get(&hashmap, "one").success && Hashmap_str_int_get(&hashmap, "one").value == 1);
