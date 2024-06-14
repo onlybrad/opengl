@@ -15,7 +15,7 @@ int main(void) {
 
 #define T int
 #define VECTOR_PRINT_FORMAT
-#define VECTOR_PRINT_ARGUMENTS(i)
+#define VECTOR_PRINT_ARGUMENTS
 #include "../core/Template/Vector.h"
 
 #define T int
@@ -26,7 +26,7 @@ int main(void) {
 
 #define T str
 #define VECTOR_PRINT_FORMAT
-#define VECTOR_PRINT_ARGUMENTS(s)
+#define VECTOR_PRINT_ARGUMENTS
 #include "../core/Template/Vector.h"
 
 #define T str
@@ -204,8 +204,8 @@ static void vector_test(void) {
 #define V int
 #define HASHMAP_PRINT_KEY_FORMAT
 #define HASHMAP_PRINT_VALUE_FORMAT 
-#define HASHMAP_PRINT_KEY_ARGUMENTS(k) k
-#define HASHMAP_PRINT_VALUE_ARGUMENTS(v) v
+#define HASHMAP_PRINT_KEY_ARGUMENTS
+#define HASHMAP_PRINT_VALUE_ARGUMENTS
 #include "../core/Template/Hashmap.h"
 
 #define K str
@@ -259,7 +259,7 @@ static void hashmap_test(void) {
 
 #define T str
 #define QUEUE_PRINT_FORMAT
-#define QUEUE_PRINT_ARGUMENTS(s)
+#define QUEUE_PRINT_ARGUMENTS
 #include "../core/Template/Queue.h"
 
 #define T str
