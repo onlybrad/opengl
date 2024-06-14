@@ -1,19 +1,21 @@
 #include <assert.h>
-#include "../core/Util/Str.h"
+
+typedef const char *str;
 
 static void vector_test(void);
 static void hashmap_test(void);
+static void queue_test(void);
 
 int main(void) {
     vector_test();
     hashmap_test();
-
+    queue_test();
     return 0;
 }
 
 #define T int
-#define VECTOR_PRINT_FORMAT "%i" 
-#define VECTOR_PRINT_ARGUMENTS(i) i
+#define VECTOR_PRINT_FORMAT
+#define VECTOR_PRINT_ARGUMENTS(i)
 #include "../core/Template/Vector.h"
 
 #define T int
@@ -23,8 +25,8 @@ int main(void) {
 #include "../core/Template/Vector.h"
 
 #define T str
-#define VECTOR_PRINT_FORMAT "%s" 
-#define VECTOR_PRINT_ARGUMENTS(s) s
+#define VECTOR_PRINT_FORMAT
+#define VECTOR_PRINT_ARGUMENTS(s)
 #include "../core/Template/Vector.h"
 
 #define T str
@@ -112,7 +114,7 @@ static void vector_test(void) {
     
     Vector_int_free(&vector);
 
-    static const char *vector_chars = "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+    static str vector_chars = "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
     Vector_str vector2;
     Vector_str_init(&vector2, 0);
 
@@ -186,7 +188,7 @@ static void vector_test(void) {
     }
 
     vector2.length = 0;
-    static const char *words[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    static str words[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
     for(int i=0; i<10; i++) {
         Vector_str_push(&vector2, words[i]);
     }
@@ -200,10 +202,18 @@ static void vector_test(void) {
 
 #define K str
 #define V int
+#define HASHMAP_PRINT_KEY_FORMAT
+#define HASHMAP_PRINT_VALUE_FORMAT 
+#define HASHMAP_PRINT_KEY_ARGUMENTS(k) k
+#define HASHMAP_PRINT_VALUE_ARGUMENTS(v) v
 #include "../core/Template/Hashmap.h"
 
 #define K str
 #define V int
+#define HASHMAP_PRINT_KEY_FORMAT "%s" 
+#define HASHMAP_PRINT_VALUE_FORMAT "%d" 
+#define HASHMAP_PRINT_KEY_ARGUMENTS(k) k
+#define HASHMAP_PRINT_VALUE_ARGUMENTS(v) v
 #define HASHMAP_IMPLEMENTATION
 #include "../core/Template/Hashmap.h"
 
@@ -216,6 +226,8 @@ static void hashmap_test(void) {
     Hashmap_str_int_insert(&hashmap, "three", 3);
     Hashmap_str_int_insert(&hashmap, "four", 4);
     Hashmap_str_int_insert(&hashmap, "five", 5);
+
+    assert(strcmp(Hashmap_str_int_to_string(&hashmap), "[three => 3, four => 4, five => 5, two => 2, one => 1]") == 0);
 
     assert(! Hashmap_str_int_get(&hashmap, "zero").success);
     assert(Hashmap_str_int_get(&hashmap, "one").success && Hashmap_str_int_get(&hashmap, "one").value == 1);
@@ -232,7 +244,7 @@ static void hashmap_test(void) {
     assert(Hashmap_str_int_exists(&hashmap, "four"));
     assert(Hashmap_str_int_exists(&hashmap, "five"));
 
-    static const char *hashmap_chars[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"};
+    static str hashmap_chars[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"};
 
     for(int i=0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
         Hashmap_str_int_insert(&hashmap, hashmap_chars[i], i);
@@ -243,4 +255,44 @@ static void hashmap_test(void) {
     }
 
     Hashmap_str_int_free(&hashmap);
+}
+
+#define T str
+#define QUEUE_PRINT_FORMAT
+#define QUEUE_PRINT_ARGUMENTS(s)
+#include "../core/Template/Queue.h"
+
+#define T str
+#define QUEUE_PRINT_FORMAT "%s"
+#define QUEUE_PRINT_ARGUMENTS(s) s
+#define QUEUE_IMPLEMENTATION
+#include "../core/Template/Queue.h"
+
+static void queue_test(void) {
+    Queue_str queue;
+    Queue_str_init(&queue);
+
+    assert(! Queue_str_dequeue(&queue).success);
+
+    Queue_str_enqueue(&queue, "Hello");
+    assert(strcmp(Queue_str_dequeue(&queue).value, "Hello") == 0);
+    assert(! Queue_str_dequeue(&queue).success);
+
+    static str queue_words[] = {"Hello", "World", "A", "B", "C", "1", "2", "3", "ABC", "DEF", "XYZ", "IOP", "HELLO WORLD!", "SOME", "STRING", "WORD", "TEST", "QUEUE", "HI"};
+
+    for(int i=0; i<(int)ARRAY_LEN(queue_words); i++) {
+        Queue_str_enqueue(&queue, queue_words[i]);
+    }
+
+    char *queue_str = Queue_str_to_string(&queue);
+    assert(strcmp(queue_str, "Hello -> World -> A -> B -> C -> 1 -> 2 -> 3 -> ABC -> DEF -> XYZ -> IOP -> HELLO WORLD! -> SOME -> STRING -> WORD -> TEST -> QUEUE -> HI") == 0);
+    free(queue_str);
+
+    for(int i=0; i<(int)ARRAY_LEN(queue_words); i++) {
+        const Result_str result = Queue_str_dequeue(&queue);
+        assert(result.success);
+        assert(strcmp(result.value, queue_words[i]) == 0);
+    }
+    assert(! Queue_str_dequeue(&queue).success);
+
 }

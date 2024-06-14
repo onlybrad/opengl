@@ -2,15 +2,9 @@
 #include <stdio.h>
 #include "../Util/util.h"
 
-//USAGE EXAMPLE
-//pointer types and multi word types must be typedefed into a single word
-//one translation unit must define VECTOR_IMPLEMENTATION to get the function implementations for a specific T type
-//Vector_{T}_{Function Name}
 #if 0
 typedef const char *str;
-#define T str
-#define VECTOR_IMPLEMENTATION
-//#include Vector.h
+#define T str 
 #endif
 
 #ifndef T
@@ -37,6 +31,7 @@ typedef const char *str;
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
 #ifndef VECTOR_IMPLEMENTATION
+
 typedef struct VECTOR {
     T *buffer;
     size_t length;
@@ -59,7 +54,13 @@ void VECTOR_PRINT(const VECTOR *const vector);
 char *VECTOR_TO_STRING(const VECTOR *const vector);
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
-#else
+#endif //VECTOR_IMPLEMENTATION
+
+#if 0
+#define VECTOR_IMPLEMENTATION
+#endif
+
+#if defined VECTOR_IMPLEMENTATION 
 
 #include <string.h>
 #include <assert.h>
@@ -203,8 +204,8 @@ char *VECTOR_TO_STRING(const VECTOR *const vector) {
         sprintf(vector_str + offset, VECTOR_PRINT_FORMAT, VECTOR_PRINT_ARGUMENTS(vector->buffer[vector->length - 1]));
     }
 
-    vector_str[length * sizeof(char) - 1] = ']'; 
-    vector_str[length * sizeof(char)] = '\0'; 
+    vector_str[length - 1] = ']'; 
+    vector_str[length] = '\0'; 
 
     return vector_str;
 }

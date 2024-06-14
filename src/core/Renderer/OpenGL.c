@@ -12,6 +12,17 @@ int MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 int MAX_TEXTURE_IMAGE_UNITS;
 VertexLayout OBJECT_VERTEX_LAYOUT;
 
+void GLClearError(void) {
+    while(glGetError() != GL_NO_ERROR);
+}
+
+void GLCheckError(void) {
+    GLenum error;
+    while((error = glGetError())) {
+        printf("GL Error: %u", error);
+    }
+}
+
 static void opengl_defaults_init(void) {
     glClearColor(0.2f, 0.3f, 0.3f, 0.0f);
     glEnable(GL_BLEND);

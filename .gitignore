@@ -3,5 +3,4 @@ lib/cglm/build/
 lib/libcglm.a
 lib/libglfw3.a
 lib/stb_image.a
-main_debug.exe
-main.exe
+*.exe

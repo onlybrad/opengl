@@ -2,21 +2,21 @@
 #include "String.h"
 #include "util.h"
 
-String Str_init(const char *c_str) {
+String String_init(const char *c_str) {
     return (String){
         .buffer = c_str,
         .length = strlen(c_str)
     };
 }
 
-String Str_init_move(const char *c_str, const size_t length) {
+String String_init_move(const char *c_str, const size_t length) {
     return (String){
         .buffer = c_str,
         .length = length
     };
 }
 
-String Str_init_copy(const char *c_str, const size_t length) {
+String String_init_copy(const char *c_str, const size_t length) {
     return (String) {
         .buffer = strdup(c_str),
         .length = length

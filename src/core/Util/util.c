@@ -1,19 +1,7 @@
-#include <glad/glad.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "util.h"
-
-void GLClearError(void) {
-    while(glGetError() != GL_NO_ERROR);
-}
-
-void GLCheckError(void) {
-    GLenum error;
-    while((error = glGetError())) {
-        printf("GL Error: %u", error);
-    }
-}
 
 String file_get_contents(const char *const path) {
     FILE *const file = fopen(path, "rb");

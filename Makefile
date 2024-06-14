@@ -19,8 +19,8 @@ main_debug.exe: $(SOURCE)
 main.exe: $(SOURCE)
 	$(CC) $(MACRO) $(INCLUDES) $(FLAGS) $(STD) -s -O3 -o main $(SOURCE) -static $(STATIC_LIBS) $(WINDOWS_DYNAMIC_LIBS) -mwindows
 
-test.exe: ./src/test/test.c ./src/core/Template/*.h ./src/core/Util/Str.c
-	$(CC) $(FLAGS) $(STD) -g -o test ./src/test/test.c ./src/core/Util/Str.c
+test.exe: ./src/test/test.c ./src/core/Template/*.h ./src/core/Util/String.c
+	$(CC) $(FLAGS) $(STD) -g -o test ./src/test/test.c ./src/core/Util/String.c ./src/core/Util/util.c
 
 cglm:
 	mkdir -p ./lib/cglm/build
