@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "../Util/util.h"
 
 #if 0
@@ -62,9 +61,9 @@ char *VECTOR_TO_STRING(const VECTOR vector[static 1]);
 
 #if defined VECTOR_IMPLEMENTATION 
 
-#include <string.h>
 #include <assert.h>
 #include <math.h>
+#include <string.h>
 
 static void VECTOR_RESIZE(VECTOR vector[static 1], const size_t new_capacity) {
     T *buffer = realloc(vector->buffer, sizeof(T) * new_capacity);
@@ -96,7 +95,7 @@ void VECTOR_INIT_COPY(VECTOR vector[static 1], T *buffer, const size_t length) {
 
 void VECTOR_FREE(VECTOR vector[static 1]) {
     free(vector->buffer);
-    memset(vector, 0, sizeof(VECTOR));
+    *vector = (VECTOR){0};
 }
 
 void VECTOR_COPY(VECTOR vector_dst[static 1], VECTOR vector_src[static 1]) {
@@ -156,6 +155,7 @@ T VECTOR_REMOVE(VECTOR vector[static 1], const size_t index) {
 }
 
 #if defined VECTOR_PRINT_FORMAT && defined VECTOR_PRINT_ARGUMENTS
+#include <stdio.h>
 void VECTOR_PRINT(const VECTOR vector[static 1]) {
     if(vector->length == 0) {
         puts("[]");

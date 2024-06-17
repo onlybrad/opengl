@@ -175,7 +175,7 @@ inline static float *Camera_get_projection(const Camera camera[static 1]) {
 }
 
 inline void PerspectiveCamera_init(PerspectiveCamera perspective_camera[static 1], const float x, const float y) {
-    memset(perspective_camera, 0, sizeof(PerspectiveCamera));
+    *perspective_camera = (PerspectiveCamera){0};
     Camera_init(&perspective_camera->camera, x, y);
     update_perspective_projection(perspective_camera);
 }

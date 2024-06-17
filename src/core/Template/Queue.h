@@ -54,7 +54,6 @@ char *QUEUE_TO_STRING(const QUEUE queue[static 1]);
 
 #if defined QUEUE_IMPLEMENTATION 
 
-#include <string.h>
 #include <assert.h>
 
 static void QUEUE_RESIZE(QUEUE queue[static 1], const size_t new_capacity) {
@@ -74,7 +73,7 @@ void QUEUE_INIT(QUEUE queue[static 1]) {
 
 void QUEUE_FREE(QUEUE queue[static 1]) {
     free(queue->buffer);
-    memset(queue, 0, sizeof(QUEUE));
+    *queue = (QUEUE){0};
 }
 
 void QUEUE_ENQUEUE(QUEUE queue[static 1], T value) {

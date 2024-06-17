@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <stdbool.h>
-#include <assert.h>
-#include <string.h>
 #include "../Util/util.h"
 
 #if !defined K || !defined V
@@ -56,13 +54,15 @@ void HASHMAP_PRINT(const HASHMAP hashmap[static 1]);
 char *HASHMAP_TO_STRING(const HASHMAP hashmap[static 1]);
 #endif //HASHMAP_PRINT_KEY_FORMAT HASHMAP_PRINT_VALUE_FORMAT HASHMAP_PRINT_KEY_ARGUMENTS HASHMAP_PRINT_VALUE_ARGUMENTS
 
-#endif
+#endif //HASHMAP_IMPLEMENTATION
 
 #if 0
 #define HASHMAP_IMPLEMENTATION
 #endif
 
 #if defined HASHMAP_IMPLEMENTATION
+
+#include <assert.h>
 
 static void HASHMAP_RESIZE(HASHMAP hashmap[static 1], const size_t capacity) {
     BUCKET *const new_buckets = calloc(capacity, sizeof(BUCKET));
@@ -109,7 +109,7 @@ void HASHMAP_INIT(HASHMAP hashmap[static 1], size_t (*hash_function)(K), bool (*
 
 void HASHMAP_FREE(HASHMAP hashmap[static 1]) {
     free(hashmap->buckets);
-    memset(hashmap, 0, sizeof(HASHMAP));
+    *hashmap = (HASHMAP){0};
 }
 
 bool HASHMAP_EXISTS(HASHMAP hashmap[static 1], K key) {
@@ -144,7 +144,8 @@ bool HASHMAP_REMOVE(HASHMAP hashmap[static 1], K key) {
         return false;
     }
 
-    memset(bucket, 0, sizeof(BUCKET));
+    *bucket = (BUCKET){0};
+
     return true;
 }
 
