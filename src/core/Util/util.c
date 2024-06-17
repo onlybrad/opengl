@@ -17,7 +17,7 @@ String file_get_contents(const char path[static 1]) {
     String str;
 
     fseek(file, 0, SEEK_END);
-    str.length = (size_t)ftello64(file);
+    str.length = (size_t)ftello(file);
     fseek(file, 0, SEEK_SET);
     str.buffer = malloc(str.length * sizeof(char));
     fread(unconst(str.buffer), 1, str.length, file);
