@@ -9,17 +9,10 @@ String String_init(const char c_str[static 1]) {
     };
 }
 
-String String_init_move(const char c_str[static 1], const size_t length) {
-    return (String){
-        .buffer = c_str,
-        .length = length
-    };
-}
-
-String String_init_copy(const char c_str[static 1], const size_t length) {
+String String_init_copy(const char c_str[static 1]) {
     return (String) {
         .buffer = strdup(c_str),
-        .length = length
+        .length = strlen(c_str)
     };
 }
 
@@ -29,7 +22,7 @@ void String_free(String str) {
 
 size_t string_hash_function(const char *key) {
     size_t hash = 0xcbf29ce484222325;
-    size_t str_len = strlen(key);
+    const size_t str_len = strlen(key);
     for(size_t i=0; i < str_len; i++) {
         hash = (hash ^ (size_t)key[i]) * 0x100000001b3;
     }
