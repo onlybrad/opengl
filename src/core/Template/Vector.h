@@ -190,7 +190,7 @@ char *VECTOR_TO_STRING(const VECTOR vector[static 1]) {
         length += (size_t)char_printed;
     }
 
-    char *vector_str = malloc(length * sizeof(char) + 1);
+    char *vector_str = malloc((length + 1) * sizeof(char));
     assert(vector_str != NULL);
     vector_str[0] = '[';
 

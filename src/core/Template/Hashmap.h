@@ -190,7 +190,7 @@ char *HASHMAP_TO_STRING(const HASHMAP hashmap[static 1]) {
         }
     }
 
-    char *hashmap_str = malloc(length * sizeof(char) + 1);
+    char *hashmap_str = malloc((length + 1) * sizeof(char));
     assert(hashmap_str != NULL);
     hashmap_str[0] = '[';
 

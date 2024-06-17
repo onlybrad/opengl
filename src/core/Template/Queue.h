@@ -128,7 +128,7 @@ char *QUEUE_TO_STRING(const QUEUE queue[static 1]) {
         length += (size_t)char_printed;
     }
 
-    char *queue_str = malloc(length * sizeof(char) + 1);
+    char *queue_str = malloc((length + 1) * sizeof(char));
     assert(queue_str != NULL);
 
     size_t offset = 0;
