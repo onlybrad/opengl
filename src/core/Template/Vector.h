@@ -38,8 +38,8 @@ typedef struct VECTOR {
 } VECTOR;
 
 void VECTOR_INIT(VECTOR vector[static 1], const size_t capacity);
-void VECTOR_INIT_MOVE(VECTOR vector[static 1], T *buffer, const size_t length);
-void VECTOR_INIT_COPY(VECTOR vector[static 1], T *buffer, const size_t length);
+void VECTOR_INIT_MOVE(VECTOR vector[static 1], T buffer[static 1], const size_t length);
+void VECTOR_INIT_COPY(VECTOR vector[static 1], T buffer[static 1], const size_t length);
 void VECTOR_COPY(VECTOR vector_dst[static 1], VECTOR vector_src[static 1]);
 void VECTOR_FREE(VECTOR vector[static 1]);
 void VECTOR_PUSH(VECTOR vector[static 1], T value);
@@ -79,13 +79,13 @@ void VECTOR_INIT(VECTOR vector[static 1], const size_t capacity) {
     assert(vector->buffer != NULL);
 }
 
-void VECTOR_INIT_MOVE(VECTOR vector[static 1], T *buffer, const size_t length) {
+void VECTOR_INIT_MOVE(VECTOR vector[static 1], T buffer[static 1], const size_t length) {
     vector->capacity = length;
     vector->length = length;
     vector->buffer = buffer;
 }
 
-void VECTOR_INIT_COPY(VECTOR vector[static 1], T *buffer, const size_t length) {
+void VECTOR_INIT_COPY(VECTOR vector[static 1], T buffer[static 1], const size_t length) {
     vector->capacity = length;
     vector->length = length;
     vector->buffer = malloc(sizeof(T) * length);
