@@ -9,7 +9,7 @@
 #include "../core/Input/Mouse.h"
 #include "../core/Util/util.h"
 
-static void input_callback(Window *const window) {
+static void input_callback(Window window[static 1]) {
     PerspectiveCamera *const camera = window->scene->perspective_camera;
     
     if (Keyboard_is_pressed(KEY_UP)) {
@@ -38,7 +38,7 @@ static void input_callback(Window *const window) {
 }
 
 //all opengl calls must be done in here
-static void drawing_callback(Window *const window) {
+static void drawing_callback(Window window[static 1]) {
     const float time = Window_time();
     const vec4 new_color = {
         MAX(0.2f, sinf(time * 2.0f)), 
@@ -61,7 +61,7 @@ static void drawing_callback(Window *const window) {
 }
 
 //this runs on a seperate thread, opengl calls will fail if called from here. This is where CPU side logic must be implemented.
-static void logic_callback(Window *const window) {
+static void logic_callback(Window window[static 1]) {
     //The index of the light object in the current scene
     const unsigned int light_index = 2;
     
@@ -74,11 +74,11 @@ static void logic_callback(Window *const window) {
     Scene3D_object_set_transform(window->scene, light_index, &light_transform);
 }
 
-static void mouse_cursor_callback(Window *const window, double x, double y) {
+static void mouse_cursor_callback(Window window[static 1], double x, double y) {
     PerspectiveCamera_change_direction(window->scene->perspective_camera, (float)x, (float)y);
 }
 
-static void mouse_scroll_callback(Window *const window, double _, double yoffset) {
+static void mouse_scroll_callback(Window window[static 1], double _, double yoffset) {
     (void)_;
     PerspectiveCamera_zoom(window->scene->perspective_camera, (float)yoffset);
 }

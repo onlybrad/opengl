@@ -1,3 +1,6 @@
+#include <stb_image.h>
+#include <glad/glad.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "Texture.h"
@@ -43,7 +46,7 @@ extern int MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 
 static const unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
 
-static void generate_texture(Texture *const texture) {
+static void generate_texture(Texture texture[static 1]) {
     GLenum format;
     if(texture->channels == 3) {
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -66,7 +69,7 @@ static void generate_texture(Texture *const texture) {
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture_init(Texture *const texture, const char *const name, const char *const path) {
+void Texture_init(Texture texture[static 1], const char *const name, const char path[static 1]) {
     int width, height, channels;
 
     stbi_set_flip_vertically_on_load(1);
@@ -86,17 +89,17 @@ void Texture_init(Texture *const texture, const char *const name, const char *co
     generate_texture(texture);
 }
 
-void Texture_free(Texture *const texture) {
+void Texture_free(Texture texture[static 1]) {
     stbi_image_free(unconst(texture->data));
     texture->data = NULL;
 }
 
-void Texture_use(const Texture *const texture, const unsigned int slot) {
+void Texture_use(const Texture texture[static 1], const unsigned int slot) {
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-void Texture_color(Texture *const texture, const char* const name, Color *const color) {
+void Texture_color(Texture texture[static 1], const char* const name, Color *const color) {
     texture->channels = 4;
     texture->width = 1;
     texture->height = 1;

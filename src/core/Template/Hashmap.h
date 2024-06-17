@@ -44,16 +44,16 @@ typedef struct HASHMAP {
     bool (*compare_function)(K, K);
 } HASHMAP;
 
-void HASHMAP_INIT(HASHMAP *const hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K));
-void HASHMAP_FREE(HASHMAP *const hashmap);
-bool HASHMAP_EXISTS(HASHMAP *const hashmap, K key);
-void HASHMAP_INSERT(HASHMAP *const hashmap, K key, V value);
-RESULT HASHMAP_GET(HASHMAP *const hashmap, K key);
-bool HASHMAP_REMOVE(HASHMAP *const hashmap, K key);
+void HASHMAP_INIT(HASHMAP hashmap[static 1], size_t (*hash_function)(K), bool (*compare_function)(K, K));
+void HASHMAP_FREE(HASHMAP hashmap[static 1]);
+bool HASHMAP_EXISTS(HASHMAP hashmap[static 1], K key);
+void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, V value);
+RESULT HASHMAP_GET(HASHMAP hashmap[static 1], K key);
+bool HASHMAP_REMOVE(HASHMAP hashmap[static 1], K key);
 
 #if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
-void HASHMAP_PRINT(const HASHMAP *const hashmap);
-char *HASHMAP_TO_STRING(const HASHMAP *const hashmap);
+void HASHMAP_PRINT(const HASHMAP hashmap[static 1]);
+char *HASHMAP_TO_STRING(const HASHMAP hashmap[static 1]);
 #endif //HASHMAP_PRINT_KEY_FORMAT HASHMAP_PRINT_VALUE_FORMAT HASHMAP_PRINT_KEY_ARGUMENTS HASHMAP_PRINT_VALUE_ARGUMENTS
 
 #endif
@@ -64,7 +64,7 @@ char *HASHMAP_TO_STRING(const HASHMAP *const hashmap);
 
 #if defined HASHMAP_IMPLEMENTATION
 
-static void HASHMAP_RESIZE(HASHMAP *const hashmap, const size_t capacity) {
+static void HASHMAP_RESIZE(HASHMAP hashmap[static 1], const size_t capacity) {
     BUCKET *const new_buckets = calloc(capacity, sizeof(BUCKET));
     assert(new_buckets != NULL);
     BUCKET *const old_buckets = hashmap->buckets;
@@ -81,7 +81,7 @@ static void HASHMAP_RESIZE(HASHMAP *const hashmap, const size_t capacity) {
     free(old_buckets);
 }
 
-static BUCKET *HASHMAP_GET_BUCKET(HASHMAP *const hashmap, K key, const bool ignore_used) {
+static BUCKET *HASHMAP_GET_BUCKET(HASHMAP hashmap[static 1], K key, const bool ignore_used) {
     size_t i = hashmap->hash_function(key) % hashmap->capacity;
     const size_t start = i;
 
@@ -99,7 +99,7 @@ static BUCKET *HASHMAP_GET_BUCKET(HASHMAP *const hashmap, K key, const bool igno
     return NULL;
 }
 
-void HASHMAP_INIT(HASHMAP *const hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K)) {
+void HASHMAP_INIT(HASHMAP hashmap[static 1], size_t (*hash_function)(K), bool (*compare_function)(K, K)) {
     hashmap->capacity = HASHMAP_INITIAL_CAPACITY;
     hashmap->hash_function = hash_function;
     hashmap->compare_function = compare_function;
@@ -107,16 +107,16 @@ void HASHMAP_INIT(HASHMAP *const hashmap, size_t (*hash_function)(K), bool (*com
     assert(hashmap->buckets != NULL);
 }
 
-void HASHMAP_FREE(HASHMAP *const hashmap) {
+void HASHMAP_FREE(HASHMAP hashmap[static 1]) {
     free(hashmap->buckets);
     memset(hashmap, 0, sizeof(HASHMAP));
 }
 
-bool HASHMAP_EXISTS(HASHMAP *const hashmap, K key) {
+bool HASHMAP_EXISTS(HASHMAP hashmap[static 1], K key) {
     return HASHMAP_GET_BUCKET(hashmap, key, true) != NULL;
 }
 
-void HASHMAP_INSERT(HASHMAP *const hashmap, K key, V value) {
+void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, V value) {
     BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, false);
     
     if(bucket == NULL) {
@@ -129,7 +129,7 @@ void HASHMAP_INSERT(HASHMAP *const hashmap, K key, V value) {
     bucket->used = true;
 }
 
-RESULT HASHMAP_GET(HASHMAP *const hashmap, K key) {
+RESULT HASHMAP_GET(HASHMAP hashmap[static 1], K key) {
     BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
 
     return bucket == NULL 
@@ -137,7 +137,7 @@ RESULT HASHMAP_GET(HASHMAP *const hashmap, K key) {
         : (RESULT) {.success = true, .value = bucket->value};
 }
 
-bool HASHMAP_REMOVE(HASHMAP *const hashmap, K key) {
+bool HASHMAP_REMOVE(HASHMAP hashmap[static 1], K key) {
     BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
 
     if(bucket == NULL) {
@@ -149,7 +149,7 @@ bool HASHMAP_REMOVE(HASHMAP *const hashmap, K key) {
 }
 
 #if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
-void HASHMAP_PRINT(const HASHMAP *const hashmap) {
+void HASHMAP_PRINT(const HASHMAP hashmap[static 1]) {
     putchar('[');
 
     size_t i;
@@ -170,7 +170,7 @@ void HASHMAP_PRINT(const HASHMAP *const hashmap) {
     puts("]");
 }
 
-char *HASHMAP_TO_STRING(const HASHMAP *const hashmap) {
+char *HASHMAP_TO_STRING(const HASHMAP hashmap[static 1]) {
     size_t length = 2;
     size_t i;
 

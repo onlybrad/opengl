@@ -24,9 +24,7 @@
 #define ARRAY_LEN(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
 #define MEMBER_SIZE(STRUCT, MEMBER) (sizeof(((STRUCT *)0)->MEMBER)) 
 #define ARRAY_MEMBER_LENGTH(STRUCT, MEMBER) (MEMBER_SIZE(STRUCT, MEMBER)/MEMBER_SIZE(STRUCT, MEMBER[0]))
-#define GL_CALL(CODE) GLClearError();\
-CODE\
-GLCheckError();
+
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #endif
@@ -34,9 +32,7 @@ GLCheckError();
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #endif
 
-void GLClearError(void);
-void GLCheckError(void);
-String file_get_contents(const char *const path);
+String file_get_contents(const char path[static 1]);
 void *unconst(const void *var);
 
 #endif

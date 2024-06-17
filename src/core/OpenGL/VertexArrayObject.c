@@ -1,15 +1,17 @@
+#include <glad/glad.h>
+#include <stdlib.h>
 #include "VertexArrayObject.h"
 #include "../Util/util.h"
 
-void VertexArrayObject_init(VertexArrayObject *const vao) {
+void VertexArrayObject_init(VertexArrayObject vao[static 1]) {
     glGenVertexArrays(1, &vao->id);
 }
 
-void VertexArrayObject_free(VertexArrayObject *const vao) {
+void VertexArrayObject_free(VertexArrayObject vao[static 1]) {
     glDeleteVertexArrays(1, &vao->id);
 }
 
-void VertexArrayObject_add_buffer(VertexArrayObject *const vao, const VertexArrayBuffer *const vab, const IndexBuffer *const ib, const VertexLayout *const layout) {
+void VertexArrayObject_add_buffer(VertexArrayObject vao[static 1], const VertexArrayBuffer *const vab, const IndexBuffer *const ib, const VertexLayout *const layout) {
     VertexArrayObject_bind(vao);
     VertexArrayBuffer_bind(vab);
     
@@ -27,11 +29,11 @@ void VertexArrayObject_add_buffer(VertexArrayObject *const vao, const VertexArra
     }
 }
 
-void VertexArrayObject_bind(const VertexArrayObject *const vao) {
+void VertexArrayObject_bind(const VertexArrayObject vao[static 1]) {
     glBindVertexArray(vao->id);
 }
 
-void VertexArrayObject_unbind(const VertexArrayObject *const vao) {
+void VertexArrayObject_unbind(const VertexArrayObject vao[static 1]) {
     (void)vao;
     glBindVertexArray(0u);
 }

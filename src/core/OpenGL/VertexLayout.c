@@ -1,13 +1,13 @@
 #include "VertexLayout.h"
 
-extern GLint MAX_VERTEX_ATTRIBS;
+extern int MAX_VERTEX_ATTRIBS;
 
-void VertexLayout_init(VertexLayout *const layout) {
+void VertexLayout_init(VertexLayout layout[static 1]) {
     layout->attributes_index = 0u;
     layout->stride = 0;
 }
 
-bool VertexLayout_push(VertexLayout *const layout, const VertexAttribute attribute) {
+bool VertexLayout_push(VertexLayout layout[static 1], const VertexAttribute attribute) {
     if(layout->attributes_index == (unsigned int)MAX_VERTEX_ATTRIBS) {
         return false;
     }

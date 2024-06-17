@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <assert.h>
 
 typedef const char *str;

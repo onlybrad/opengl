@@ -3,7 +3,7 @@
 #include <string.h>
 #include "util.h"
 
-String file_get_contents(const char *const path) {
+String file_get_contents(const char path[static 1]) {
     FILE *const file = fopen(path, "rb");
 
     if (!file) {
@@ -17,7 +17,7 @@ String file_get_contents(const char *const path) {
     String str;
 
     fseek(file, 0, SEEK_END);
-    str.length = (size_t)ftell(file);
+    str.length = (size_t)ftello64(file);
     fseek(file, 0, SEEK_SET);
     str.buffer = malloc(str.length * sizeof(char));
     fread(unconst(str.buffer), 1, str.length, file);

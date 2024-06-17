@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "Scene3D.h"
 #include "OpenGL.h"
 #include "Camera.h"
@@ -17,7 +18,7 @@
 extern VertexLayout OBJECT_VERTEX_LAYOUT;
 extern const char TEXTURE_UNIFORMS[32][10];
 
-static int get_texture_slot(Scene3D *const scene, Texture *const texture) {
+static int get_texture_slot(Scene3D scene[static 1], Texture *const texture) {
     for(unsigned int i=0u; i<scene->scene_objects.length; i++) {
         if(texture == scene->scene_objects.buffer[i].object->texture) {
             return (int)i+1;
@@ -33,9 +34,9 @@ static void get_model(mat4 model, Transform *const transform) {
     glm_scale(model, transform->scale);
 }
 
-void Scene3D_init(Scene3D *const scene, Shader *const shader, PerspectiveCamera *const perspective_camera) {
+void Scene3D_init(Scene3D scene[static 1], Shader shader[static 1], PerspectiveCamera perspective_camera[static 1]) {
     VertexArrayObject_init(&scene->vao);
-    scene->objects_vertices_count = 0u;
+    scene->vertices_count = 0u;
     scene->texture_slot = 1u;
     scene->perspective_camera = perspective_camera;
     scene->shader = shader;
@@ -46,15 +47,15 @@ void Scene3D_init(Scene3D *const scene, Shader *const shader, PerspectiveCamera 
     perspective_camera->camera.id = Shader_get_location(shader, "camera_position");
 }
 
-void Scene3D_free(Scene3D *const scene) {
+void Scene3D_free(Scene3D scene[static 1]) {
     VertexArrayObject_free(&scene->vao);
     VertexArrayBuffer_free(&scene->vab);
     Vector_SceneObject3D_free(&scene->scene_objects);
     Vector_uint_free(&scene->to_update);
 }
 
-bool Scene3D_add_object(Scene3D *const scene, Object *const object, const Transform *const transform) {
-    scene->objects_vertices_count += object->vertices_count;
+bool Scene3D_add_object(Scene3D scene[static 1], Object object[static 1], const Transform *const transform) {
+    scene->vertices_count += object->vertices_count;
 
     Vector_SceneObject3D_push(&scene->scene_objects, (SceneObject3D){
         .object = object, 
@@ -78,7 +79,7 @@ bool Scene3D_add_object(Scene3D *const scene, Object *const object, const Transf
     return true;
 }
 
-void Scene3D_object_needs_update(Scene3D *const scene, const unsigned int object_index) {
+void Scene3D_object_needs_update(Scene3D scene[static 1], const unsigned int object_index) {
     SceneObject3D *const scene_object = Scene3D_object_get(scene, object_index);
 
     SYNCHRONIZE(&scene->vab.lock, 
@@ -89,7 +90,7 @@ void Scene3D_object_needs_update(Scene3D *const scene, const unsigned int object
     })
 }
 
-void Scene3D_object_set_transform(Scene3D *const scene, const unsigned int object_index, Transform *const transform) {
+void Scene3D_object_set_transform(Scene3D scene[static 1], const unsigned int object_index, Transform transform[static 1]) {
     SceneObject3D *const scene_object = Scene3D_object_get(scene, object_index);
     scene_object->transform = *transform;
 
@@ -99,16 +100,16 @@ void Scene3D_object_set_transform(Scene3D *const scene, const unsigned int objec
     Scene3D_object_needs_update(scene, object_index);
 }
 
-void Scene3D_set_background(Scene3D *const scene, Object *const background) {
+void Scene3D_set_background(Scene3D scene[static 1], Object background[static 1]) {
     scene->background = background;
     Object_set_texture_slot(background, 0u);
 }
 
-inline SceneObject3D *Scene3D_object_get(Scene3D *const scene, const unsigned int object_index) {
+inline SceneObject3D *Scene3D_object_get(Scene3D scene[static 1], const unsigned int object_index) {
     return &scene->scene_objects.buffer[object_index];
 }
 
-void Scene3D_start(Scene3D *const scene) {
+void Scene3D_start(Scene3D scene[static 1]) {
     unsigned int vab_size = 0u;
     unsigned int previous_offset = 0u;
     unsigned int previous_size = 0u;
@@ -154,13 +155,13 @@ void Scene3D_start(Scene3D *const scene) {
     Shader_set_mat4_l(scene->shader, scene->projection_id, PerspectiveCamera_get_projection(scene->perspective_camera));
 }
 
-void Scene3D_end(Scene3D *const scene) {
+void Scene3D_end(Scene3D scene[static 1]) {
     VertexArrayObject_unbind(&scene->vao);
     VertexArrayBuffer_free(&scene->vab);
     VertexArrayBuffer_unbind(&scene->vab);
 }
 
-void Scene3D_draw_objects(Scene3D *const scene) {
+void Scene3D_draw_objects(Scene3D scene[static 1]) {
     OpenGL_clear();
 
     SYNCHRONIZE(&scene->perspective_camera->camera.lock,
@@ -174,10 +175,10 @@ void Scene3D_draw_objects(Scene3D *const scene) {
         first += (int)scene->background->vertices_count;
     }
 
-    OpenGL_draw(first, (int)scene->objects_vertices_count);
+    OpenGL_draw(first, (int)scene->vertices_count);
 }
 
-void Scene3D_update_objects(Scene3D *const scene) {
+void Scene3D_update_objects(Scene3D scene[static 1]) {
     SYNCHRONIZE(&scene->vab.lock,
     for(unsigned int i=0u; i<(unsigned int)scene->to_update.length; i++) {
         SceneObject3D *const scene_object = &scene->scene_objects.buffer[scene->to_update.buffer[i]]; 

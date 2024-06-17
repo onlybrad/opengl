@@ -38,20 +38,20 @@ typedef struct VECTOR {
     size_t capacity;
 } VECTOR;
 
-void VECTOR_INIT(VECTOR *const vector, const size_t capacity);
-void VECTOR_INIT_MOVE(VECTOR *const vector, T *buffer, const size_t length);
-void VECTOR_INIT_COPY(VECTOR *const vector, T *buffer, const size_t length);
-void VECTOR_COPY(VECTOR *vector_dst, VECTOR *const vector_src);
-void VECTOR_FREE(VECTOR *const vector);
-void VECTOR_PUSH(VECTOR *const vector, T value);
-T VECTOR_POP(VECTOR *const vector);
-T VECTOR_AT(const VECTOR *const vector, const size_t index);
-void VECTOR_SET(VECTOR *const vector, const size_t index, T value);
-T VECTOR_REMOVE(VECTOR *const vector, const size_t index);
+void VECTOR_INIT(VECTOR vector[static 1], const size_t capacity);
+void VECTOR_INIT_MOVE(VECTOR vector[static 1], T *buffer, const size_t length);
+void VECTOR_INIT_COPY(VECTOR vector[static 1], T *buffer, const size_t length);
+void VECTOR_COPY(VECTOR vector_dst[static 1], VECTOR vector_src[static 1]);
+void VECTOR_FREE(VECTOR vector[static 1]);
+void VECTOR_PUSH(VECTOR vector[static 1], T value);
+T VECTOR_POP(VECTOR vector[static 1]);
+T VECTOR_AT(const VECTOR vector[static 1], const size_t index);
+void VECTOR_SET(VECTOR vector[static 1], const size_t index, T value);
+T VECTOR_REMOVE(VECTOR vector[static 1], const size_t index);
 
 #if defined VECTOR_PRINT_FORMAT && defined VECTOR_PRINT_ARGUMENTS
-void VECTOR_PRINT(const VECTOR *const vector);
-char *VECTOR_TO_STRING(const VECTOR *const vector);
+void VECTOR_PRINT(const VECTOR vector[static 1]);
+char *VECTOR_TO_STRING(const VECTOR vector[static 1]);
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
 #endif //VECTOR_IMPLEMENTATION
@@ -66,27 +66,27 @@ char *VECTOR_TO_STRING(const VECTOR *const vector);
 #include <assert.h>
 #include <math.h>
 
-static void VECTOR_RESIZE(VECTOR *const vector, const size_t new_capacity) {
+static void VECTOR_RESIZE(VECTOR vector[static 1], const size_t new_capacity) {
     T *buffer = realloc(vector->buffer, sizeof(T) * new_capacity);
     assert(buffer != NULL);
     vector->buffer = buffer;
     vector->capacity = new_capacity;
 }
 
-void VECTOR_INIT(VECTOR *const vector, const size_t capacity) {
+void VECTOR_INIT(VECTOR vector[static 1], const size_t capacity) {
     vector->capacity = capacity == 0 ? VECTOR_DEFAULT_CAPACITY : capacity;
     vector->length = 0;
     vector->buffer = calloc(vector->capacity, sizeof(T));
     assert(vector->buffer != NULL);
 }
 
-void VECTOR_INIT_MOVE(VECTOR *const vector, T *buffer, const size_t length) {
+void VECTOR_INIT_MOVE(VECTOR vector[static 1], T *buffer, const size_t length) {
     vector->capacity = length;
     vector->length = length;
     vector->buffer = buffer;
 }
 
-void VECTOR_INIT_COPY(VECTOR *const vector, T *buffer, const size_t length) {
+void VECTOR_INIT_COPY(VECTOR vector[static 1], T *buffer, const size_t length) {
     vector->capacity = length;
     vector->length = length;
     vector->buffer = malloc(sizeof(T) * length);
@@ -94,12 +94,12 @@ void VECTOR_INIT_COPY(VECTOR *const vector, T *buffer, const size_t length) {
     memcpy(vector->buffer, buffer, sizeof(T) * length);
 }
 
-void VECTOR_FREE(VECTOR *const vector) {
+void VECTOR_FREE(VECTOR vector[static 1]) {
     free(vector->buffer);
     memset(vector, 0, sizeof(VECTOR));
 }
 
-void VECTOR_COPY(VECTOR *vector_dst, VECTOR *const vector_src) {
+void VECTOR_COPY(VECTOR vector_dst[static 1], VECTOR vector_src[static 1]) {
     vector_dst->buffer = malloc(sizeof(T) * vector_src->capacity);
     assert(vector_dst->buffer != NULL);
     memcpy(vector_dst->buffer, vector_src->buffer, sizeof(T) * vector_src->capacity);
@@ -107,26 +107,26 @@ void VECTOR_COPY(VECTOR *vector_dst, VECTOR *const vector_src) {
     vector_dst->length = vector_src->length;
 }
 
-void VECTOR_PUSH(VECTOR *const vector, T value) {
+void VECTOR_PUSH(VECTOR vector[static 1], T value) {
     if(vector->length == vector->capacity) {
         VECTOR_RESIZE(vector, vector->capacity * 2);
     }
     vector->buffer[vector->length++] = value;
 }
 
-T VECTOR_POP(VECTOR *const vector) {
+T VECTOR_POP(VECTOR vector[static 1]) {
     assert(vector->length > 0);
 
     return vector->buffer[--vector->length];
 }
 
-T VECTOR_AT(const VECTOR *const vector, const size_t index) {
+T VECTOR_AT(const VECTOR vector[static 1], const size_t index) {
     assert(index < vector->length);
 
     return vector->buffer[index];
 }
 
-void VECTOR_SET(VECTOR *const vector, const size_t index, T value) {
+void VECTOR_SET(VECTOR vector[static 1], const size_t index, T value) {
     if(index < vector->length) {
         vector->buffer[index] = value;
         return;
@@ -145,7 +145,7 @@ void VECTOR_SET(VECTOR *const vector, const size_t index, T value) {
     vector->buffer[index] = value;
 }
 
-T VECTOR_REMOVE(VECTOR *const vector, const size_t index) {
+T VECTOR_REMOVE(VECTOR vector[static 1], const size_t index) {
     assert(index < vector->length);
 
     T ret = vector->buffer[index];
@@ -156,7 +156,7 @@ T VECTOR_REMOVE(VECTOR *const vector, const size_t index) {
 }
 
 #if defined VECTOR_PRINT_FORMAT && defined VECTOR_PRINT_ARGUMENTS
-void VECTOR_PRINT(const VECTOR *const vector) {
+void VECTOR_PRINT(const VECTOR vector[static 1]) {
     if(vector->length == 0) {
         puts("[]");
         return;
@@ -175,7 +175,7 @@ void VECTOR_PRINT(const VECTOR *const vector) {
     puts("]");
 }
 
-char *VECTOR_TO_STRING(const VECTOR *const vector) {
+char *VECTOR_TO_STRING(const VECTOR vector[static 1]) {
     if(vector->length == 0) {
         return strdup("[]");
     }

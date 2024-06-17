@@ -1,7 +1,6 @@
 #ifndef _VERTEX_LAYOUT
 #define _VERTEX_LAYOUT
 
-#include <glad/glad.h>
 #include <stdbool.h>
 
 typedef struct VertexAttribute {
@@ -15,7 +14,7 @@ typedef struct VertexLayout {
     int stride;
 } VertexLayout;
 
-void VertexLayout_init(VertexLayout *const layout);
-bool VertexLayout_push(VertexLayout *const layout, const VertexAttribute attribute);
+void VertexLayout_init(VertexLayout layout[static 1]);
+bool VertexLayout_push(VertexLayout layout[static 1], const VertexAttribute attribute);
 
 #endif

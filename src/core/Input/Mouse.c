@@ -19,7 +19,7 @@ static void GLFW_mouse_scroll_callback(GLFWwindow *glfw_window, double x, double
     mouse.scroll_callback(mouse.window, x, y);
 }
 
-void Mouse_init(Window *const window) {
+void Mouse_init(Window window[static 1]) {
     mouse.window = window;
 }
 

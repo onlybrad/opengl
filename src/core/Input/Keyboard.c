@@ -45,7 +45,7 @@ static void internal_keyboard_callback(int key, int action, int mods) {
     }
 }
 
-static void empty_keyboard_callback(Window *const window, int key, int scancode, int action, int mods) {
+static void empty_keyboard_callback(Window window[static 1], int key, int scancode, int action, int mods) {
     (void)window;
     (void)key;
     (void)scancode;
@@ -59,7 +59,7 @@ static void GLFW_keyboard_callback(GLFWwindow* glfw_window, int key, int scancod
     keyboard.callback(keyboard.window, key, scancode, action, mods);
 }
 
-void Keyboard_init(Window *const window) {
+void Keyboard_init(Window window[static 1]) {
     keyboard.window = window;
     keyboard.num_lock = is_numlock_on();
     keyboard.callback = empty_keyboard_callback;
