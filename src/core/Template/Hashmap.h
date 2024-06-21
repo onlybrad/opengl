@@ -81,14 +81,14 @@ static void HASHMAP_RESIZE(HASHMAP hashmap[static 1], const size_t capacity) {
     free(old_buckets);
 }
 
-static BUCKET *HASHMAP_GET_BUCKET(HASHMAP hashmap[static 1], K key, const bool ignore_used) {
+static BUCKET *HASHMAP_GET_BUCKET(HASHMAP hashmap[static 1], K key, const bool ignore_unused) {
     size_t i = hashmap->hash_function(key) % hashmap->capacity;
     const size_t start = i;
 
     do {
         if(
             hashmap->compare_function(key, hashmap->buckets[i].key) ||
-            (!ignore_used && !hashmap->buckets[i].used)
+            (!ignore_unused && !hashmap->buckets[i].used)
         ) {
             return &hashmap->buckets[i];
         }
