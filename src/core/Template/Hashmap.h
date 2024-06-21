@@ -90,7 +90,7 @@ static BUCKET *HASHMAP_GET_BUCKET(HASHMAP hashmap[static 1], K key, const bool i
             hashmap->compare_function(key, hashmap->buckets[i].key) ||
             (!ignore_unused && !hashmap->buckets[i].used)
         ) {
-            return &hashmap->buckets[i];
+            return hashmap->buckets + i;
         }
 
         i = (i + 1) % hashmap->capacity;
