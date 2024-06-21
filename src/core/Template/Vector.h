@@ -62,7 +62,7 @@ char *VECTOR_TO_STRING(const VECTOR vector[static 1]);
 #if defined VECTOR_IMPLEMENTATION 
 
 #include <assert.h>
-#include <math.h>
+//#include <math.h>
 #include <string.h>
 
 static void VECTOR_RESIZE(VECTOR vector[static 1], const size_t new_capacity) {
@@ -132,11 +132,22 @@ void VECTOR_SET(VECTOR vector[static 1], const size_t index, T value) {
     }
 
     if(index >= vector->capacity) {
+        size_t new_capacity = vector->capacity;
+
+        do {
+            new_capacity *= 2;
+        } while(new_capacity <= index);
+
+        VECTOR_RESIZE(vector, new_capacity);
+
+        //Old implementation. Not sure if casting size_t to long double will actually ensure no precision loss if the index is very big (apparently on the visual studio compiler long double is the same as double). Also it's potentially slower if the index isn't very big.
+        #if 0
         //(capacity * 2^k) = index + 1
         // k = log 2((index + 1) / capacity)
         //using long double to not lose precision when casting from size_t
         const long double k = log2l((long double)(index + 1) / (long double)vector->capacity);
         VECTOR_RESIZE(vector, (size_t)((long double)vector->capacity * powl(2.0L, ceill(k))));
+        #endif
     }
 
     memset(vector->buffer + vector->length, 0, sizeof(T) * (index - vector->length));
