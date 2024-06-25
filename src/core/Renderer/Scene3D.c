@@ -18,7 +18,7 @@
 extern VertexLayout OBJECT_VERTEX_LAYOUT;
 extern const char TEXTURE_UNIFORMS[32][10];
 
-static int get_texture_slot(Scene3D scene[static 1], Texture *const texture) {
+static int find_texture_slot(Scene3D scene[static 1], Texture *const texture) {
     for(unsigned int i=0u; i<scene->scene_objects.length; i++) {
         if(texture == scene->scene_objects.buffer[i].object->texture) {
             return (int)i+1;
@@ -66,7 +66,7 @@ bool Scene3D_add_object(Scene3D scene[static 1], Object object[static 1], const 
     });
 
     if(object->texture != NULL) {
-        const int texture_slot = get_texture_slot(scene, object->texture);
+        const int texture_slot = find_texture_slot(scene, object->texture);
 
         if(texture_slot == -1) {
             Object_set_texture_slot(object, scene->texture_slot);
