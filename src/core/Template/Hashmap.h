@@ -64,23 +64,6 @@ char *HASHMAP_TO_STRING(const HASHMAP hashmap[static 1]);
 
 #include <assert.h>
 
-static void HASHMAP_RESIZE(HASHMAP hashmap[static 1], const size_t capacity) {
-    BUCKET *const new_buckets = calloc(capacity, sizeof(BUCKET));
-    assert(new_buckets != NULL);
-    BUCKET *const old_buckets = hashmap->buckets;
-    const size_t old_capacity = hashmap->capacity;
-    hashmap->capacity = capacity;
-    hashmap->buckets = new_buckets;
-
-    for(size_t i=0; i<old_capacity; i++) {
-        if(old_buckets[i].used) {
-            HASHMAP_INSERT(hashmap, old_buckets[i].key, old_buckets[i].value);
-        }
-    }
-
-    free(old_buckets);
-}
-
 static BUCKET *HASHMAP_GET_BUCKET(HASHMAP hashmap[static 1], K key, const bool ignore_unused) {
     size_t i = hashmap->hash_function(key) % hashmap->capacity;
     const size_t start = i;
@@ -97,6 +80,26 @@ static BUCKET *HASHMAP_GET_BUCKET(HASHMAP hashmap[static 1], K key, const bool i
     } while(i != start);
 
     return NULL;
+}
+
+static void HASHMAP_RESIZE(HASHMAP hashmap[static 1], const size_t capacity) {
+    BUCKET *const new_buckets = calloc(capacity, sizeof(BUCKET));
+    assert(new_buckets != NULL);
+    BUCKET *const old_buckets = hashmap->buckets;
+    const size_t old_capacity = hashmap->capacity;
+    hashmap->capacity = capacity;
+    hashmap->buckets = new_buckets;
+
+    for(size_t i=0; i<old_capacity; i++) {
+        if(old_buckets[i].used) {
+            BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, old_buckets[i].key, false);
+            bucket->key = old_buckets[i].key;
+            bucket->value = old_buckets[i].value;
+            bucket->used = true;
+        }
+    }
+
+    free(old_buckets);
 }
 
 void HASHMAP_INIT(HASHMAP hashmap[static 1], size_t (*hash_function)(K), bool (*compare_function)(K, K)) {
