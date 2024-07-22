@@ -26,11 +26,14 @@ String file_get_contents(const char path[static 1]) {
     return str;
 }
 
-void *unconst(const void *var) {
-    void *unconst_var;
-    memcpy(&unconst_var, &var, sizeof(void*));
-    
-    return unconst_var;
+void *unconst(const void *const_var) {
+    union {
+        const void *const_var;
+        void *unconst_var;
+    } var;
+
+    var.const_var = const_var;
+    return var.unconst_var;
 }
 
 // GLsizei get_size_type(const GLenum type) {

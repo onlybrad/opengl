@@ -2,6 +2,7 @@
 #define _UTIL_H
 
 #include <stdlib.h>
+#include <stdint.h>
 #include "String.h"
 
 #if defined(__clang__) || defined(__GNUC__)
@@ -17,8 +18,10 @@
 #define _MAKE_NAME(a,b) a ## _ ## b
 #define MAKE_NAME(a,b) _MAKE_NAME(a,b)
 
-#define _stringify(a) #a
-#define stringify(a) _stringify(a)
+#define SIZE64 SIZE_MAX == ((1ULL << 8*CHAR_BIT-1)-1 << 1 | 1)
+
+#define _STRINGIFY(a) #a
+#define STRINGIFY(a) _STRINGIFY(a)
 
 #define INT_TO_PTR(INT) (void *)(uintptr_t)(INT)
 #define ARRAY_LEN(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
@@ -33,6 +36,6 @@
 #endif
 
 String file_get_contents(const char path[static 1]);
-void *unconst(const void *var);
+void *unconst(const void *const_var);
 
 #endif
