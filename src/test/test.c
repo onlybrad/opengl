@@ -1,16 +1,19 @@
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
 
 typedef const char *str;
 
 static void vector_test(void);
 static void hashmap_test(void);
 static void queue_test(void);
+static void binary_tree_test(void);
 
-int main(void) {
+int main(void) {  
     vector_test();
     hashmap_test();
     queue_test();
+    binary_tree_test();
     return 0;
 }
 
@@ -207,7 +210,7 @@ static void vector_test(void) {
 #define HASHMAP_PRINT_VALUE_FORMAT 
 #define HASHMAP_PRINT_KEY_ARGUMENTS
 #define HASHMAP_PRINT_VALUE_ARGUMENTS
-#include "../core/Template/Hashmap.h"
+#include "../core/Template/HashMap.h"
 
 #define K str
 #define V int
@@ -216,48 +219,58 @@ static void vector_test(void) {
 #define HASHMAP_PRINT_KEY_ARGUMENTS(k) k
 #define HASHMAP_PRINT_VALUE_ARGUMENTS(v) v
 #define HASHMAP_IMPLEMENTATION
-#include "../core/Template/Hashmap.h"
+#include "../core/Template/HashMap.h"
 
 static void hashmap_test(void) {
-    Hashmap_str_int hashmap;
-    Hashmap_str_int_init(&hashmap, string_hash_function, string_compare);
+    HashMap_str_int hashmap;
+    HashMap_str_int_init(&hashmap, string_hash_function, string_compare);
 
-    Hashmap_str_int_insert(&hashmap, "one", 1);
-    Hashmap_str_int_insert(&hashmap, "two", 2);
-    Hashmap_str_int_insert(&hashmap, "three", 3);
-    Hashmap_str_int_insert(&hashmap, "four", 4);
-    Hashmap_str_int_insert(&hashmap, "five", 5);
+    HashMap_str_int_insert(&hashmap, "one", 1);
+    HashMap_str_int_insert(&hashmap, "two", 2);
+    HashMap_str_int_insert(&hashmap, "three", 3);
+    HashMap_str_int_insert(&hashmap, "four", 4);
+    HashMap_str_int_insert(&hashmap, "five", 5);
 
-    char *hashmap_str = Hashmap_str_int_to_string(&hashmap);
+    char *hashmap_str = HashMap_str_int_to_string(&hashmap);
     assert(strcmp(hashmap_str, "[three => 3, four => 4, five => 5, two => 2, one => 1]") == 0);
     free(hashmap_str);
 
-    assert(! Hashmap_str_int_get(&hashmap, "zero").success);
-    assert(Hashmap_str_int_get(&hashmap, "one").success && Hashmap_str_int_get(&hashmap, "one").value == 1);
-    assert(Hashmap_str_int_get(&hashmap, "two").success && Hashmap_str_int_get(&hashmap, "two").value == 2);
-    assert(Hashmap_str_int_get(&hashmap, "three").success && Hashmap_str_int_get(&hashmap, "three").value == 3);
-    assert(Hashmap_str_int_get(&hashmap, "four").success && Hashmap_str_int_get(&hashmap, "four").value == 4);
-    assert(Hashmap_str_int_get(&hashmap, "five").success && Hashmap_str_int_get(&hashmap, "five").value == 5);
+    bool success;
+    int value;
 
-    Hashmap_str_int_remove(&hashmap, "three");
+    HashMap_str_int_get(&hashmap, "zero", &success);
+    assert(!success);
+    value = HashMap_str_int_get(&hashmap, "one", &success);
+    assert(success && value == 1);
+    value = HashMap_str_int_get(&hashmap, "two", &success);
+    assert(success && value == 2);
+    value = HashMap_str_int_get(&hashmap, "three", &success);
+    assert(success && value == 3);
+    value = HashMap_str_int_get(&hashmap, "four", &success);
+    assert(success && value == 4);
+    value = HashMap_str_int_get(&hashmap, "five", &success);
+    assert(success && value == 5);
 
-    assert(Hashmap_str_int_exists(&hashmap, "one"));
-    assert(Hashmap_str_int_exists(&hashmap, "two"));
-    assert(! Hashmap_str_int_exists(&hashmap, "three"));
-    assert(Hashmap_str_int_exists(&hashmap, "four"));
-    assert(Hashmap_str_int_exists(&hashmap, "five"));
+    HashMap_str_int_remove(&hashmap, "three");
+
+    assert(HashMap_str_int_exists(&hashmap, "one"));
+    assert(HashMap_str_int_exists(&hashmap, "two"));
+    assert(! HashMap_str_int_exists(&hashmap, "three"));
+    assert(HashMap_str_int_exists(&hashmap, "four"));
+    assert(HashMap_str_int_exists(&hashmap, "five"));
 
     static str hashmap_chars[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"};
 
     for(int i=0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
-        Hashmap_str_int_insert(&hashmap, hashmap_chars[i], i);
+        HashMap_str_int_insert(&hashmap, hashmap_chars[i], i);
     }
 
     for(int i=0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
-        assert(Hashmap_str_int_get(&hashmap, hashmap_chars[i]).success && Hashmap_str_int_get(&hashmap, hashmap_chars[i]).value == i);
+        value = HashMap_str_int_get(&hashmap, hashmap_chars[i], &success);
+        assert(success && value == i);
     }
 
-    Hashmap_str_int_free(&hashmap);
+    HashMap_str_int_free(&hashmap);
 }
 
 #define T str
@@ -275,11 +288,14 @@ static void queue_test(void) {
     Queue_str queue;
     Queue_str_init(&queue);
 
-    assert(! Queue_str_dequeue(&queue).success);
+    bool success;
+    Queue_str_dequeue(&queue, &success);
+    assert(!success);
 
     Queue_str_enqueue(&queue, "Hello");
-    assert(strcmp(Queue_str_dequeue(&queue).value, "Hello") == 0);
-    assert(! Queue_str_dequeue(&queue).success);
+    assert(strcmp(Queue_str_dequeue(&queue, &success), "Hello") == 0);
+    Queue_str_dequeue(&queue, &success);
+    assert(!success);
 
     static str queue_words[] = {"Hello", "World", "A", "B", "C", "1", "2", "3", "ABC", "DEF", "XYZ", "IOP", "HELLO WORLD!", "SOME", "STRING", "WORD", "TEST", "QUEUE", "HI"};
 
@@ -292,11 +308,235 @@ static void queue_test(void) {
     free(queue_str);
 
     for(int i=0; i<(int)ARRAY_LEN(queue_words); i++) {
-        const Result_str result = Queue_str_dequeue(&queue);
-        assert(result.success);
-        assert(strcmp(result.value, queue_words[i]) == 0);
+        str result = Queue_str_dequeue(&queue, &success);
+        assert(success && strcmp(result, queue_words[i]) == 0);
     }
-    assert(! Queue_str_dequeue(&queue).success);
+    Queue_str_dequeue(&queue, &success);
+    assert(! success);
 
     Queue_str_free(&queue);
+}
+
+#define T str
+#include "../core/Template/BinaryTree.h"
+
+#define T str
+#define BINARY_TREE_IMPLEMENTATION
+#include "../core/Template/BinaryTree.h"
+
+static void binary_tree_test(void) {
+    BinaryTree_str tree;
+    BinaryTree_str detached;
+    BinaryTree_str_init(&tree);
+    assert(BinaryTree_str_get_children_count(&tree, TreeNode_ROOT) == 0);
+    BinaryTree_str_set_value(&tree, TreeNode_ROOT, "");
+
+    const size_t root_depth = BinaryTree_str_get_node_depth(&tree, TreeNode_ROOT);
+    const size_t tree_depth = BinaryTree_str_get_depth(&tree);
+    assert(root_depth == 0);
+    assert(root_depth == tree_depth);
+
+    const TreeNode l = BinaryTree_str_add_left(&tree,TreeNode_ROOT,"l");
+    const TreeNode r = BinaryTree_str_add_right(&tree,TreeNode_ROOT,"r");
+    assert(tree.deepest == r);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 2);
+
+    const TreeNode ll = BinaryTree_str_add_left(&tree,l,"ll");
+    const TreeNode lr = BinaryTree_str_add_right(&tree,l,"lr");
+    assert(tree.deepest == lr);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 4);
+    const TreeNode rl = BinaryTree_str_add_left(&tree,r,"rl");
+    const TreeNode rr = BinaryTree_str_add_right(&tree,r,"rr");
+    assert(tree.deepest == rr);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 6);
+
+    const TreeNode lll = BinaryTree_str_add_left(&tree,ll,"lll");
+    const TreeNode llr = BinaryTree_str_add_right(&tree,ll,"llr");
+    assert(tree.deepest == llr);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 8);
+    const TreeNode lrl = BinaryTree_str_add_left(&tree,lr,"lrl");
+    const TreeNode lrr = BinaryTree_str_add_right(&tree,lr,"lrr");
+    assert(tree.deepest == lrr);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 10);
+
+    const TreeNode lrrl = BinaryTree_str_add_left(&tree,lrr,"lrrl");
+    assert(tree.deepest == lrrl);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 11);
+    const TreeNode lrrlr = BinaryTree_str_add_right(&tree,lrrl,"lrrlr");
+    assert(tree.deepest == lrrlr);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 12);
+    const TreeNode llrl = BinaryTree_str_add_left(&tree, llr, "llrl");
+    const TreeNode llrll = BinaryTree_str_add_left(&tree, llrl, "llrll");
+    BinaryTree_str_add_left(&tree,TreeNode_ROOT,"new l");
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 14);
+
+    assert(tree.deepest == lrrlr);
+
+    /*
+                         root                      depth = 0
+                     /            \
+                    /              \
+                  new l               r            depth = 1
+              /          \         /    \
+             /            \       /      \
+           ll             lr     rl       rr       depth = 2
+           /  \           / \
+          /    \         /   \
+         lll    llr    lrl    lrr                  depth = 3
+                /             /
+               /             /
+            llrl           lrrl                    depth = 4
+            /                  \
+           /                    \
+          llrll                 lrrlr              depth = 5
+    */ 
+
+    assert(BinaryTree_str_get_node_depth(&tree, l) == 1);
+    assert(BinaryTree_str_get_node_depth(&tree, r) == 1);
+    assert(BinaryTree_str_get_parent(&tree, TreeNode_ROOT) == TreeNode_NULL);
+    assert(BinaryTree_str_get_parent(&tree, l) == TreeNode_ROOT);
+    assert(BinaryTree_str_get_parent(&tree, r) == TreeNode_ROOT);
+    assert(BinaryTree_str_get_left(&tree, TreeNode_ROOT) == l);
+    assert(BinaryTree_str_get_right(&tree, TreeNode_ROOT) == r);
+
+    assert(BinaryTree_str_get_node_depth(&tree, ll) == 2);
+    assert(BinaryTree_str_get_node_depth(&tree, lr) == 2);
+    assert(BinaryTree_str_get_parent(&tree, ll) == l);
+    assert(BinaryTree_str_get_parent(&tree, lr) == l);
+    assert(BinaryTree_str_get_left(&tree, l) == ll);
+    assert(BinaryTree_str_get_right(&tree, l) == lr);
+
+    assert(BinaryTree_str_get_node_depth(&tree, rl) == 2);
+    assert(BinaryTree_str_get_node_depth(&tree, rr) == 2);
+    assert(BinaryTree_str_get_parent(&tree, rl) == r);
+    assert(BinaryTree_str_get_parent(&tree, rr) == r);
+    assert(BinaryTree_str_get_left(&tree, r) == rl);
+    assert(BinaryTree_str_get_right(&tree, r) == rr);
+
+    assert(BinaryTree_str_get_node_depth(&tree, lll) == 3);
+    assert(BinaryTree_str_get_node_depth(&tree, llr) == 3);
+    assert(BinaryTree_str_get_parent(&tree, lll) == ll);
+    assert(BinaryTree_str_get_parent(&tree, llr) == ll);
+    assert(BinaryTree_str_get_left(&tree, ll) == lll);
+    assert(BinaryTree_str_get_right(&tree, ll) == llr);
+
+    assert(BinaryTree_str_get_node_depth(&tree, lrl) == 3);
+    assert(BinaryTree_str_get_node_depth(&tree, lrr) == 3);
+    assert(BinaryTree_str_get_parent(&tree, lrl) == lr);
+    assert(BinaryTree_str_get_parent(&tree, lrr) == lr);
+    assert(BinaryTree_str_get_left(&tree, lr) == lrl);
+    assert(BinaryTree_str_get_right(&tree, lr) == lrr);
+
+    assert(BinaryTree_str_get_node_depth(&tree, lrrl) == 4);
+    assert(BinaryTree_str_get_node_depth(&tree, lrrlr) == 5);
+    assert(BinaryTree_str_get_parent(&tree, lrrl) == lrr);
+    assert(BinaryTree_str_get_parent(&tree, lrrlr) == lrrl);
+    assert(BinaryTree_str_get_left(&tree, lrr) == lrrl);
+    assert(BinaryTree_str_get_right(&tree, lrr) == TreeNode_NULL);
+    assert(BinaryTree_str_get_right(&tree, lrrl) == lrrlr);
+    assert(BinaryTree_str_get_left(&tree, lrrl) == TreeNode_NULL);
+
+    assert(BinaryTree_str_get_depth(&tree) == 5);
+    detached = BinaryTree_str_detach(&tree, lrrl);
+    BinaryTree_str_free(&detached);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 12);
+    /*
+                         root                      depth = 0
+                     /            \
+                    /              \
+                   l                  r            depth = 1
+              /          \         /    \
+             /            \       /      \
+           ll             lr     rl       rr       depth = 2
+           /  \           / \
+          /    \         /   \
+         lll    llr    lrl    lrr                  depth = 3
+                /             
+               /              
+            llrl             (removed)             depth = 4
+            /                  
+           /                    
+          llrll              (removed)             depth = 5
+    */
+
+    assert(BinaryTree_str_get_depth(&tree) == 5);
+    assert(BinaryTree_str_get_left(&tree, lrr) == TreeNode_NULL);
+    assert(tree.deepest == llrll);
+
+    detached = BinaryTree_str_detach(&tree, lll);
+    BinaryTree_str_free(&detached);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 11);
+    /*
+                         root                      depth = 0
+                     /            \
+                    /              \
+                   l                  r            depth = 1
+              /          \         /    \
+             /            \       /      \
+           ll             lr     rl       rr       depth = 2
+              \           / \
+               \         /   \
+    (removed)  llr    lrl    lrr                   depth = 3
+                /             
+               /              
+            llrl                                   depth = 4
+            /                  
+           /                    
+          llrll                                    depth = 5
+    */
+    assert(BinaryTree_str_get_depth(&tree) == 5);
+    assert(BinaryTree_str_get_left(&tree, ll) == TreeNode_NULL);
+    assert(tree.deepest == llrll);
+
+    detached = BinaryTree_str_detach(&tree, llrl);
+    BinaryTree_str_free(&detached);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 9);
+    /*
+                         root                      depth = 0
+                     /            \
+                    /              \
+                   l                  r            depth = 1
+              /          \         /    \
+             /            \       /      \
+           ll             lr     rl       rr       depth = 2
+              \           / \
+               \         /   \
+               llr    lrl    lrr                   depth = 3             
+                             
+            (removed)                               
+                                             
+            (removed)                                    
+    */
+    assert(BinaryTree_str_get_depth(&tree) == 3);
+    assert(BinaryTree_str_get_left(&tree, llr) == TreeNode_NULL);
+    assert(tree.deepest == lrr);
+
+    detached = BinaryTree_str_detach(&tree, l);
+    BinaryTree_str_free(&detached);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 3);
+    /*
+                            root                   depth = 0
+                                      \
+                                       \
+               (removed)                 r         depth = 1
+                                        / \
+                                       /   \
+           (removed)      (removed)   rl    rr     depth = 2
+
+
+           (removed)   (removed)  (removed)             
+                             
+                                   
+    */
+    assert(BinaryTree_str_get_depth(&tree) == 2);
+    assert(BinaryTree_str_get_left(&tree, TreeNode_ROOT) == TreeNode_NULL);
+    assert(tree.deepest == rr);
+
+    detached = BinaryTree_str_detach(&tree, TreeNode_ROOT);
+    BinaryTree_str_free(&detached);
+    assert(BinaryTree_str_get_depth(&tree) == 0);
+    assert(tree.deepest == TreeNode_ROOT);
+    assert(BinaryTree_str_get_children_count(&tree,TreeNode_ROOT) == 0);
+
+    BinaryTree_str_free(&tree);
 }

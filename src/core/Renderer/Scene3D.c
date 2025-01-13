@@ -82,12 +82,13 @@ bool Scene3D_add_object(Scene3D scene[static 1], Object object[static 1], const 
 void Scene3D_object_needs_update(Scene3D scene[static 1], const unsigned int object_index) {
     SceneObject3D *const scene_object = Scene3D_object_get(scene, object_index);
 
-    SYNCHRONIZE(&scene->vab.lock, 
+    Lock_lock(&scene->vab.lock); 
     if(scene_object->needs_update) {
         Vector_uint_push(&scene->to_update, object_index);
     } else {
         scene_object->needs_update = false;
-    })
+    }
+    Lock_unlock(&scene->vab.lock);
 }
 
 void Scene3D_object_set_transform(Scene3D scene[static 1], const unsigned int object_index, Transform transform[static 1]) {
@@ -164,10 +165,11 @@ void Scene3D_end(Scene3D scene[static 1]) {
 void Scene3D_draw_objects(Scene3D scene[static 1]) {
     OpenGL_clear();
 
-    SYNCHRONIZE(&scene->perspective_camera->camera.lock,
+    Lock_lock(&scene->perspective_camera->camera.lock);
     Shader_set_mat4_l(scene->shader, scene->projection_id, PerspectiveCamera_get_projection(scene->perspective_camera));
     Shader_set_mat4_l(scene->shader, scene->view_id, PerspectiveCamera_get_view(scene->perspective_camera));
-    Shader_set_vec3_l(scene->shader, scene->perspective_camera->camera.id, scene->perspective_camera->camera.position);)
+    Shader_set_vec3_l(scene->shader, scene->perspective_camera->camera.id, scene->perspective_camera->camera.position);
+    Lock_unlock(&scene->perspective_camera->camera.lock);
 
     int first = 0;
     if(scene->background != NULL) {
@@ -179,11 +181,12 @@ void Scene3D_draw_objects(Scene3D scene[static 1]) {
 }
 
 void Scene3D_update_objects(Scene3D scene[static 1]) {
-    SYNCHRONIZE(&scene->vab.lock,
+    Lock_lock(&scene->vab.lock);
     for(unsigned int i=0u; i<(unsigned int)scene->to_update.length; i++) {
         SceneObject3D *const scene_object = &scene->scene_objects.buffer[scene->to_update.buffer[i]]; 
         VertexArrayBuffer_set(&scene->vab, scene_object->offset * sizeof(*scene_object->object->vertices), scene_object->object->vertices, scene_object->object->vertices_count * sizeof(*scene_object->object->vertices));
         scene_object->needs_update = true;
     }
-    scene->to_update.length = 0;)
+    scene->to_update.length = 0;
+    Lock_unlock(&scene->vab.lock);
 }

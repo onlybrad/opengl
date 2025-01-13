@@ -36,7 +36,7 @@ GLfloat zoom = 2.f;
 double cursorX;
 double cursorY;
 
-struct VertexV1
+struct Vertex
 {
     GLfloat x, y, z;
     GLfloat r, g, b;
@@ -51,7 +51,7 @@ struct VertexV1
 #define QUADNUM (QUADW*QUADH)
 
 GLuint quad[4 * QUADNUM];
-struct VertexV1 vertex[VERTEXNUM];
+struct Vertex vertex[VERTEXNUM];
 
 /* The grid will look like this:
  *
@@ -182,8 +182,8 @@ void init_opengl(void)
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-    glVertexPointer(3, GL_FLOAT, sizeof(struct VertexV1), vertex);
-    glColorPointer(3, GL_FLOAT, sizeof(struct VertexV1), &vertex[0].r); // Pointer to the first color
+    glVertexPointer(3, GL_FLOAT, sizeof(struct Vertex), vertex);
+    glColorPointer(3, GL_FLOAT, sizeof(struct Vertex), &vertex[0].r); // Pointer to the first color
 
     glPointSize(2.0);
 

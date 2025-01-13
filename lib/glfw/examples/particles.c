@@ -73,7 +73,7 @@ typedef struct
     GLfloat s, t;         // Texture coordinates
     GLuint  rgba;         // Color (four ubytes packed into an uint)
     GLfloat x, y, z;      // Vertex coordinates
-} VertexV1;
+} Vertex;
 
 
 //========================================================================

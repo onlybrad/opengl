@@ -13,7 +13,6 @@ typedef const char *str;
 
 #define QUEUE_INITIAL_CAPACITY 16
 #define QUEUE MAKE_NAME(Queue, T)
-#define RESULT MAKE_NAME(Result, T)
 #define QUEUE_RESIZE MAKE_NAME(QUEUE, resize)
 #define QUEUE_INIT MAKE_NAME(QUEUE, init)
 #define QUEUE_FREE MAKE_NAME(QUEUE, free)
@@ -27,8 +26,6 @@ typedef const char *str;
 
 #ifndef QUEUE_IMPLEMENTATION
 
-#include "Result.h"
-
 typedef struct QUEUE {
     T *buffer;
     size_t tail;
@@ -39,7 +36,7 @@ typedef struct QUEUE {
 void QUEUE_INIT(QUEUE queue[static 1]);
 void QUEUE_FREE(QUEUE queue[static 1]);
 void QUEUE_ENQUEUE(QUEUE queue[static 1], T value);
-RESULT QUEUE_DEQUEUE(QUEUE queue[static 1]);
+T QUEUE_DEQUEUE(QUEUE queue[static 1], bool *const success);
 
 #endif //QUEUE_IMPLEMENTATION
 
@@ -52,7 +49,7 @@ char *QUEUE_TO_STRING(const QUEUE queue[static 1]);
 #define QUEUE_IMPLEMENTATION
 #endif
 
-#if defined QUEUE_IMPLEMENTATION 
+#ifdef QUEUE_IMPLEMENTATION 
 
 #include <assert.h>
 
@@ -83,9 +80,10 @@ void QUEUE_ENQUEUE(QUEUE queue[static 1], T value) {
     queue->buffer[queue->head++] = value;
 }
 
-RESULT QUEUE_DEQUEUE(QUEUE queue[static 1]) {
+T QUEUE_DEQUEUE(QUEUE queue[static 1], bool *const success) {
     if(queue->head == 0) {
-        return (RESULT){.success = false};
+        *success = false;
+        return (T){0};
     }
     
     T ret = queue->buffer[queue->tail++];
@@ -95,7 +93,8 @@ RESULT QUEUE_DEQUEUE(QUEUE queue[static 1]) {
         queue->tail = 0;
     }
 
-    return (RESULT){.success = true, .value = ret};
+    *success = true;
+    return ret;
 }
 
 #if defined QUEUE_PRINT_FORMAT && defined QUEUE_PRINT_ARGUMENTS
@@ -150,7 +149,6 @@ char *QUEUE_TO_STRING(const QUEUE queue[static 1]) {
 
 #undef QUEUE_INITIAL_CAPACITY
 #undef T
-#undef RESULT
 #undef QUEUE
 #undef PREFIX
 #undef QUEUE_RESIZE

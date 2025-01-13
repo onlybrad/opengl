@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "String.h"
 
 #if defined(__clang__) || defined(__GNUC__)
@@ -13,6 +14,10 @@
 #define FALLTHROUGH {[[fallthrough]];}
 #else
 #define FALLTHROUGH
+#endif
+
+#if _WIN32
+#include <stringapiset.h>
 #endif
 
 #define _MAKE_NAME(a,b) a ## _ ## b
@@ -26,7 +31,7 @@
 #define INT_TO_PTR(INT) (void *)(uintptr_t)(INT)
 #define ARRAY_LEN(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
 #define MEMBER_SIZE(STRUCT, MEMBER) (sizeof(((STRUCT *)0)->MEMBER)) 
-#define ARRAY_MEMBER_LENGTH(STRUCT, MEMBER) (MEMBER_SIZE(STRUCT, MEMBER)/MEMBER_SIZE(STRUCT, MEMBER[0]))
+#define ARRAY_MEMBER_LEN(STRUCT, MEMBER) (MEMBER_SIZE(STRUCT, MEMBER)/MEMBER_SIZE(STRUCT, MEMBER[0]))
 
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -35,6 +40,8 @@
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #endif
 
+
+FILE *file_open(const char *__restrict__ filename, const char *__restrict__ mode);
 String file_get_contents(const char path[static 1]);
 void *unconst(const void *const_var);
 

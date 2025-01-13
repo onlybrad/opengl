@@ -8,7 +8,7 @@
 #define K str
 #define V int
 #define HASHMAP_IMPLEMENTATION
-#include "../Template/Hashmap.h"
+#include "../Template/HashMap.h"
 
 static unsigned int compile_shader(String shader_source, const GLenum shader_type) {
     const unsigned int shader = glCreateShader(shader_type);
@@ -90,7 +90,7 @@ bool Shader_init(Shader shader[static 1], const char vertex_shader_path[static 1
     shader->id = id;
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
-    Hashmap_str_int_init(&shader->location_cache, string_hash_function, string_compare);
+    HashMap_str_int_init(&shader->location_cache, string_hash_function, string_compare);
 
     return true;
 }
@@ -99,7 +99,7 @@ void Shader_free(Shader shader[static 1]) {
     glDeleteProgram(shader->id);
     String_free(shader->vertex_shader_src);
     String_free(shader->fragment_shader_src);
-    Hashmap_str_int_free(&shader->location_cache);
+    HashMap_str_int_free(&shader->location_cache);
 }
 
 void Shader_use(const Shader shader[static 1]) {
@@ -107,10 +107,11 @@ void Shader_use(const Shader shader[static 1]) {
 }
 
 int Shader_get_location(Shader shader[static 1], const char name[static 1]) {
-    Result_int result = Hashmap_str_int_get(&shader->location_cache, name);
+    bool success;
+    const int result = HashMap_str_int_get(&shader->location_cache, name, &success);
 
-    if(result.success) {
-        return result.value;
+    if(success) {
+        return result;
     }
 
     int location = glGetUniformLocation(shader->id, name);
@@ -119,7 +120,7 @@ int Shader_get_location(Shader shader[static 1], const char name[static 1]) {
         return location;
     }
 
-    Hashmap_str_int_insert(&shader->location_cache, name, location);
+    HashMap_str_int_insert(&shader->location_cache, name, location);
     
     return location;
 }

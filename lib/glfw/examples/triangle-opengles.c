@@ -34,13 +34,13 @@
 #include <stddef.h>
 #include <stdio.h>
 
-typedef struct VertexV1
+typedef struct Vertex
 {
     vec2 pos;
     vec3 col;
-} VertexV1;
+} Vertex;
 
-static const VertexV1 vertices[3] =
+static const Vertex vertices[3] =
 {
     { { -0.6f, -0.4f }, { 1.f, 0.f, 0.f } },
     { {  0.6f, -0.4f }, { 0.f, 1.f, 0.f } },
@@ -135,9 +135,9 @@ int main(void)
     glEnableVertexAttribArray(vpos_location);
     glEnableVertexAttribArray(vcol_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(VertexV1), (void*) offsetof(VertexV1, pos));
+                          sizeof(Vertex), (void*) offsetof(Vertex, pos));
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(VertexV1), (void*) offsetof(VertexV1, col));
+                          sizeof(Vertex), (void*) offsetof(Vertex, col));
 
     while (!glfwWindowShouldClose(window))
     {

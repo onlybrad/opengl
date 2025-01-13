@@ -1,10 +1,28 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "util.h"
 
+FILE *file_open(const char *__restrict__ filename, const char *__restrict__ mode) {
+    #if _WIN32
+    wchar_t modew[64];
+    wchar_t filenamew[1024];
+
+    if(MultiByteToWideChar(CP_UTF8, 0ul, filename, -1, filenamew, ARRAY_LEN(filenamew)) == 0) {
+        return NULL;
+    }
+
+    if(MultiByteToWideChar(CP_UTF8, 0ul, mode, -1, modew, ARRAY_LEN(modew)) == 0) {
+        return NULL;
+    }
+
+    return _wfopen(filenamew, modew);
+    #else   
+    return fopen(filename, mode);
+    #endif
+}
+
 String file_get_contents(const char path[static 1]) {
-    FILE *const file = fopen(path, "rb");
+    FILE *const file = file_open(path, "rb");
 
     if (!file) {
         perror(NULL);
@@ -16,16 +34,35 @@ String file_get_contents(const char path[static 1]) {
 
     String str;
 
-    fseek(file, 0, SEEK_END);
+    fseeko(file, 0, SEEK_END);
     str.length = (size_t)ftello(file);
-    fseek(file, 0, SEEK_SET);
+    fseeko(file, 0, SEEK_SET);
     str.buffer = malloc(str.length * sizeof(char));
-    fread(unconst(str.buffer), 1, str.length, file);
+
+    if(str.buffer == NULL) {
+        str.buffer = NULL;
+        str.length = 0;
+        return str;
+    }
+
+    char *buffer = unconst(str.buffer);
+    size_t bytes_read;
+    while ((bytes_read = fread(buffer, 1, str.length, file)) > 0);
+
+    if(ferror(file)) {
+        free(buffer);
+        str.buffer = NULL;
+        str.length = 0;
+    }
+
     fclose(file);
     
     return str;
 }
 
+/**
+ * @brief this function will convert const to non-const pointer without triggering the -Wcast-qual warning in GCC. It is useful for using with free() which doesn't accept a const pointer without GCC issuing a warning.
+ */
 void *unconst(const void *const_var) {
     union {
         const void *const_var;

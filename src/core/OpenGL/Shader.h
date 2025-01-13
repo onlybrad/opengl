@@ -13,12 +13,12 @@ typedef struct Location {
 typedef const char *str;
 #define K str
 #define V int
-#include "../Template/Hashmap.h"
+#include "../Template/HashMap.h"
 typedef struct Shader {
     unsigned int id;
     String vertex_shader_src;
     String fragment_shader_src;
-    Hashmap_str_int location_cache;
+    HashMap_str_int location_cache;
 } Shader;
 
 bool Shader_init(Shader shader[static 1], const char vertex_shader_path[static 1], const char fragment_shader_path[static 1]);

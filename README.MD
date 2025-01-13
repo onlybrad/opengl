@@ -11,7 +11,7 @@
 
 # Building dependencies
 ```
-make cglm && make glfw && make stb_image
+make dependencies
 ```
 
 # Building Windows debug executable 

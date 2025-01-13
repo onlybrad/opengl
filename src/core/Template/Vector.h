@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "../Util/util.h"
 
+//this is for testing (IDE highlighting purpose)
 #if 0
 typedef const char *str;
 #define T str 
@@ -53,13 +54,14 @@ void VECTOR_PRINT(const VECTOR vector[static 1]);
 char *VECTOR_TO_STRING(const VECTOR vector[static 1]);
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
-#endif //VECTOR_IMPLEMENTATION
+#endif //#ifndef VECTOR_IMPLEMENTATION
 
+//this is for testing (IDE highlighting purpose)
 #if 0
 #define VECTOR_IMPLEMENTATION
 #endif
 
-#if defined VECTOR_IMPLEMENTATION 
+#ifdef VECTOR_IMPLEMENTATION 
 
 #include <assert.h>
 //#include <math.h>
@@ -99,6 +101,7 @@ void VECTOR_FREE(VECTOR vector[static 1]) {
 }
 
 void VECTOR_COPY(VECTOR vector_dst[static 1], VECTOR vector_src[static 1]) {
+    free(vector_dst->buffer);
     vector_dst->buffer = malloc(sizeof(T) * vector_src->capacity);
     assert(vector_dst->buffer != NULL);
     memcpy(vector_dst->buffer, vector_src->buffer, sizeof(T) * vector_src->capacity);
@@ -222,7 +225,7 @@ char *VECTOR_TO_STRING(const VECTOR vector[static 1]) {
 }
 #endif //VECTOR_PRINT_FORMAT VECTOR_PRINT_ARGUMENTS
 
-#endif //VECTOR_IMPLEMENTATION
+#endif //#ifdef VECTOR_IMPLEMENTATION
 
 #undef T
 #undef VECTOR_DEFAULT_CAPACITY

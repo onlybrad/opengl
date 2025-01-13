@@ -40,14 +40,14 @@ static void max_values_init(void) {
 
 static void vertex_layout_init(void) {
     VertexAttribute attributes[] = {
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, position)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, normal)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, color)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, texture_coordinate)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, texture_slot)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, shininess)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, is_light)},
-        {.count = ARRAY_MEMBER_LENGTH(Vertex, model)}
+        {.count = ARRAY_MEMBER_LEN(Vertex, position)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, normal)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, color)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, texture_coordinate)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, texture_slot)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, shininess)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, is_light)},
+        {.count = ARRAY_MEMBER_LEN(Vertex, model)}
     };
 
     VertexLayout_init(&OBJECT_VERTEX_LAYOUT);

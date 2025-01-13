@@ -1,7 +1,8 @@
 PHONY := cglm glfw stb_image
 CC := gcc
 STD := -std=c99
-MACRO = -D GLFW_INCLUDE_NONE
+MACRO := -D GLFW_INCLUDE_NONE
+RELEASE_MACRO := -D NDEBUG
 INCLUDES := -isystem ./lib/cglm/include -I ./lib/glad/include -I ./lib/glfw/include -I ./lib/stb_image
 FLAGS := -fdiagnostics-color=always -Wall -Wextra -Wpedantic -Wconversion -Wstrict-overflow=5 -Wshadow -Wunused-macros -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wdangling-else -Wlogical-op -Wstrict-prototypes -Wold-style-definition -Wmissing-prototypes -Winline
 SOURCE := ./lib/glad/src/*.c ./src/core/OpenGL/*.c ./src/core/Renderer/*.c ./src/core/Thread/*.c ./src/core/Object/*.c ./src/core/Input/*.c ./src/core/Util/*.c ./src/main.c
@@ -17,10 +18,13 @@ main_debug.exe: $(SOURCE)
 	$(CC) $(MACRO) $(INCLUDES) $(FLAGS) $(STD) -g -o main_debug $(SOURCE) $(STATIC_LIBS) $(WINDOWS_DYNAMIC_LIBS) -mconsole
 
 main.exe: $(SOURCE)
-	$(CC) $(MACRO) $(INCLUDES) $(FLAGS) $(STD) -s -O3 -o main $(SOURCE) -static $(STATIC_LIBS) $(WINDOWS_DYNAMIC_LIBS) -mwindows
+	$(CC) $(MACRO) $(RELEASE_MACRO) $(INCLUDES) $(FLAGS) $(STD) -s -O3 -o main $(SOURCE) -static $(STATIC_LIBS) $(WINDOWS_DYNAMIC_LIBS) -mwindows
 
 test.exe: ./src/test/test.c ./src/core/Template/*.h ./src/core/Util/String.c
 	$(CC) $(FLAGS) $(STD) -g -o test ./src/test/test.c ./src/core/Util/String.c ./src/core/Util/util.c
+
+dependencies:
+	make cglm && make glfw && make stb_image
 
 cglm:
 	mkdir -p ./lib/cglm/build
