@@ -12,7 +12,7 @@ typedef struct Location {
 
 typedef const char *str;
 #define K str
-#define V int
+#define VALUE int
 #include "../Template/HashMap.h"
 typedef struct Shader {
     unsigned int id;

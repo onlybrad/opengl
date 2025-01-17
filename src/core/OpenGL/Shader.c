@@ -6,7 +6,7 @@
 #include "../Util/util.h"
 
 #define K str
-#define V int
+#define VALUE int
 #define HASHMAP_IMPLEMENTATION
 #include "../Template/HashMap.h"
 

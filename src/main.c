@@ -48,7 +48,7 @@ int main(void) {
     Texture_init(&space_texture, "spaceTexture", "./textures/space.jpg");
     Texture_init(&wood_texture, "woodTexture", "./textures/wood.png");
 
-    Object background, cube, cylinder, light;
+    Object background, cube, cube2, cylinder, light;
     Cube_create_background(&background);
     Object_set_texture(&background, &space_texture);
     Scene3D_set_background(&scene, &background);
@@ -56,6 +56,13 @@ int main(void) {
     Cube_create(&cube);
     Object_set_texture(&cube, &wood_texture);
     Scene3D_add_object(&scene, &cube, NULL);
+
+    Cube_create(&cube2);
+    Object_set_texture(&cube2, &wood_texture);
+    Scene3D_add_object(&scene, &cube2, &(Transform) {
+        .scale = {1.0f, 1.0f, 1.0f},
+        .translate = {0.0f, 2.0f, 0.0f}
+    });
 
     Cylinder_create(&cylinder, 0.5f, 0.5f);
     Object_set_texture(&cylinder, &wood_texture);

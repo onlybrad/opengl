@@ -5,7 +5,7 @@
 
 typedef struct Texture {
     unsigned int id;
-    const unsigned char *data;
+    unsigned char *data;
     const char *name;
     int width;
     int height;

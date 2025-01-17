@@ -7,7 +7,7 @@ void Object_init(Object object[static 1], Vertex vertices[static 1], const unsig
     object->texture = NULL;
     object->vertices_count = vertices_count;
 
-    Vertex *vertices_copy = calloc(sizeof(Vertex), (size_t)vertices_count);
+    Vertex *vertices_copy = calloc((size_t)vertices_count, sizeof(Vertex));
     memcpy(vertices_copy, vertices, sizeof(Vertex) * (size_t)vertices_count);
     object->vertices = vertices_copy;
 }

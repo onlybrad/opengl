@@ -73,7 +73,7 @@ void Texture_init(Texture texture[static 1], const char *const name, const char 
     int width, height, channels;
 
     stbi_set_flip_vertically_on_load(1);
-    const unsigned char *data = stbi_load(path, &width, &height, &channels, 0);
+    unsigned char *data = stbi_load(path, &width, &height, &channels, 0);
 
     if(data == NULL) {
         fprintf(stderr, "Couldn't load texture at %s\n", path);
@@ -90,7 +90,7 @@ void Texture_init(Texture texture[static 1], const char *const name, const char 
 }
 
 void Texture_free(Texture texture[static 1]) {
-    stbi_image_free(unconst(texture->data));
+    stbi_image_free(texture->data);
     texture->data = NULL;
 }
 
@@ -106,7 +106,7 @@ void Texture_color(Texture texture[static 1], const char* const name, Color *con
 
     const size_t size = 4 * sizeof(unsigned char);
     texture->data = malloc(size);
-    memcpy(unconst(texture->data), color == NULL ? DEFAULT_TEXTURE : (unsigned char*)color, size);
+    memcpy(texture->data, color == NULL ? DEFAULT_TEXTURE : (unsigned char*)color, size);
     
     texture->name = NULL ? "default" : name;
     generate_texture(texture);

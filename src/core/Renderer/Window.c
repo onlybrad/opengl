@@ -27,7 +27,7 @@ void Window_init(Window window[static 1], const int width, const int height, con
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window->glfw_window = glfwCreateWindow(width, height, title, NULL, NULL);
-    if (window == NULL)  {
+    if (window->glfw_window == NULL)  {
         fputs("Failed to create GLFW window", stderr);
         glfwTerminate();
         exit(1);

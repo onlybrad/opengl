@@ -5,16 +5,16 @@
 #if 0
 typedef const char *str;
 #define K str
-#define V int 
+#define VALUE int 
 #endif
 
-#if !defined K || !defined V
-    #error "Missing parameter K or V"
+#if !defined K || !defined VALUE
+    #error "Missing parameter K or VALUE"
 #endif
 
 #define HASHMAP_INITIAL_CAPACITY 16
-#define BUCKET MAKE_NAME(Bucket,MAKE_NAME(K,V))
-#define HASHMAP MAKE_NAME(HashMap,MAKE_NAME(K,V))
+#define BUCKET MAKE_NAME(Bucket,MAKE_NAME(K,VALUE))
+#define HASHMAP MAKE_NAME(HashMap,MAKE_NAME(K,VALUE))
 #define HASHMAP_RESIZE MAKE_NAME(HASHMAP, resize)
 #define HASHMAP_GET_BUCKET MAKE_NAME(HASHMAP, get_bucket)
 #define HASHMAP_INIT MAKE_NAME(HASHMAP, init)
@@ -34,7 +34,7 @@ typedef const char *str;
 typedef struct BUCKET {
     bool used;
     K key;
-    V value;
+    VALUE value;
 } BUCKET;
 
 typedef struct HASHMAP {
@@ -47,8 +47,8 @@ typedef struct HASHMAP {
 void HASHMAP_INIT(HASHMAP hashmap[static 1], size_t (*hash_function)(K), bool (*compare_function)(K, K));
 void HASHMAP_FREE(HASHMAP hashmap[static 1]);
 bool HASHMAP_EXISTS(HASHMAP hashmap[static 1], K key);
-void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, V value);
-V HASHMAP_GET(HASHMAP hashmap[static 1], K key, bool *const success);
+void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, VALUE value);
+VALUE HASHMAP_GET(HASHMAP hashmap[static 1], K key, bool *const success);
 bool HASHMAP_REMOVE(HASHMAP hashmap[static 1], K key);
 
 #if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
@@ -123,7 +123,7 @@ bool HASHMAP_EXISTS(HASHMAP hashmap[static 1], K key) {
     return HASHMAP_GET_BUCKET(hashmap, key, true) != NULL;
 }
 
-void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, V value) {
+void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, VALUE value) {
     BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, false);
     
     if(bucket == NULL) {
@@ -136,12 +136,12 @@ void HASHMAP_INSERT(HASHMAP hashmap[static 1], K key, V value) {
     bucket->used = true;
 }
 
-V HASHMAP_GET(HASHMAP hashmap[static 1], K key, bool *const success) {
+VALUE HASHMAP_GET(HASHMAP hashmap[static 1], K key, bool *const success) {
     BUCKET *const bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
 
     if(bucket == NULL) {
         *success = false;
-        return (V){0};
+        return (VALUE){0};
     }
 
     *success = true;
@@ -232,7 +232,7 @@ char *HASHMAP_TO_STRING(const HASHMAP hashmap[static 1]) {
 #endif //HASHMAP_IMPLEMENTATION
 
 #undef K
-#undef V
+#undef VALUE
 #undef T
 #undef HASHMAP_INITIAL_CAPACITY
 #undef HASHMAP
