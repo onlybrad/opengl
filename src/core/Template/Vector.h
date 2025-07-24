@@ -178,7 +178,7 @@ void VECTOR_PRINT(const VECTOR *vector) {
 
     putchar('[');
 
-    for(size_t i = 0; i<vector->length - 1; i++) {
+    for(size_t i = 0; i < vector->length - 1; i++) {
         printf(VECTOR_PRINT_FORMAT ", ", VECTOR_PRINT_ARGUMENTS(vector->buffer[i]));
     }
 
@@ -195,7 +195,7 @@ char *VECTOR_TO_STRING(const VECTOR *vector) {
     }
 
     size_t length = 2;
-    for(size_t i = 0; i<vector->length - 1; i++) {
+    for(size_t i = 0; i < vector->length - 1; i++) {
         const int char_printed = snprintf(NULL, 0, VECTOR_PRINT_FORMAT ", ", VECTOR_PRINT_ARGUMENTS(vector->buffer[i]));
         length += (size_t)char_printed;
     }
@@ -209,7 +209,7 @@ char *VECTOR_TO_STRING(const VECTOR *vector) {
     vector_str[0] = '[';
 
     size_t offset = 1;
-    for(size_t i = 0; i<vector->length - 1; i++) {
+    for(size_t i = 0; i < vector->length - 1; i++) {
         const int char_printed = sprintf(vector_str + offset, VECTOR_PRINT_FORMAT ", ", VECTOR_PRINT_ARGUMENTS(vector->buffer[i]));
         offset += (size_t)char_printed;
     }

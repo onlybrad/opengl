@@ -95,7 +95,7 @@ static void HASHMAP_RESIZE(HASHMAP *hashmap, size_t capacity) {
     hashmap->capacity = capacity;
     hashmap->buckets = new_buckets;
 
-    for(size_t i = 0; i<old_capacity; i++) {
+    for(size_t i = 0; i < old_capacity; i++) {
         if(old_buckets[i].used) {
             BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, old_buckets[i].key, false);
             bucket->key = old_buckets[i].key;
@@ -169,7 +169,7 @@ void HASHMAP_PRINT(const HASHMAP *hashmap) {
     putchar('[');
 
     size_t i;
-    for(i = 0; i<hashmap->capacity; i++) {
+    for(i = 0; i < hashmap->capacity; i++) {
         if(hashmap->buckets[i].used) {
             printf(HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
             i++;
@@ -177,7 +177,7 @@ void HASHMAP_PRINT(const HASHMAP *hashmap) {
         }
     }
 
-    for(;i<hashmap->capacity; i++) {
+    for(;i < hashmap->capacity; i++) {
         if(hashmap->buckets[i].used) {
             printf(", " HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
         }
@@ -190,7 +190,7 @@ char *HASHMAP_TO_STRING(const HASHMAP *hashmap) {
     size_t length = 2;
     size_t i;
 
-    for(i = 0; i<hashmap->capacity; i++) {
+    for(i = 0; i < hashmap->capacity; i++) {
         if(hashmap->buckets[i].used) {
             const int char_printed = snprintf(NULL, 0, HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
             length += (size_t)char_printed;
@@ -199,7 +199,7 @@ char *HASHMAP_TO_STRING(const HASHMAP *hashmap) {
         }
     }
 
-    for(;i<hashmap->capacity; i++) {
+    for(;i < hashmap->capacity; i++) {
         if(hashmap->buckets[i].used) {
             const int char_printed = snprintf(NULL, 0, ", " HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
             length += (size_t)char_printed;
@@ -211,7 +211,7 @@ char *HASHMAP_TO_STRING(const HASHMAP *hashmap) {
     hashmap_str[0] = '[';
 
     size_t offset = 1;
-    for(i = 0; i<hashmap->capacity; i++) {
+    for(i = 0; i <hashmap->capacity; i++) {
         if(hashmap->buckets[i].used) {
             const int char_printed = sprintf(hashmap_str + offset, HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
             offset += (size_t)char_printed;
@@ -220,7 +220,7 @@ char *HASHMAP_TO_STRING(const HASHMAP *hashmap) {
         }
     }
 
-    for(;i<hashmap->capacity; i++) {
+    for(;i < hashmap->capacity; i++) {
         if(hashmap->buckets[i].used) {
             const int char_printed = sprintf(hashmap_str + offset, ", " HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
             offset += (size_t)char_printed;

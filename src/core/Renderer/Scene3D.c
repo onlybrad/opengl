@@ -216,7 +216,7 @@ void Scene3D_update_objects(Scene3D *scene) {
     assert(scene != NULL);
 
     Lock_lock(&scene->vab.lock);
-    for(unsigned i = 0u; i<(unsigned)scene->to_update.length; i++) {
+    for(unsigned i = 0u; i < (unsigned)scene->to_update.length; i++) {
         SceneObject3D *const scene_object = &scene->scene_objects.buffer[scene->to_update.buffer[i]]; 
         VertexArrayBuffer_set(&scene->vab, scene_object->offset * sizeof(*scene_object->object->vertices), scene_object->object->vertices, scene_object->object->vertices_count * sizeof(*scene_object->object->vertices));
         scene_object->needs_update = true;
