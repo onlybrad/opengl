@@ -62,7 +62,6 @@ int main(void) {
 
     Cube_create(&cube2);
     Object_set_texture(&cube2, &wood_texture);
-
     const Transform cube_transform = {
         0.0f, 
         {0.0f, 0.0f, 0.0f},
@@ -73,7 +72,6 @@ int main(void) {
 
     Cylinder_create(&cylinder, 0.5f, 0.5f);
     Object_set_texture(&cylinder, &wood_texture);
-
     const Transform cylinder_transform = {
         0.0f,
         {0.0f, 0.0f, 0.0f},
@@ -85,8 +83,8 @@ int main(void) {
     Cube_create_light(&light);
     const Transform light_transform = {
         0.0,
-        {2.0f, 0.0f, 1.0f},
         {1.0f, 1.0f, 0.0f},
+        {2.0f, 0.0f, 1.0f},
         {0.2f, 0.2f, 0.2f}, 
     };
     Color light_color = {255, 255, 255, 255};
