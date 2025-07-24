@@ -25,11 +25,8 @@ String file_get_contents(const char *path) {
     FILE *const file = file_open(path, "rb");
 
     if (!file) {
-        perror(NULL);
-        return (String){
-            .buffer = NULL,
-            .length = 0
-        };
+        String string = {NULL, 0};
+        return string;
     }
 
     String str;
@@ -37,7 +34,7 @@ String file_get_contents(const char *path) {
     fseeko(file, 0, SEEK_END);
     str.length = (size_t)ftello(file);
     fseeko(file, 0, SEEK_SET);
-    str.buffer = malloc(str.length * sizeof(char));
+    str.buffer = (const char*)malloc(str.length * sizeof(char));
 
     if(str.buffer == NULL) {
         str.buffer = NULL;
@@ -45,7 +42,7 @@ String file_get_contents(const char *path) {
         return str;
     }
 
-    char *buffer = unconst(str.buffer);
+    char *buffer = (char*)unconst(str.buffer);
     size_t bytes_read;
     while ((bytes_read = fread(buffer, 1, str.length, file)) > 0);
 

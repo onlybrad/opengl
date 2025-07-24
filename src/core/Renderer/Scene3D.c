@@ -73,13 +73,18 @@ bool Scene3D_add_object(Scene3D *scene, Object *object, const Transform *transfo
     
     scene->vertices_count += object->vertices_count;
 
-    Vector_SceneObject3D_push(&scene->scene_objects, (SceneObject3D){
-        .object = object, 
-        .transform = transform == NULL 
-            ? (Transform){.scale = {1.0f, 1.0f, 1.0f}} 
-            : *transform,
-        .needs_update = true
-    });
+    Transform t;
+    if(transform == NULL) {
+        memset(&t, 0, sizeof(t));
+        t.scale[0] = 1.0;
+        t.scale[1] = 1.0;
+        t.scale[2] = 1.0;
+    } else {
+        t = *transform;
+    }
+
+    const SceneObject3D object3D = {object, t, 0u, true};
+    Vector_SceneObject3D_push(&scene->scene_objects, object3D);
 
     if(object->texture != NULL) {
         const int texture_slot = find_texture_slot(scene, object->texture);

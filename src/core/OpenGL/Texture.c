@@ -110,7 +110,7 @@ void Texture_use(const Texture *texture, const unsigned slot) {
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-void Texture_color(Texture *texture, const char* name, const Color *color) {
+bool Texture_color(Texture *texture, const char* name, const Color *color) {
     assert(texture != NULL);
     assert(name != NULL);
     assert(color != NULL);
@@ -120,9 +120,16 @@ void Texture_color(Texture *texture, const char* name, const Color *color) {
     texture->height = 1;
 
     const size_t size = 4 * sizeof(unsigned char);
-    texture->data = malloc(size);
+    texture->data = (unsigned char*)malloc(size);
+
+    if(texture->data == NULL) {
+        return false;
+    }
+
     memcpy(texture->data, color == NULL ? DEFAULT_TEXTURE : (const unsigned char*)color, size);
     
     texture->name = NULL ? "default" : name;
     generate_texture(texture);
+
+    return true;
 }

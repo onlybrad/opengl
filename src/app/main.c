@@ -35,7 +35,10 @@ int main(void) {
     PerspectiveCamera camera;
     PerspectiveCamera_init(&camera, (float)width/2.0f, (float)height/2.0f);
     PerspectiveCamera_set_speed(&camera, 0.05f);
-    PerspectiveCamera_set_position(&camera, (vec3){0.0f, 0.0f, 3.0f});
+
+    vec3 position = {0.0f, 0.0f, 3.0f};
+    PerspectiveCamera_set_position(&camera, position);
+
     PerspectiveCamera_set_fov(&camera, glm_rad(45.0f));
     PerspectiveCamera_set_aspect(&camera, (float)width/(float)height);
     PerspectiveCamera_set_near_z(&camera, 0.1f);
@@ -59,29 +62,40 @@ int main(void) {
 
     Cube_create(&cube2);
     Object_set_texture(&cube2, &wood_texture);
-    Scene3D_add_object(&scene, &cube2, &(Transform) {
-        .scale = {1.0f, 1.0f, 1.0f},
-        .translate = {0.0f, 2.0f, 0.0f}
-    });
+
+    const Transform cube_transform = {
+        0.0f, 
+        {0.0f, 0.0f, 0.0f},
+        {0.0f, 2.0f, 0.0f},
+        {1.0f, 1.0f, 1.0f}
+    };
+    Scene3D_add_object(&scene, &cube2, &cube_transform);
 
     Cylinder_create(&cylinder, 0.5f, 0.5f);
     Object_set_texture(&cylinder, &wood_texture);
-    Scene3D_add_object(&scene, &cylinder, &(Transform){
-        .scale = {1.0f, 1.0f, 1.0f},
-        .translate = {2.0f, 0.0f, 0.0f}
-    });
+
+    const Transform cylinder_transform = {
+        0.0f,
+        {0.0f, 0.0f, 0.0f},
+        {2.0f, 0.0f, 0.0f},
+        {1.0f, 1.0f, 1.0f}
+    };
+    Scene3D_add_object(&scene, &cylinder, &cylinder_transform);
 
     Cube_create_light(&light);
-    Transform light_transform = {
-        .translate = {2.0f, 0.0f, 1.0f},
-        .rotation_axis = {1.0f, 1.0f, 0.0f},
-        .scale = {0.2f, 0.2f, 0.2f}, 
+    const Transform light_transform = {
+        0.0,
+        {2.0f, 0.0f, 1.0f},
+        {1.0f, 1.0f, 0.0f},
+        {0.2f, 0.2f, 0.2f}, 
     };
     Color light_color = {255, 255, 255, 255};
     Object_set_rgba_color(&light, &light_color);
     Scene3D_add_object(&scene, &light, &light_transform);
     Shader_set_vec3(&shader, "light_position", light_transform.translate);
-    Shader_set_vec4(&shader, "light_color", COLOR_TO_VEC4(&light_color));
+
+    vec4 vec4_light_color;
+    Shader_set_vec4(&shader, "light_color", Color_to_vec4(&light_color, vec4_light_color));
     Shader_set_float(&shader, "ambiant_strength", 0.7f);
 
     Window_set_scene3D(&window, &scene);

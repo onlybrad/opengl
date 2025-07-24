@@ -25,7 +25,7 @@ typedef struct Object {
     unsigned vertices_count;
 } Object;
 
-void Object_init(Object *object, Vertex *vertices, const unsigned vertices_count);
+bool Object_init(Object *object, Vertex *vertices, const unsigned vertices_count);
 void Object_init_move(Object *object, Vertex *vertices, const unsigned vertices_count);
 void Object_free(Object *object);
 void Object_set_texture(Object *object, Texture *texture);

@@ -75,7 +75,8 @@ static void logic_callback(Window *window) {
     //Calculate the new rotation and position of the light source
     Transform light_transform = Scene3D_object_get(window->scene, light_index)->transform;
     light_transform.rotation_angle += glm_rad(1.0f);
-    glm_vec3_rotate(light_transform.translate, glm_rad(1.0f), (vec3){1.0f, 1.0f, 0.0f});
+    vec3 axis = {1.0f, 1.0f, 0.0f};
+    glm_vec3_rotate(light_transform.translate, glm_rad(1.0f), axis);
 
     //update the Transform of the light object in the scene, this will automatically mark the light object as "needs_update" which will allow the drawing loop to update it in the vertex buffer once Scene3D_update_objects is called.
     Scene3D_object_set_transform(window->scene, light_index, &light_transform);

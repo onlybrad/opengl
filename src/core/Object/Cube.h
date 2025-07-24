@@ -6,47 +6,47 @@
 #define CURLY_BRACKETS(...) __VA_ARGS__ 
 
 #define CUBE_VERTICES(SIDE, COLOR) {\
-    {.position = {-SIDE,  SIDE,  SIDE}, .normal = {0.0f, 0.0f, 1.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = {-SIDE, -SIDE,  SIDE}, .normal = {0.0f, 0.0f, 1.0f}, .color = COLOR, .texture_coordinate = {0.0f, 0.0f}},\
-    {.position = { SIDE, -SIDE,  SIDE}, .normal = {0.0f, 0.0f, 1.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = {-SIDE,  SIDE,  SIDE}, .normal = {0.0f, 0.0f, 1.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = { SIDE, -SIDE,  SIDE}, .normal = {0.0f, 0.0f, 1.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = { SIDE,  SIDE,  SIDE}, .normal = {0.0f, 0.0f, 1.0f}, .color = COLOR, .texture_coordinate = {1.0f, 1.0f}},\
+    {{-SIDE,  SIDE,  SIDE}, {0.0f, 0.0f, 1.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE,  SIDE}, {0.0f, 0.0f, 1.0f}, COLOR, {0.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE,  SIDE}, {0.0f, 0.0f, 1.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE,  SIDE,  SIDE}, {0.0f, 0.0f, 1.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE,  SIDE}, {0.0f, 0.0f, 1.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE,  SIDE}, {0.0f, 0.0f, 1.0f}, COLOR, {1.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
 \
-    {.position = { SIDE,  SIDE,  SIDE}, .normal = {1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = { SIDE, -SIDE,  SIDE}, .normal = {1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 0.0f}},\
-    {.position = { SIDE, -SIDE, -SIDE}, .normal = {1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = { SIDE,  SIDE,  SIDE}, .normal = {1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = { SIDE, -SIDE, -SIDE}, .normal = {1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = { SIDE,  SIDE, -SIDE}, .normal = {1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 1.0f}},\
+    {{ SIDE,  SIDE,  SIDE}, {1.0f, 0.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE,  SIDE}, {1.0f, 0.0f, 0.0f}, COLOR, {0.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE, -SIDE}, {1.0f, 0.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE,  SIDE}, {1.0f, 0.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE, -SIDE}, {1.0f, 0.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE, -SIDE}, {1.0f, 0.0f, 0.0f}, COLOR, {1.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
 \
-    {.position = { SIDE,  SIDE, -SIDE}, .normal = {0.0f, 0.0f, -1.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = { SIDE, -SIDE, -SIDE}, .normal = {0.0f, 0.0f, -1.0f}, .color = COLOR, .texture_coordinate = {0.0f, 0.0f}},\
-    {.position = {-SIDE, -SIDE, -SIDE}, .normal = {0.0f, 0.0f, -1.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = { SIDE,  SIDE, -SIDE}, .normal = {0.0f, 0.0f, -1.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = {-SIDE, -SIDE, -SIDE}, .normal = {0.0f, 0.0f, -1.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = {-SIDE,  SIDE, -SIDE}, .normal = {0.0f, 0.0f, -1.0f}, .color = COLOR, .texture_coordinate = {1.0f, 1.0f}},\
+    {{ SIDE,  SIDE, -SIDE}, {0.0f, 0.0f, -1.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE, -SIDE}, {0.0f, 0.0f, -1.0f}, COLOR, {0.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE, -SIDE}, {0.0f, 0.0f, -1.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE, -SIDE}, {0.0f, 0.0f, -1.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE, -SIDE}, {0.0f, 0.0f, -1.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE,  SIDE, -SIDE}, {0.0f, 0.0f, -1.0f}, COLOR, {1.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
 \
-    {.position = {-SIDE,  SIDE, -SIDE}, .normal = {-1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = {-SIDE, -SIDE, -SIDE}, .normal = {-1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 0.0f}},\
-    {.position = {-SIDE, -SIDE,  SIDE}, .normal = {-1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = {-SIDE,  SIDE, -SIDE}, .normal = {-1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = {-SIDE, -SIDE,  SIDE}, .normal = {-1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = {-SIDE,  SIDE,  SIDE}, .normal = {-1.0f, 0.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 1.0f}},\
+    {{-SIDE,  SIDE, -SIDE}, {-1.0f, 0.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE, -SIDE}, {-1.0f, 0.0f, 0.0f}, COLOR, {0.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE,  SIDE}, {-1.0f, 0.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE,  SIDE, -SIDE}, {-1.0f, 0.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE,  SIDE}, {-1.0f, 0.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE,  SIDE,  SIDE}, {-1.0f, 0.0f, 0.0f}, COLOR, {1.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
 \
-    {.position = {-SIDE,  SIDE, -SIDE}, .normal = {0.0f, 1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = {-SIDE,  SIDE,  SIDE}, .normal = {0.0f, 1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 0.0f}},\
-    {.position = { SIDE,  SIDE,  SIDE}, .normal = {0.0f, 1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = {-SIDE,  SIDE, -SIDE}, .normal = {0.0f, 1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = { SIDE,  SIDE,  SIDE}, .normal = {0.0f, 1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = { SIDE,  SIDE, -SIDE}, .normal = {0.0f, 1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 1.0f}},\
+    {{-SIDE,  SIDE, -SIDE}, {0.0f, 1.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE,  SIDE,  SIDE}, {0.0f, 1.0f, 0.0f}, COLOR, {0.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE,  SIDE}, {0.0f, 1.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE,  SIDE, -SIDE}, {0.0f, 1.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE,  SIDE}, {0.0f, 1.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE,  SIDE, -SIDE}, {0.0f, 1.0f, 0.0f}, COLOR, {1.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
 \
-    {.position = {-SIDE, -SIDE,  SIDE}, .normal = {0.0f, -1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = {-SIDE, -SIDE, -SIDE}, .normal = {0.0f, -1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 0.0f}},\
-    {.position = { SIDE, -SIDE, -SIDE}, .normal = {0.0f, -1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = {-SIDE, -SIDE,  SIDE}, .normal = {0.0f, -1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {0.0f, 1.0f}},\
-    {.position = { SIDE, -SIDE, -SIDE}, .normal = {0.0f, -1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 0.0f}},\
-    {.position = { SIDE, -SIDE,  SIDE}, .normal = {0.0f, -1.0f, 0.0f}, .color = COLOR, .texture_coordinate = {1.0f, 1.0f}}\
+    {{-SIDE, -SIDE,  SIDE}, {0.0f, -1.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE, -SIDE}, {0.0f, -1.0f, 0.0f}, COLOR, {0.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE, -SIDE}, {0.0f, -1.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{-SIDE, -SIDE,  SIDE}, {0.0f, -1.0f, 0.0f}, COLOR, {0.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE, -SIDE}, {0.0f, -1.0f, 0.0f}, COLOR, {1.0f, 0.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}},\
+    {{ SIDE, -SIDE,  SIDE}, {0.0f, -1.0f, 0.0f}, COLOR, {1.0f, 1.0f}, {0.0f}, {0.0f}, {0.0f}, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}}\
 }
 
 #define BLACK_CUBE_VERTICES(SIDE) CUBE_VERTICES(SIDE, CURLY_BRACKETS({0.0f, 0.0f, 0.0f, 0.0f}))

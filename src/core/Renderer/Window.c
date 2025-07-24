@@ -92,7 +92,7 @@ void Window_drawing_loop(Window *window, void(*drawing_function)(Window *const))
 static void *logic_loop(void *arg) {
     assert(arg != NULL);
 
-    const WindowThreadArgs *const args = arg;
+    const WindowThreadArgs *const args = (const WindowThreadArgs*)arg;
     Window *const window = args->window;
     WindowCallback logic_callback = args->callback;
 
@@ -114,10 +114,8 @@ void Window_logic_loop(Window *window, void(*logic_function)(Window *const)) {
     assert(window != NULL);
     assert(logic_function != NULL);
 
-    window->logic_thread_args = (WindowThreadArgs){
-        .window = window,
-        .callback = logic_function
-    };
+    window->logic_thread_args.window = window;
+    window->logic_thread_args.callback = logic_function;
 
     Thread thread;
     Thread_init(&thread, logic_loop, &window->logic_thread_args);

@@ -45,7 +45,7 @@ typedef struct HASHMAP {
     bool (*compare_function)(K, K);
 } HASHMAP;
 
-void HASHMAP_INIT(HASHMAP *hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K));
+bool HASHMAP_INIT(HASHMAP *hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K));
 void HASHMAP_FREE(HASHMAP *hashmap);
 bool HASHMAP_EXISTS(HASHMAP *hashmap, K key);
 void HASHMAP_INSERT(HASHMAP *hashmap, K key, VALUE value);
@@ -85,11 +85,15 @@ static BUCKET *HASHMAP_GET_BUCKET(HASHMAP *hashmap, K key, bool ignore_unused) {
     return NULL;
 }
 
-static void HASHMAP_RESIZE(HASHMAP *hashmap, size_t capacity) {
+static bool HASHMAP_RESIZE(HASHMAP *hashmap, size_t capacity) {
     assert(hashmap != NULL);
 
-    BUCKET *const new_buckets = calloc(capacity, sizeof(BUCKET));
-    assert(new_buckets != NULL);
+    BUCKET *const new_buckets = (BUCKET *)calloc(capacity, sizeof(BUCKET));
+    
+    if(new_buckets == NULL) {
+        return false;
+    }
+
     BUCKET *const old_buckets = hashmap->buckets;
     const size_t old_capacity = hashmap->capacity;
     hashmap->capacity = capacity;
@@ -105,23 +109,25 @@ static void HASHMAP_RESIZE(HASHMAP *hashmap, size_t capacity) {
     }
 
     free(old_buckets);
+
+    return true;
 }
 
-void HASHMAP_INIT(HASHMAP *hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K)) {
+bool HASHMAP_INIT(HASHMAP *hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K)) {
     assert(hash_function != NULL);
     assert(compare_function != NULL);
 
     hashmap->capacity = HASHMAP_INITIAL_CAPACITY;
     hashmap->hash_function = hash_function;
     hashmap->compare_function = compare_function;
-    hashmap->buckets = calloc(HASHMAP_INITIAL_CAPACITY, sizeof(BUCKET));
+    hashmap->buckets = (BUCKET*)calloc(HASHMAP_INITIAL_CAPACITY, sizeof(BUCKET));
 
-    assert(hashmap->buckets != NULL);
+    return hashmap->buckets != NULL;
 }
 
 void HASHMAP_FREE(HASHMAP *hashmap) {
     free(hashmap->buckets);
-    *hashmap = (HASHMAP){0};
+    memset(hashmap, 0, sizeof(*hashmap));
 }
 
 bool HASHMAP_EXISTS(HASHMAP *hashmap, K key) {
@@ -146,7 +152,7 @@ VALUE HASHMAP_GET(HASHMAP *hashmap, K key, bool *const success) {
 
     if(bucket == NULL) {
         *success = false;
-        return (VALUE){0};
+        return 0;
     }
 
     *success = true;
@@ -159,7 +165,7 @@ bool HASHMAP_REMOVE(HASHMAP *hashmap, K key) {
         return false;
     }
     
-    *bucket = (BUCKET){0};
+    memset(bucket, 0, sizeof(*bucket));
 
     return true;
 }

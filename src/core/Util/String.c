@@ -3,17 +3,13 @@
 #include "util.h"
 
 String String_init(const char *c_str) {
-    return (String){
-        .buffer = c_str,
-        .length = strlen(c_str)
-    };
+    String string = {c_str, strlen(c_str)};
+    return string;
 }
 
 String String_init_copy(const char *c_str) {
-    return (String) {
-        .buffer = strdup(c_str),
-        .length = strlen(c_str)
-    };
+    String string = {strdup(c_str), strlen(c_str)};
+    return string;
 }
 
 void String_free(String str) {

@@ -50,7 +50,7 @@ void PerspectiveCamera_move_front(PerspectiveCamera *perspective_camera);
 void PerspectiveCamera_move_back(PerspectiveCamera *perspective_camera);
 void PerspectiveCamera_move_right(PerspectiveCamera *perspective_camera);
 void PerspectiveCamera_move_left(PerspectiveCamera *perspective_camera);
-float *PerspectiveCamera_get_view(const PerspectiveCamera *perspective_camera);
-float *PerspectiveCamera_get_projection(const PerspectiveCamera *perspective_camera);
+float *PerspectiveCamera_get_view(PerspectiveCamera *perspective_camera);
+float *PerspectiveCamera_get_projection(PerspectiveCamera *perspective_camera);
 
 #endif

@@ -203,13 +203,13 @@ static void Camera_move_left(Camera *camera) {
     update_view(camera);
 }
 
-inline static float *Camera_get_view(const Camera *camera) {
+inline static float *Camera_get_view(Camera *camera) {
     assert(camera != NULL);
 
     return (float*)camera->view;
 }
 
-inline static float *Camera_get_projection(const Camera *camera) {
+inline static float *Camera_get_projection(Camera *camera) {
     assert(camera != NULL);
 
     return (float*)camera->projection;
@@ -218,7 +218,7 @@ inline static float *Camera_get_projection(const Camera *camera) {
 inline void PerspectiveCamera_init(PerspectiveCamera *perspective_camera, const float x, const float y) {
     assert(perspective_camera != NULL);
 
-    *perspective_camera = (PerspectiveCamera){0};
+    memset(perspective_camera, 0, sizeof(*perspective_camera));
     Camera_init(&perspective_camera->camera, x, y);
     update_perspective_projection(perspective_camera);
 }
@@ -369,13 +369,13 @@ inline void PerspectiveCamera_move_left(PerspectiveCamera *perspective_camera) {
     Camera_move_left(&perspective_camera->camera);
 }
 
-inline float *PerspectiveCamera_get_view(const PerspectiveCamera *perspective_camera) {
+inline float *PerspectiveCamera_get_view(PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     return Camera_get_view(&perspective_camera->camera);
 }
 
-inline float *PerspectiveCamera_get_projection(const PerspectiveCamera *perspective_camera) {
+inline float *PerspectiveCamera_get_projection(PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     return Camera_get_projection(&perspective_camera->camera);

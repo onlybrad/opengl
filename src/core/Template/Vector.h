@@ -38,15 +38,15 @@ typedef struct VECTOR {
     size_t capacity;
 } VECTOR;
 
-void VECTOR_INIT(VECTOR *vector, size_t capacity);
+bool VECTOR_INIT(VECTOR *vector, size_t capacity);
 void VECTOR_INIT_MOVE(VECTOR *vector, T *buffer, size_t length);
-void VECTOR_INIT_COPY(VECTOR *vector, T *buffer, size_t length);
-void VECTOR_COPY(VECTOR *vector_dst, VECTOR *vector_src);
+bool VECTOR_INIT_COPY(VECTOR *vector, T *buffer, size_t length);
+bool VECTOR_COPY(VECTOR *vector_dst, VECTOR *vector_src);
 void VECTOR_FREE(VECTOR *vector);
-void VECTOR_PUSH(VECTOR *vector, T value);
+bool VECTOR_PUSH(VECTOR *vector, T value);
 T VECTOR_POP(VECTOR *vector);
 T VECTOR_AT(const VECTOR *vector, size_t index);
-void VECTOR_SET(VECTOR *vector, size_t index, T value);
+bool VECTOR_SET(VECTOR *vector, size_t index, T value);
 T VECTOR_REMOVE(VECTOR *vector, size_t index);
 
 #if defined VECTOR_PRINT_FORMAT && defined VECTOR_PRINT_ARGUMENTS
@@ -67,18 +67,24 @@ char *VECTOR_TO_STRING(const VECTOR *vector);
 //#include <math.h>
 #include <string.h>
 
-static void VECTOR_RESIZE(VECTOR *vector, size_t new_capacity) {
-    T *buffer = realloc(vector->buffer, sizeof(T) * new_capacity);
-    assert(buffer != NULL);
+static bool VECTOR_RESIZE(VECTOR *vector, size_t new_capacity) {
+    T *buffer = (T*)realloc(vector->buffer, sizeof(T) * new_capacity);
+    if(buffer == NULL) {
+        return false;
+    }
+
     vector->buffer = buffer;
     vector->capacity = new_capacity;
+
+    return true;
 }
 
-void VECTOR_INIT(VECTOR *vector, size_t capacity) {
+bool VECTOR_INIT(VECTOR *vector, size_t capacity) {
     vector->capacity = capacity == 0 ? VECTOR_DEFAULT_CAPACITY : capacity;
     vector->length = 0;
-    vector->buffer = calloc(vector->capacity, sizeof(T));
-    assert(vector->buffer != NULL);
+    vector->buffer = (T*)calloc(vector->capacity, sizeof(T));
+    
+    return vector->buffer != NULL;
 }
 
 void VECTOR_INIT_MOVE(VECTOR *vector, T *buffer, size_t length) {
@@ -87,33 +93,49 @@ void VECTOR_INIT_MOVE(VECTOR *vector, T *buffer, size_t length) {
     vector->buffer = buffer;
 }
 
-void VECTOR_INIT_COPY(VECTOR *vector, T *buffer, size_t length) {
+bool VECTOR_INIT_COPY(VECTOR *vector, T *buffer, size_t length) {
     vector->capacity = length;
     vector->length = length;
-    vector->buffer = malloc(sizeof(T) * length);
-    assert(vector->buffer != NULL);
+    vector->buffer = (T*)malloc(sizeof(T) * length);
+    
+    if(vector->buffer == NULL) {
+        return false;
+    }
+
     memcpy(vector->buffer, buffer, sizeof(T) * length);
+
+    return true;
 }
 
 void VECTOR_FREE(VECTOR *vector) {
     free(vector->buffer);
-    *vector = (VECTOR){0};
+    memset(vector, 0, sizeof(*vector));
 }
 
-void VECTOR_COPY(VECTOR *vector_dst, VECTOR *vector_src) {
+bool VECTOR_COPY(VECTOR *vector_dst, VECTOR *vector_src) {
     free(vector_dst->buffer);
-    vector_dst->buffer = malloc(sizeof(T) * vector_src->capacity);
-    assert(vector_dst->buffer != NULL);
+    vector_dst->buffer = (T*)malloc(sizeof(T) * vector_src->capacity);
+
+    if(vector_dst->buffer == NULL) {
+        return false;
+    }
+
     memcpy(vector_dst->buffer, vector_src->buffer, sizeof(T) * vector_src->capacity);
     vector_dst->capacity = vector_src->capacity;
     vector_dst->length = vector_src->length;
+
+    return true;
 }
 
-void VECTOR_PUSH(VECTOR *vector, T value) {
+bool VECTOR_PUSH(VECTOR *vector, T value) {
     if(vector->length == vector->capacity) {
-        VECTOR_RESIZE(vector, vector->capacity * 2);
+        if(!VECTOR_RESIZE(vector, vector->capacity * 2)) {
+            return false;
+        }
     }
     vector->buffer[vector->length++] = value;
+
+    return true;
 }
 
 T VECTOR_POP(VECTOR *vector) {
@@ -128,10 +150,10 @@ T VECTOR_AT(const VECTOR *vector, size_t index) {
     return vector->buffer[index];
 }
 
-void VECTOR_SET(VECTOR *vector, size_t index, T value) {
+bool VECTOR_SET(VECTOR *vector, size_t index, T value) {
     if(index < vector->length) {
         vector->buffer[index] = value;
-        return;
+        return true;
     }
 
     if(index >= vector->capacity) {
@@ -141,21 +163,16 @@ void VECTOR_SET(VECTOR *vector, size_t index, T value) {
             new_capacity *= 2;
         } while(new_capacity <= index);
 
-        VECTOR_RESIZE(vector, new_capacity);
-
-        //Old implementation. Not sure if casting size_t to long double will actually ensure no precision loss if the index is very big (apparently on the visual studio compiler long double is the same as double). Also it's potentially slower if the index isn't very big.
-        #if 0
-        //(capacity * 2^k) = index + 1
-        // k = log 2((index + 1) / capacity)
-        //using long double to not lose precision when casting from size_t
-        const long double k = log2l((long double)(index + 1) / (long double)vector->capacity);
-        VECTOR_RESIZE(vector, (size_t)((long double)vector->capacity * powl(2.0L, ceill(k))));
-        #endif
+        if(!VECTOR_RESIZE(vector, new_capacity)) {
+            return false;
+        }
     }
 
     memset(vector->buffer + vector->length, 0, sizeof(T) * (index - vector->length));
     vector->length = index + 1;
     vector->buffer[index] = value;
+
+    return true;
 }
 
 T VECTOR_REMOVE(VECTOR *vector, size_t index) {
@@ -204,7 +221,7 @@ char *VECTOR_TO_STRING(const VECTOR *vector) {
         length += (size_t)char_printed;
     }
 
-    char *vector_str = malloc((length + 1) * sizeof(char));
+    char *vector_str = (char*)malloc((length + 1) * sizeof(char));
     assert(vector_str != NULL);
     vector_str[0] = '[';
 

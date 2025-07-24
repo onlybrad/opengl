@@ -4,16 +4,22 @@
 #include "Object.h"
 #include "../Util/util.h"
 
-void Object_init(Object *object, Vertex *vertices, const unsigned vertices_count) {
+bool Object_init(Object *object, Vertex *vertices, const unsigned vertices_count) {
     assert(object != NULL);
     assert(vertices != NULL);
 
     object->texture = NULL;
     object->vertices_count = vertices_count;
 
-    Vertex *vertices_copy = calloc((size_t)vertices_count, sizeof(Vertex));
+    Vertex *vertices_copy = (Vertex*)calloc((size_t)vertices_count, sizeof(Vertex));
+    if(vertices_copy == NULL) {
+        return false;
+    }
+
     memcpy(vertices_copy, vertices, sizeof(Vertex) * (size_t)vertices_count);
     object->vertices = vertices_copy;
+
+    return true;
 }
 
 void Object_init_move(Object *object, Vertex *vertices, const unsigned vertices_count) {

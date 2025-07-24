@@ -23,19 +23,17 @@ bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute) {
         layout->stride += (int)attribute.count * (int)sizeof(float);
     } else {
         for(unsigned i = 0u; i < attribute.count / 4; i++) {
-            layout->attributes[layout->attributes_index++] = (VertexAttribute) {
-                .normalized = attribute.normalized,
-                .count = 4u
-            };
+            layout->attributes[layout->attributes_index].normalized = attribute.normalized;
+            layout->attributes[layout->attributes_index].count = 4u;
+            layout->attributes_index++;
             layout->stride += 4 * (int)sizeof(float);
         }
         
         unsigned count = attribute.count % 4u;
         if(count > 0) {
-            layout->attributes[layout->attributes_index++] = (VertexAttribute) {
-                .normalized = attribute.normalized,
-                .count = count
-            };
+            layout->attributes[layout->attributes_index].normalized = attribute.normalized;
+            layout->attributes[layout->attributes_index].count = count;
+            layout->attributes_index++;
             layout->stride += (int)count * (int)sizeof(float);
         }
     }
