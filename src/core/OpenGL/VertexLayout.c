@@ -14,7 +14,7 @@ void VertexLayout_init(VertexLayout *layout) {
 bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute) {
     assert(layout != NULL);
 
-    if(layout->attributes_index == (unsigned int)MAX_VERTEX_ATTRIBS) {
+    if(layout->attributes_index == (unsigned)MAX_VERTEX_ATTRIBS) {
         return false;
     }
 
@@ -22,7 +22,7 @@ bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute) {
         layout->attributes[layout->attributes_index++] = attribute;
         layout->stride += (int)attribute.count * (int)sizeof(float);
     } else {
-        for(unsigned int i = 0u; i < attribute.count / 4; i++) {
+        for(unsigned i = 0u; i < attribute.count / 4; i++) {
             layout->attributes[layout->attributes_index++] = (VertexAttribute) {
                 .normalized = attribute.normalized,
                 .count = 4u
@@ -30,7 +30,7 @@ bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute) {
             layout->stride += 4 * (int)sizeof(float);
         }
         
-        unsigned int count = attribute.count % 4u;
+        unsigned count = attribute.count % 4u;
         if(count > 0) {
             layout->attributes[layout->attributes_index++] = (VertexAttribute) {
                 .normalized = attribute.normalized,

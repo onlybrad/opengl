@@ -18,7 +18,7 @@ static bool is_numlock_on(void) {
 #elif defined(__linux__)
     //ChatGPT gave me this, too lazy to check if it actually works LUL
     int fd;
-    unsigned int leds;
+    unsigned leds;
     fd = open("/dev/console", O_NOCTTY);
     ioctl(fd, KDGKBLED, &leds);
     close(fd);

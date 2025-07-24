@@ -30,7 +30,7 @@ void VertexArrayObject_add_buffer(VertexArrayObject *vao, const VertexArrayBuffe
 
     int offset = 0;
 
-    for(unsigned int i = 0; i < layout->attributes_index; i++) {
+    for(unsigned i = 0; i < layout->attributes_index; i++) {
         const VertexAttribute *const attribute = layout->attributes + i;
         glEnableVertexAttribArray(i);
         glVertexAttribPointer(i, (int)attribute->count, GL_FLOAT, attribute->normalized, layout->stride, INT_TO_PTR(offset));

@@ -53,7 +53,7 @@ static void drawing_callback(Window *window) {
     };
 
     //The index of the light object in the current scene
-    const unsigned int light_index = 3;
+    const unsigned light_index = 3;
     SceneObject3D *const scene_light = Scene3D_object_get(window->scene, light_index);
     Object_set_vec4_color(scene_light->object, (const float*)new_color);
     //Notify the scene that the light object has been updated, this will cause it to update the light object in the vertex buffer the next time Scene3D_update_objects is called.
@@ -70,7 +70,7 @@ static void logic_callback(Window *window) {
     assert(window != NULL);
 
     //The index of the light object in the current scene
-    const unsigned int light_index = 3;
+    const unsigned light_index = 3;
     
     //Calculate the new rotation and position of the light source
     Transform light_transform = Scene3D_object_get(window->scene, light_index)->transform;

@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include "VertexArrayBuffer.h"
 
-void VertexArrayBuffer_init(VertexArrayBuffer *vab, const void *data, const unsigned int size){
+void VertexArrayBuffer_init(VertexArrayBuffer *vab, const void *data, const unsigned size){
     assert(vab != NULL);
 
     Lock_init(&vab->lock);
@@ -12,7 +12,7 @@ void VertexArrayBuffer_init(VertexArrayBuffer *vab, const void *data, const unsi
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 }
 
-inline void VertexArrayBuffer_push(VertexArrayBuffer *vab, const void *data, const unsigned int size) {
+inline void VertexArrayBuffer_push(VertexArrayBuffer *vab, const void *data, const unsigned size) {
     assert(vab != NULL);
 
     glBindBuffer(GL_ARRAY_BUFFER, vab->id);
@@ -20,7 +20,7 @@ inline void VertexArrayBuffer_push(VertexArrayBuffer *vab, const void *data, con
     vab->index += (size_t)size;
 }
 
-inline void VertexArrayBuffer_set(VertexArrayBuffer *vab, const unsigned int index, const void *data, const unsigned int size) {
+inline void VertexArrayBuffer_set(VertexArrayBuffer *vab, const unsigned index, const void *data, const unsigned size) {
     assert(vab != NULL);
 
     glBindBuffer(GL_ARRAY_BUFFER, vab->id);

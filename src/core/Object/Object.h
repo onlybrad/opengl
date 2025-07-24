@@ -22,19 +22,19 @@ typedef struct Vertex {
 typedef struct Object {
     Vertex *vertices;
     Texture *texture;
-    unsigned int vertices_count;
+    unsigned vertices_count;
 } Object;
 
-void Object_init(Object *object, Vertex *vertices, const unsigned int vertices_count);
-void Object_init_move(Object *object, Vertex *vertices, const unsigned int vertices_count);
+void Object_init(Object *object, Vertex *vertices, const unsigned vertices_count);
+void Object_init_move(Object *object, Vertex *vertices, const unsigned vertices_count);
 void Object_free(Object *object);
 void Object_set_texture(Object *object, Texture *texture);
 void Object_set_rgba_color(Object *object, Color *color);
 void Object_set_vec4_color(Object *object, const vec4 color);
-void Object_set_texture_slot(Object *object, const unsigned int texture_slot);
-void Object_set_shininess(Object *object, const unsigned int shininess);
+void Object_set_texture_slot(Object *object, const unsigned texture_slot);
+void Object_set_shininess(Object *object, const unsigned shininess);
 void Object_set_model(Object *object, const float model[16]);
 void Object_set_is_light(Object *object, const bool is_light);
-unsigned int Object_get_texture_slot(Object *object);
+unsigned Object_get_texture_slot(Object *object);
 
 #endif

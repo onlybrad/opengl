@@ -103,7 +103,7 @@ void Texture_free(Texture *texture) {
     texture->data = NULL;
 }
 
-void Texture_use(const Texture *texture, const unsigned int slot) {
+void Texture_use(const Texture *texture, const unsigned slot) {
     assert(texture != NULL);
 
     glActiveTexture(GL_TEXTURE0 + slot);

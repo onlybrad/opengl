@@ -4,13 +4,13 @@
 #include <stdbool.h>
 
 typedef struct VertexAttribute {
-    unsigned int count;
+    unsigned count;
     bool normalized;
 } VertexAttribute;
 
 typedef struct VertexLayout {
     VertexAttribute attributes[32];
-    unsigned int attributes_index;
+    unsigned attributes_index;
     int stride;
 } VertexLayout;
 

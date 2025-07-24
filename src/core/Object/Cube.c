@@ -8,7 +8,7 @@ static Vertex cube_vertices[] = CUBE_VERTICES(0.5f, CURLY_BRACKETS({1.0f, 0.5f, 
 void Cube_create_background(Object *object) {
     assert(object != NULL);
     
-    Object_init(object, background_vertices, (unsigned int)ARRAY_LEN(background_vertices));
+    Object_init(object, background_vertices, (unsigned)ARRAY_LEN(background_vertices));
 
     mat4 model;
     glm_mat4_identity(model);
@@ -18,7 +18,7 @@ void Cube_create_background(Object *object) {
 void Cube_create(Object *object) {
     assert(object != NULL);
     
-    Object_init(object, cube_vertices, (unsigned int)ARRAY_LEN(cube_vertices));
+    Object_init(object, cube_vertices, (unsigned)ARRAY_LEN(cube_vertices));
     
     mat4 model;
     glm_mat4_identity(model);

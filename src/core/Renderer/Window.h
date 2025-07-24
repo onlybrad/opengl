@@ -16,10 +16,10 @@ struct Window {
     bool shoudClose;
     int width;
     int height;
-    unsigned int updates_per_second;
+    unsigned updates_per_second;
     float delta_time;
     double current_time;
-    long long unsigned int frame;
+    long long unsigned frame;
     GLFWwindow *glfw_window;
     Scene3D *scene;
     WindowCallback input_callback;
@@ -30,7 +30,7 @@ void Window_init(Window *window, const int width, const int height, const char* 
 void Window_free(Window *window);
 void Window_set_vsync(Window *window, const bool on);
 void Window_set_scene3D(Window *window, Scene3D *scene);
-void Window_set_updates_per_second(Window *window, const unsigned int updates_per_seconds);
+void Window_set_updates_per_second(Window *window, const unsigned updates_per_seconds);
 void Window_drawing_loop(Window *window, void(*drawing_function)(Window *const));
 void Window_logic_loop(Window *window, void(*logic_function)(Window *const));
 void Window_set_input_callback(Window *window, WindowCallback input_callback);

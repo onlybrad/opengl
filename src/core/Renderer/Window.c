@@ -66,7 +66,7 @@ void Window_set_scene3D(Window *window, Scene3D *scene) {
     glfwSetCursorPos(window->glfw_window, scene->perspective_camera->camera.x, scene->perspective_camera->camera.y);
 }
 
-inline void Window_set_updates_per_second(Window *window, const unsigned int updates_per_seconds) {
+inline void Window_set_updates_per_second(Window *window, const unsigned updates_per_seconds) {
     assert(window != NULL);
 
     window->updates_per_second = updates_per_seconds;

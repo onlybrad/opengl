@@ -15,7 +15,7 @@ typedef const char *str;
 #define VALUE int
 #include "../Template/HashMap.h"
 typedef struct Shader {
-    unsigned int id;
+    unsigned id;
     String vertex_shader_src;
     String fragment_shader_src;
     HashMap_str_int location_cache;

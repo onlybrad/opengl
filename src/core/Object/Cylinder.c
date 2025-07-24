@@ -3,14 +3,14 @@
 #include <stdlib.h>
 #include "Cylinder.h"
 
-static Vertex *generate_cylinder_vertices(const unsigned int segments, const float radius, const float height, size_t *const size) {
+static Vertex *generate_cylinder_vertices(const unsigned segments, const float radius, const float height, size_t *const size) {
     const float π = 3.141593f;
     const float step = 2.0f * π / (float)segments;
 
     *size = (size_t)segments * 6 * sizeof(Vertex);
     Vertex *vertices = calloc((size_t)segments * 6, sizeof(Vertex));
     
-    for (unsigned int i = 0u; i < segments; i++) {
+    for (unsigned i = 0u; i < segments; i++) {
         const float θ = (float)i * step;
         const float x1 = radius * cosf(θ);
         const float z1 = radius * sinf(θ);
@@ -93,7 +93,7 @@ void Cylinder_create(Object *object, const float radius, const float height) {
     size_t size;
     Vertex *cylinder_vertices = generate_cylinder_vertices(20u, radius, height, &size);
 
-    Object_init_move(object, cylinder_vertices, (unsigned int)(size/sizeof(*cylinder_vertices)));
+    Object_init_move(object, cylinder_vertices, (unsigned)(size/sizeof(*cylinder_vertices)));
     mat4 model;
     glm_mat4_identity(model);
     Object_set_model(object, (float*)model);

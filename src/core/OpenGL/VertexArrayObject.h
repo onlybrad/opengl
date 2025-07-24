@@ -6,7 +6,7 @@
 #include "IndexBuffer.h"
 
 typedef struct VertexArrayObject {
-    unsigned int id;
+    unsigned id;
 } VertexArrayObject;
 
 void VertexArrayObject_init(VertexArrayObject *vao);

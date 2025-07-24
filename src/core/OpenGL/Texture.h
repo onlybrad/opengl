@@ -4,7 +4,7 @@
 #include "../Util/Color.h"
 
 typedef struct Texture {
-    unsigned int id;
+    unsigned id;
     unsigned char *data;
     const char *name;
     int width;
@@ -14,7 +14,7 @@ typedef struct Texture {
 
 void Texture_init(Texture *texture, const char *name, const char *path);
 void Texture_free(Texture *texture);
-void Texture_use(const Texture *texture, const unsigned int slot);
+void Texture_use(const Texture *texture, const unsigned slot);
 void Texture_color(Texture *texture, const char* name, const Color *color);
 
 #endif

@@ -11,8 +11,8 @@
 #define HASHMAP_IMPLEMENTATION
 #include "../Template/HashMap.h"
 
-static unsigned int compile_shader(String shader_source, const GLenum shader_type) {
-    const unsigned int shader = glCreateShader(shader_type);
+static unsigned compile_shader(String shader_source, const GLenum shader_type) {
+    const unsigned shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_source.buffer, (int *)&(shader_source.length));
     glCompileShader(shader);
 
@@ -37,18 +37,18 @@ static unsigned int compile_shader(String shader_source, const GLenum shader_typ
     return shader;
 }
 
-static unsigned int create_shader(String vertex_shader_src, String fragment_shader_src) {
-    const unsigned int vertex_shader = compile_shader(vertex_shader_src, GL_VERTEX_SHADER);
+static unsigned create_shader(String vertex_shader_src, String fragment_shader_src) {
+    const unsigned vertex_shader = compile_shader(vertex_shader_src, GL_VERTEX_SHADER);
     if(vertex_shader == 0u) {
         return 0u;
     }
 
-    const unsigned int fragment_shader = compile_shader(fragment_shader_src, GL_FRAGMENT_SHADER);
+    const unsigned fragment_shader = compile_shader(fragment_shader_src, GL_FRAGMENT_SHADER);
     if(fragment_shader == 0u) {
         return 0u;
     }
 
-    const unsigned int program = glCreateProgram();
+    const unsigned program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
     glLinkProgram(program);
@@ -85,7 +85,7 @@ bool Shader_init(Shader *shader, const char *vertex_shader_path, const char *fra
         return false;
     }
 
-    const unsigned int id = create_shader(vertex_shader_src, fragment_shader_src);
+    const unsigned id = create_shader(vertex_shader_src, fragment_shader_src);
     if(id == 0) {
         String_free(vertex_shader_src);
         String_free(fragment_shader_src);
