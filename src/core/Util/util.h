@@ -7,31 +7,26 @@
 #include "String.h"
 
 #if defined(__clang__) || defined(__GNUC__)
-#define FALLTHROUGH {__attribute__((fallthrough));}
+#define OB_FALLTHROUGH {__attribute__((fallthrough));}
 #elif defined(_MSC_VER)
-#define FALLTHROUGH {__fallthrough;}
+#define OB_FALLTHROUGH {__fallthrough;}
 #elif defined(__INTEL_COMPILER)
-#define FALLTHROUGH {[[fallthrough]];}
+#define OB_FALLTHROUGH {[[fallthrough]];}
 #else
-#define FALLTHROUGH
+#define OB_FALLTHROUGH
 #endif
 
 #if _WIN32
 #include <stringapiset.h>
 #endif
 
-#define _MAKE_NAME(a,b) a ## _ ## b
-#define MAKE_NAME(a,b) _MAKE_NAME(a,b)
+#define _OB_MAKE_NAME(a,b) a ## _ ## b
+#define OB_MAKE_NAME(a,b) _OB_MAKE_NAME(a,b)
 
-#define SIZE64 SIZE_MAX == ((1ULL << 8*CHAR_BIT-1)-1 << 1 | 1)
-
-#define _STRINGIFY(a) #a
-#define STRINGIFY(a) _STRINGIFY(a)
-
-#define INT_TO_PTR(INT) (void *)(uintptr_t)(INT)
-#define ARRAY_LEN(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
-#define MEMBER_SIZE(STRUCT, MEMBER) (sizeof(((STRUCT *)0)->MEMBER)) 
-#define ARRAY_MEMBER_LEN(STRUCT, MEMBER) (MEMBER_SIZE(STRUCT, MEMBER)/MEMBER_SIZE(STRUCT, MEMBER[0]))
+#define OB_INT_TO_PTR(INT) (void *)(uintptr_t)(INT)
+#define OB_ARRAY_LEN(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0]))
+#define OB_MEMBER_SIZE(STRUCT, MEMBER) (sizeof(((STRUCT *)0)->MEMBER)) 
+#define OB_ARRAY_MEMBER_LEN(STRUCT, MEMBER) (OB_MEMBER_SIZE(STRUCT, MEMBER)/OB_MEMBER_SIZE(STRUCT, MEMBER[0]))
 
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -40,9 +35,8 @@
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #endif
 
-
-FILE *file_open(const char *filename, const char *mode);
-String file_get_contents(const char *path);
-void *unconst(const void *const_var);
+FILE *OB_file_open(const char *filename, const char *mode);
+struct OB_String OB_file_get_contents(const char *path);
+void *OB_unconst(const void *const_var);
 
 #endif

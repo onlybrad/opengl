@@ -1,20 +1,20 @@
-#ifndef _VERTEX_LAYOUT
-#define _VERTEX_LAYOUT
+#ifndef OB_VERTEX_LAYOUT
+#define OB_VERTEX_LAYOUT
 
 #include <stdbool.h>
 
-typedef struct VertexAttribute {
+struct OB_VertexAttribute {
     unsigned count;
     bool normalized;
-} VertexAttribute;
+};
 
-typedef struct VertexLayout {
-    VertexAttribute attributes[32];
+struct OB_VertexLayout {
+    struct OB_VertexAttribute attributes[32];
     unsigned attributes_index;
     int stride;
-} VertexLayout;
+};
 
-void VertexLayout_init(VertexLayout *layout);
-bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute);
+void OB_VertexLayout_init(struct OB_VertexLayout *layout);
+bool OB_VertexLayout_push(struct OB_VertexLayout *layout, const struct OB_VertexAttribute attribute);
 
 #endif

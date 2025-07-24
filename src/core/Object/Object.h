@@ -1,5 +1,5 @@
-#ifndef _OBJECT_H
-#define _OBJECT_H
+#ifndef OB_OBJECT_H
+#define OB_OBJECT_H
 
 #include <stdbool.h>
 #include <cglm/cglm.h>
@@ -8,7 +8,7 @@
 #include "../OpenGL/VertexArrayBuffer.h"
 #include "../Util/Color.h"
 
-typedef struct Vertex {
+struct OB_Vertex {
     float position[3];
     float normal[3];
     float color[4];
@@ -17,24 +17,24 @@ typedef struct Vertex {
     float shininess[1];
     float is_light[1];
     float model[16];
-} Vertex;
+};
 
-typedef struct Object {
-    Vertex *vertices;
-    Texture *texture;
+struct OB_Object {
+    struct OB_Vertex *vertices;
+    struct OB_Texture *texture;
     unsigned vertices_count;
-} Object;
+};
 
-bool Object_init(Object *object, Vertex *vertices, const unsigned vertices_count);
-void Object_init_move(Object *object, Vertex *vertices, const unsigned vertices_count);
-void Object_free(Object *object);
-void Object_set_texture(Object *object, Texture *texture);
-void Object_set_rgba_color(Object *object, Color *color);
-void Object_set_vec4_color(Object *object, const vec4 color);
-void Object_set_texture_slot(Object *object, const unsigned texture_slot);
-void Object_set_shininess(Object *object, const unsigned shininess);
-void Object_set_model(Object *object, const float model[16]);
-void Object_set_is_light(Object *object, const bool is_light);
-unsigned Object_get_texture_slot(Object *object);
+bool OB_Object_init(struct OB_Object *object, struct OB_Vertex *vertices, unsigned vertices_count);
+void OB_Object_init_move(struct OB_Object *object, struct OB_Vertex *vertices, unsigned vertices_count);
+void OB_Object_free(struct OB_Object *object);
+void OB_Object_set_texture(struct OB_Object *object, struct OB_Texture *texture);
+void OB_Object_set_rgba_color(struct OB_Object *object, const struct OB_Color *color);
+void OB_Object_set_vec4_color(struct OB_Object *object, const vec4 color);
+void OB_Object_set_texture_slot(struct OB_Object *object, unsigned texture_slot);
+void OB_Object_set_shininess(struct OB_Object *object, unsigned shininess);
+void OB_Object_set_model(struct OB_Object *object, const float model[16]);
+void OB_Object_set_is_light(struct OB_Object *object, bool is_light);
+unsigned OB_Object_get_texture_slot(struct OB_Object *object);
 
 #endif

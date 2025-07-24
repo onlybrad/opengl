@@ -1,21 +1,21 @@
-#ifndef _TEXTURE_H
-#define _TEXTURE_H
+#ifndef OB_TEXTURE_H
+#define OB_TEXTURE_H
 
 #include <stdbool.h>
 #include "../Util/Color.h"
 
-typedef struct Texture {
+struct OB_Texture {
     unsigned id;
     unsigned char *data;
     const char *name;
     int width;
     int height;
     int channels;
-} Texture;
+};
 
-void Texture_init(Texture *texture, const char *name, const char *path);
-void Texture_free(Texture *texture);
-void Texture_use(const Texture *texture, const unsigned slot);
-bool Texture_color(Texture *texture, const char* name, const Color *color);
+void OB_Texture_init(struct OB_Texture *texture, const char *name, const char *path);
+void OB_Texture_free(struct OB_Texture *texture);
+void OB_Texture_use(const struct OB_Texture *texture, unsigned slot);
+bool OB_Texture_color(struct OB_Texture *texture, const char* name, const struct OB_Color *color);
 
 #endif

@@ -5,52 +5,47 @@
 
 #if 0
 typedef const char *str;
-#define K str
-#define VALUE int 
+#define HASHMAP_K str
+#define HASHMAP_V int 
 #endif
 
-#if !defined K || !defined VALUE
-    #error "Missing parameter K or VALUE"
+#if !defined HASHMAP_K || !defined HASHMAP_V
+    #error "Missing parameter HASHMAP_K or HASHMAP_V"
 #endif
 
 #define HASHMAP_INITIAL_CAPACITY 16
-#define BUCKET MAKE_NAME(Bucket,MAKE_NAME(K,VALUE))
-#define HASHMAP MAKE_NAME(HashMap,MAKE_NAME(K,VALUE))
-#define HASHMAP_RESIZE MAKE_NAME(HASHMAP, resize)
-#define HASHMAP_GET_BUCKET MAKE_NAME(HASHMAP, get_bucket)
-#define HASHMAP_INIT MAKE_NAME(HASHMAP, init)
-#define HASHMAP_FREE MAKE_NAME(HASHMAP, free)
-#define HASHMAP_EXISTS MAKE_NAME(HASHMAP, exists)
-#define HASHMAP_INSERT MAKE_NAME(HASHMAP, insert)
-#define HASHMAP_GET MAKE_NAME(HASHMAP, get)
-#define HASHMAP_REMOVE MAKE_NAME(HASHMAP, remove)
-
-#if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
-#define HASHMAP_PRINT MAKE_NAME(HASHMAP, print)
-#define HASHMAP_TO_STRING MAKE_NAME(HASHMAP, to_string)
-#endif //HASHMAP_PRINT_KEY_FORMAT HASHMAP_PRINT_VALUE_FORMAT HASHMAP_PRINT_KEY_ARGUMENTS HASHMAP_PRINT_VALUE_ARGUMENTS
+#define BUCKET OB_MAKE_NAME(Bucket, OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
+#define HASHMAP OB_MAKE_NAME(Hashmap, OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
+#define HASHMAP_RESIZE OB_MAKE_NAME(HASHMAP, resize)
+#define HASHMAP_GET_BUCKET OB_MAKE_NAME(HASHMAP, get_bucket)
+#define HASHMAP_INIT OB_MAKE_NAME(HASHMAP, init)
+#define HASHMAP_FREE OB_MAKE_NAME(HASHMAP, free)
+#define HASHMAP_EXISTS OB_MAKE_NAME(HASHMAP, exists)
+#define HASHMAP_INSERT OB_MAKE_NAME(HASHMAP, insert)
+#define HASHMAP_GET OB_MAKE_NAME(HASHMAP, get)
+#define HASHMAP_REMOVE OB_MAKE_NAME(HASHMAP, remove)
 
 #ifndef HASHMAP_IMPLEMENTATION
 
-typedef struct BUCKET {
+struct BUCKET {
     bool used;
-    K key;
-    VALUE value;
-} BUCKET;
+    HASHMAP_K key;
+    HASHMAP_V value;
+};
 
-typedef struct HASHMAP {
-    BUCKET* buckets;
+struct HASHMAP {
+    struct BUCKET* buckets;
     size_t capacity;
-    size_t (*hash_function)(K);
-    bool (*compare_function)(K, K);
-} HASHMAP;
+    size_t (*hash_function)(HASHMAP_K);
+    bool (*compare_function)(HASHMAP_K, HASHMAP_K);
+};
 
-bool HASHMAP_INIT(HASHMAP *hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K));
-void HASHMAP_FREE(HASHMAP *hashmap);
-bool HASHMAP_EXISTS(HASHMAP *hashmap, K key);
-void HASHMAP_INSERT(HASHMAP *hashmap, K key, VALUE value);
-VALUE HASHMAP_GET(HASHMAP *hashmap, K key, bool *const success);
-bool HASHMAP_REMOVE(HASHMAP *hashmap, K key);
+bool HASHMAP_INIT(struct HASHMAP *hashmap, size_t (*hash_function)(HASHMAP_K), bool (*compare_function)(HASHMAP_K, HASHMAP_K));
+void HASHMAP_FREE(struct HASHMAP *hashmap);
+bool HASHMAP_EXISTS(struct HASHMAP *hashmap, HASHMAP_K key);
+void HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value);
+HASHMAP_V HASHMAP_GET(struct HASHMAP *hashmap, HASHMAP_K key, bool *success);
+bool HASHMAP_REMOVE(struct HASHMAP *hashmap, HASHMAP_K key);
 
 #if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
 void HASHMAP_PRINT(const HASHMAP *hashmap);
@@ -65,7 +60,7 @@ char *HASHMAP_TO_STRING(const HASHMAP *hashmap);
 
 #ifdef HASHMAP_IMPLEMENTATION
 
-static BUCKET *HASHMAP_GET_BUCKET(HASHMAP *hashmap, K key, bool ignore_unused) {
+static struct BUCKET *HASHMAP_GET_BUCKET(struct HASHMAP *hashmap, HASHMAP_K key, bool ignore_unused) {
     assert(hashmap != NULL);
 
     size_t i = hashmap->hash_function(key) % hashmap->capacity;
@@ -85,23 +80,23 @@ static BUCKET *HASHMAP_GET_BUCKET(HASHMAP *hashmap, K key, bool ignore_unused) {
     return NULL;
 }
 
-static bool HASHMAP_RESIZE(HASHMAP *hashmap, size_t capacity) {
+static bool HASHMAP_RESIZE(struct HASHMAP *hashmap, size_t capacity) {
     assert(hashmap != NULL);
 
-    BUCKET *const new_buckets = (BUCKET *)calloc(capacity, sizeof(BUCKET));
+    struct BUCKET *const new_buckets = (struct BUCKET *)calloc(capacity, sizeof(struct BUCKET));
     
     if(new_buckets == NULL) {
         return false;
     }
 
-    BUCKET *const old_buckets = hashmap->buckets;
+    struct BUCKET *const old_buckets = hashmap->buckets;
     const size_t old_capacity = hashmap->capacity;
     hashmap->capacity = capacity;
     hashmap->buckets = new_buckets;
 
     for(size_t i = 0; i < old_capacity; i++) {
         if(old_buckets[i].used) {
-            BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, old_buckets[i].key, false);
+            struct BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, old_buckets[i].key, false);
             bucket->key = old_buckets[i].key;
             bucket->value = old_buckets[i].value;
             bucket->used = true;
@@ -113,29 +108,29 @@ static bool HASHMAP_RESIZE(HASHMAP *hashmap, size_t capacity) {
     return true;
 }
 
-bool HASHMAP_INIT(HASHMAP *hashmap, size_t (*hash_function)(K), bool (*compare_function)(K, K)) {
+bool HASHMAP_INIT(struct HASHMAP *hashmap, size_t (*hash_function)(HASHMAP_K), bool (*compare_function)(HASHMAP_K, HASHMAP_K)) {
     assert(hash_function != NULL);
     assert(compare_function != NULL);
 
     hashmap->capacity = HASHMAP_INITIAL_CAPACITY;
     hashmap->hash_function = hash_function;
     hashmap->compare_function = compare_function;
-    hashmap->buckets = (BUCKET*)calloc(HASHMAP_INITIAL_CAPACITY, sizeof(BUCKET));
+    hashmap->buckets = (struct BUCKET*)calloc(HASHMAP_INITIAL_CAPACITY, sizeof(struct BUCKET));
 
     return hashmap->buckets != NULL;
 }
 
-void HASHMAP_FREE(HASHMAP *hashmap) {
+void HASHMAP_FREE(struct HASHMAP *hashmap) {
     free(hashmap->buckets);
     memset(hashmap, 0, sizeof(*hashmap));
 }
 
-bool HASHMAP_EXISTS(HASHMAP *hashmap, K key) {
+bool HASHMAP_EXISTS(struct HASHMAP *hashmap, HASHMAP_K key) {
     return HASHMAP_GET_BUCKET(hashmap, key, true) != NULL;
 }
 
-void HASHMAP_INSERT(HASHMAP *hashmap, K key, VALUE value) {
-    BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, false);
+void HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value) {
+    struct BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, false);
     
     if(bucket == NULL) {
         HASHMAP_RESIZE(hashmap, 2 * hashmap->capacity);
@@ -147,8 +142,8 @@ void HASHMAP_INSERT(HASHMAP *hashmap, K key, VALUE value) {
     bucket->used = true;
 }
 
-VALUE HASHMAP_GET(HASHMAP *hashmap, K key, bool *const success) {
-    BUCKET *const bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
+HASHMAP_V HASHMAP_GET(struct HASHMAP *hashmap, HASHMAP_K key, bool *success) {
+    struct BUCKET *const bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
 
     if(bucket == NULL) {
         *success = false;
@@ -159,8 +154,8 @@ VALUE HASHMAP_GET(HASHMAP *hashmap, K key, bool *const success) {
     return bucket->value;
 }
 
-bool HASHMAP_REMOVE(HASHMAP *hashmap, K key) {
-    BUCKET *const bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
+bool HASHMAP_REMOVE(struct HASHMAP *hashmap, HASHMAP_K key) {
+    struct BUCKET *const bucket = HASHMAP_GET_BUCKET(hashmap, key, true);
     if(bucket == NULL) {
         return false;
     }
@@ -170,81 +165,10 @@ bool HASHMAP_REMOVE(HASHMAP *hashmap, K key) {
     return true;
 }
 
-#if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
-void HASHMAP_PRINT(const HASHMAP *hashmap) {
-    putchar('[');
-
-    size_t i;
-    for(i = 0; i < hashmap->capacity; i++) {
-        if(hashmap->buckets[i].used) {
-            printf(HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
-            i++;
-            break;
-        }
-    }
-
-    for(;i < hashmap->capacity; i++) {
-        if(hashmap->buckets[i].used) {
-            printf(", " HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
-        }
-    }
-
-    puts("]");
-}
-
-char *HASHMAP_TO_STRING(const HASHMAP *hashmap) {
-    size_t length = 2;
-    size_t i;
-
-    for(i = 0; i < hashmap->capacity; i++) {
-        if(hashmap->buckets[i].used) {
-            const int char_printed = snprintf(NULL, 0, HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
-            length += (size_t)char_printed;
-            i++;            
-            break;
-        }
-    }
-
-    for(;i < hashmap->capacity; i++) {
-        if(hashmap->buckets[i].used) {
-            const int char_printed = snprintf(NULL, 0, ", " HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
-            length += (size_t)char_printed;
-        }
-    }
-
-    char *hashmap_str = malloc((length + 1) * sizeof(char));
-    assert(hashmap_str != NULL);
-    hashmap_str[0] = '[';
-
-    size_t offset = 1;
-    for(i = 0; i <hashmap->capacity; i++) {
-        if(hashmap->buckets[i].used) {
-            const int char_printed = sprintf(hashmap_str + offset, HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
-            offset += (size_t)char_printed;
-            i++;
-            break;
-        }
-    }
-
-    for(;i < hashmap->capacity; i++) {
-        if(hashmap->buckets[i].used) {
-            const int char_printed = sprintf(hashmap_str + offset, ", " HASHMAP_PRINT_KEY_FORMAT " => " HASHMAP_PRINT_VALUE_FORMAT, HASHMAP_PRINT_KEY_ARGUMENTS(hashmap->buckets[i].key), HASHMAP_PRINT_VALUE_ARGUMENTS(hashmap->buckets[i].value));
-            offset += (size_t)char_printed;
-        }
-    }
-
-    hashmap_str[length - 1] = ']'; 
-    hashmap_str[length] = '\0'; 
-
-    return hashmap_str;
-}
-#endif //HASHMAP_PRINT_KEY_FORMAT HASHMAP_PRINT_VALUE_FORMAT HASHMAP_PRINT_KEY_ARGUMENTS HASHMAP_PRINT_VALUE_ARGUMENTS
-
 #endif //HASHMAP_IMPLEMENTATION
 
-#undef K
-#undef VALUE
-#undef T
+#undef HASHMAP_K
+#undef HASHMAP_V
 #undef HASHMAP_INITIAL_CAPACITY
 #undef HASHMAP
 #undef BUCKET
@@ -255,15 +179,6 @@ char *HASHMAP_TO_STRING(const HASHMAP *hashmap) {
 #undef HASHMAP_INSERT
 #undef HASHMAP_GET
 #undef HASHMAP_REMOVE
-
-#if defined HASHMAP_PRINT_KEY_FORMAT && defined HASHMAP_PRINT_VALUE_FORMAT && defined HASHMAP_PRINT_KEY_ARGUMENTS && defined HASHMAP_PRINT_VALUE_ARGUMENTS
-#undef HASHMAP_PRINT
-#undef HASHMAP_TO_STRING
-#undef HASHMAP_PRINT_KEY_FORMAT
-#undef HASHMAP_PRINT_VALUE_FORMAT
-#undef HASHMAP_PRINT_KEY_ARGUMENTS
-#undef HASHMAP_PRINT_VALUE_ARGUMENTS
-#endif
 
 #ifdef HASHMAP_IMPLEMENTATION
 #undef HASHMAP_IMPLEMENTATION

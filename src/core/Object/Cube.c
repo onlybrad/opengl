@@ -2,33 +2,33 @@
 #include "Cube.h"
 #include "../Util/util.h"
 
-static Vertex background_vertices[] = BLACK_CUBE_VERTICES(1.0f);
-static Vertex cube_vertices[] = CUBE_VERTICES(0.5f, CURLY_BRACKETS({1.0f, 0.5f, 0.31f, 1.0f}));
+static struct OB_Vertex background_vertices[] = OB_BLACK_CUBE_VERTICES(1.0f);
+static struct OB_Vertex cube_vertices[] = OB_CUBE_VERTICES(0.5f, OB_CURLY_BRACKETS({1.0f, 0.5f, 0.31f, 1.0f}));
 
-void Cube_create_background(Object *object) {
+void OB_Cube_create_background(struct OB_Object *object) {
     assert(object != NULL);
     
-    Object_init(object, background_vertices, (unsigned)ARRAY_LEN(background_vertices));
+    OB_Object_init(object, background_vertices, (unsigned)OB_ARRAY_LEN(background_vertices));
 
     mat4 model;
     glm_mat4_identity(model);
-    Object_set_model(object, (float*)model);
+    OB_Object_set_model(object, (float*)model);
 }
 
-void Cube_create(Object *object) {
+void OB_Cube_create(struct OB_Object *object) {
     assert(object != NULL);
     
-    Object_init(object, cube_vertices, (unsigned)ARRAY_LEN(cube_vertices));
+    OB_Object_init(object, cube_vertices, (unsigned)OB_ARRAY_LEN(cube_vertices));
     
     mat4 model;
     glm_mat4_identity(model);
-    Object_set_model(object, (float*)model);
-    Object_set_shininess(object, 32u);
+    OB_Object_set_model(object, (float*)model);
+    OB_Object_set_shininess(object, 32u);
 }
 
-void Cube_create_light(Object *object) {
+void OB_Cube_create_light(struct OB_Object *object) {
     assert(object != NULL);
     
-    Cube_create(object);
-    Object_set_is_light(object, true);
+    OB_Cube_create(object);
+    OB_Object_set_is_light(object, true);
 }

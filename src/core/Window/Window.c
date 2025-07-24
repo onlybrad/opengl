@@ -3,15 +3,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "Window.h"
-#include "../Renderer/OpenGL.h"
+#include "../OpenGL/OpenGL.h"
 #include "../Thread/Thread.h"
 
 static void GLFW_resize_callback(GLFWwindow *_, int width, int height) {
     (void)_;
-    OpenGL_set_viewport(width, height);
+    OB_OpenGL_set_viewport(width, height);
 }
 
-void Window_init(Window *window, const int width, const int height, const char* title) {
+void OB_Window_init(struct OB_Window *window, const int width, const int height, const char* title) {
     assert(window != NULL);
 
     window->width = width;
@@ -21,7 +21,7 @@ void Window_init(Window *window, const int width, const int height, const char* 
     window->frame = 0;
     window->scene = NULL;
     window->updates_per_second = 30u;
-    window->shoudClose = false;
+    window->should_close = false;
     window->input_callback = NULL;
     
     glfwInit();
@@ -41,24 +41,24 @@ void Window_init(Window *window, const int width, const int height, const char* 
     glfwSetFramebufferSizeCallback(window->glfw_window, GLFW_resize_callback);
     glfwMakeContextCurrent(window->glfw_window);
     
-    OpenGL_init((GLADloadproc)glfwGetProcAddress, glfwTerminate);
+    OB_OpenGL_init((GLADloadproc)glfwGetProcAddress, glfwTerminate);
 }
 
-void Window_free(Window *window) {
+void OB_Window_free(struct OB_Window *window) {
     assert(window != NULL);
 
     glfwDestroyWindow(window->glfw_window);
     glfwTerminate();
 }
 
-void Window_set_vsync(Window *window, const bool on) {
+void OB_Window_set_vsync(struct OB_Window *window, const bool on) {
     assert(window != NULL);
 
     glfwMakeContextCurrent(window->glfw_window);
     glfwSwapInterval((int)on);
 }
 
-void Window_set_scene3D(Window *window, Scene3D *scene) {
+void OB_Window_set_scene3D(struct OB_Window *window, struct OB_Scene3D *scene) {
     assert(window != NULL);
     assert(scene != NULL);
 
@@ -66,13 +66,13 @@ void Window_set_scene3D(Window *window, Scene3D *scene) {
     glfwSetCursorPos(window->glfw_window, scene->perspective_camera->camera.x, scene->perspective_camera->camera.y);
 }
 
-inline void Window_set_updates_per_second(Window *window, const unsigned updates_per_seconds) {
+inline void OB_Window_set_updates_per_second(struct OB_Window *window, const unsigned updates_per_seconds) {
     assert(window != NULL);
 
     window->updates_per_second = updates_per_seconds;
 }
 
-void Window_drawing_loop(Window *window, void(*drawing_function)(Window *const)) {
+void OB_Window_drawing_loop(struct OB_Window *window, void(*drawing_function)(struct OB_Window *const)) {
     assert(window != NULL);
     assert(drawing_function != NULL);
 
@@ -86,20 +86,20 @@ void Window_drawing_loop(Window *window, void(*drawing_function)(Window *const))
         glfwPollEvents();
     }
 
-    window->shoudClose = true;
+    window->should_close = true;
 }
 
 static void *logic_loop(void *arg) {
     assert(arg != NULL);
 
-    const WindowThreadArgs *const args = (const WindowThreadArgs*)arg;
-    Window *const window = args->window;
-    WindowCallback logic_callback = args->callback;
+    const struct OB_WindowThreadArgs *const args = (const struct OB_WindowThreadArgs*)arg;
+    struct OB_Window *const window = args->window;
+    OB_WindowCallback logic_callback = args->callback;
 
     const double tick = 1.0/(double)window->updates_per_second; 
     double next_update = glfwGetTime();
 
-    while(! window->shoudClose) {    
+    while(! window->should_close) {    
         if(next_update < glfwGetTime()) {
             window->input_callback(window);
             logic_callback(window);
@@ -110,26 +110,26 @@ static void *logic_loop(void *arg) {
     return NULL;
 }
 
-void Window_logic_loop(Window *window, void(*logic_function)(Window *const)) {
+void OB_Window_logic_loop(struct OB_Window *window, void(*logic_function)(struct OB_Window *const)) {
     assert(window != NULL);
     assert(logic_function != NULL);
 
     window->logic_thread_args.window = window;
     window->logic_thread_args.callback = logic_function;
 
-    Thread thread;
-    Thread_init(&thread, logic_loop, &window->logic_thread_args);
-    Thread_start(&thread);
+    struct OB_Thread thread;
+    OB_Thread_init(&thread, logic_loop, &window->logic_thread_args);
+    OB_Thread_start(&thread);
 }
 
-inline void Window_set_input_callback(Window *window, WindowCallback input_callback) {
+inline void OB_Window_set_input_callback(struct OB_Window *window, OB_WindowCallback input_callback) {
     assert(window != NULL);
     assert(input_callback != NULL);
 
     window->input_callback = input_callback;
 }
 
-inline float Window_time(void) {
+inline float OB_Window_time(const struct OB_Window *window) {
+    (void)window;
     return (float)glfwGetTime();
 }
-

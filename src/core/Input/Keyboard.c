@@ -12,7 +12,7 @@
     #error "Implementation needed for set_initial_num_lock_state for OS other than Windows and Linux"
 #endif
 
-static bool is_numlock_on(void) {
+static bool OB_is_numlock_on(void) {
 #if defined(_WIN32)
     return GetKeyState(VK_NUMLOCK) & 1;
 #elif defined(__linux__)
@@ -26,15 +26,15 @@ static bool is_numlock_on(void) {
 #endif
 }
 
-typedef struct Keyboard {
+struct OB_Keyboard {
     bool num_lock;
-    Window *window;
-    Keyboard_Callback callback;
-} Keyboard;
+    struct OB_Window *window;
+    OB_Keyboard_Callback callback;
+};
 
-static Keyboard keyboard;
+static struct OB_Keyboard keyboard;
 
-static void internal_keyboard_callback(int key, int action, int mods) {
+static void OB_internal_keyboard_callback(int key, int action, int mods) {
     if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(keyboard.window->glfw_window, true);
         return;
@@ -45,7 +45,7 @@ static void internal_keyboard_callback(int key, int action, int mods) {
     }
 }
 
-static void empty_keyboard_callback(Window *window, int key, int scancode, int action, int mods) {
+static void OB_empty_keyboard_callback(struct OB_Window *window, int key, int scancode, int action, int mods) {
     (void)window;
     (void)key;
     (void)scancode;
@@ -53,29 +53,29 @@ static void empty_keyboard_callback(Window *window, int key, int scancode, int a
     (void)mods;
 }
 
-static void GLFW_keyboard_callback(GLFWwindow* glfw_window, int key, int scancode, int action, int mods) {
+static void OB_GLFW_keyboard_callback(GLFWwindow* glfw_window, int key, int scancode, int action, int mods) {
     (void)glfw_window;
-    internal_keyboard_callback(key, action, mods);
+    OB_internal_keyboard_callback(key, action, mods);
     keyboard.callback(keyboard.window, key, scancode, action, mods);
 }
 
-void Keyboard_init(Window *window) {
+void OB_Keyboard_init(struct OB_Window *window) {
     assert(window != NULL);
 
     keyboard.window = window;
-    keyboard.num_lock = is_numlock_on();
-    keyboard.callback = empty_keyboard_callback;
-    glfwSetKeyCallback(window->glfw_window, GLFW_keyboard_callback);
+    keyboard.num_lock = OB_is_numlock_on();
+    keyboard.callback = OB_empty_keyboard_callback;
+    glfwSetKeyCallback(window->glfw_window, OB_GLFW_keyboard_callback);
 }
 
-void Keyboard_set_callback(Keyboard_Callback callback) {
+void OB_Keyboard_set_callback(OB_Keyboard_Callback callback) {
     keyboard.callback = callback;
 }
 
-inline bool Keyboard_is_pressed(const int key) {
+inline bool OB_Keyboard_is_pressed(int key) {
     return glfwGetKey(keyboard.window->glfw_window, key) == GLFW_PRESS;
 }
 
-inline bool Keyboard_numlock(void) {
+inline bool OB_Keyboard_numlock(void) {
     return keyboard.num_lock;
 }

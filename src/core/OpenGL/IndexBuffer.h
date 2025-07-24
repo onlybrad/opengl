@@ -1,14 +1,14 @@
-#ifndef _INDEX_BUFFER_H
-#define _INDEX_BUFFER_H
+#ifndef OB_INDEX_BUFFER_H
+#define OB_INDEX_BUFFER_H
 
-typedef struct IndexBuffer {
+struct OB_IndexBuffer {
     unsigned id;
     unsigned count;
-} IndexBuffer;
+};
 
-void IndexBuffer_init(IndexBuffer *index_buffer, const unsigned *const data, const unsigned count);
-void IndexBuffer_free(IndexBuffer *index_buffer);
-void IndexBuffer_bind(const IndexBuffer *index_buffer);
-void IndexBuffer_unbind(const IndexBuffer *index_buffer);
+void OB_IndexBuffer_init(struct OB_IndexBuffer *index_buffer, const unsigned *data, unsigned count);
+void OB_IndexBuffer_free(struct OB_IndexBuffer *index_buffer);
+void OB_IndexBuffer_bind(const struct OB_IndexBuffer *index_buffer);
+void OB_IndexBuffer_unbind(const struct OB_IndexBuffer *index_buffer);
 
 #endif

@@ -1,13 +1,12 @@
-#ifndef _MOUSE_H
-#define _MOUSE_H
+#ifndef OB_MOUSE_H
+#define OB_MOUSE_H
 
-#include "../Renderer/Window.h"
+#include "../Window/Window.h"
 
-typedef void(*MouseCursorCallback)(Window *const, double, double);
-typedef void(*MouseScrollCallback)(Window *const, double, double);
+typedef void(*OB_MouseCallback)(struct OB_Window*, double, double);
 
-void Mouse_init(Window *window);
-void Mouse_set_cursor_callback(MouseScrollCallback cursor_callback);
-void Mouse_set_scroll_callback(MouseScrollCallback scroll_callback);
+void OB_Mouse_init(struct OB_Window *window);
+void OB_Mouse_set_cursor_callback(OB_MouseCallback cursor_callback);
+void OB_Mouse_set_scroll_callback(OB_MouseCallback scroll_callback);
 
 #endif

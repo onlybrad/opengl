@@ -1,18 +1,23 @@
-#ifndef _VERTEX_ARRAY_OBJECT_H
-#define _VERTEX_ARRAY_OBJECT_H
+#ifndef OB_VERTEX_ARRAY_OBJECT_H
+#define OB_VERTEX_ARRAY_OBJECT_H
 
 #include "VertexArrayBuffer.h"
 #include "VertexLayout.h"
 #include "IndexBuffer.h"
 
-typedef struct VertexArrayObject {
+struct OB_VertexArrayObject {
     unsigned id;
-} VertexArrayObject;
+};
 
-void VertexArrayObject_init(VertexArrayObject *vao);
-void VertexArrayObject_free(VertexArrayObject *vao);
-void VertexArrayObject_add_buffer(VertexArrayObject *vao, const VertexArrayBuffer *vab, const IndexBuffer *ib, const VertexLayout *layout);
-void VertexArrayObject_bind(const VertexArrayObject *vao);
-void VertexArrayObject_unbind(const VertexArrayObject *vao);
+void OB_VertexArrayObject_init(struct OB_VertexArrayObject *vao);
+void OB_VertexArrayObject_free(struct OB_VertexArrayObject *vao);
+void OB_VertexArrayObject_add_buffer(
+    struct OB_VertexArrayObject *vao,
+    const struct OB_VertexArrayBuffer *vab,
+    const struct OB_IndexBuffer *ib,
+    const struct OB_VertexLayout *layout
+);
+void OB_VertexArrayObject_bind(const struct OB_VertexArrayObject *vao);
+void OB_VertexArrayObject_unbind(const struct OB_VertexArrayObject *vao);
 
 #endif

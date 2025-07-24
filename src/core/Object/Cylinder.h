@@ -1,8 +1,8 @@
-#ifndef _CYLINDER_H
-#define _CYLINDER_H
+#ifndef OB_CYLINDER_H
+#define OB_CYLINDER_H
 
 #include "Object.h"
 
-bool Cylinder_create(Object *object, const float radius, const float height);
+bool OB_Cylinder_create(struct OB_Object *object, float radius, float height);
 
 #endif

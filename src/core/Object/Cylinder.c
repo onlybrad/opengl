@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include "Cylinder.h"
 
-static Vertex *generate_cylinder_vertices(const unsigned segments, const float radius, const float height, size_t *const size) {
+static struct OB_Vertex *OB_generate_cylinder_vertices(unsigned segments, float radius, float height, size_t *size) {
     const float π = 3.141593f;
     const float step = 2.0f * π / (float)segments;
 
-    *size = (size_t)segments * 6 * sizeof(Vertex);
-    Vertex *vertices = (Vertex*)calloc((size_t)segments * 6, sizeof(Vertex));
+    *size = (size_t)segments * 6 * sizeof(struct OB_Vertex);
+    struct OB_Vertex *vertices = (struct OB_Vertex*)calloc((size_t)segments * 6, sizeof(struct OB_Vertex));
 
     if(vertices == NULL) {
         return NULL;
@@ -21,7 +21,7 @@ static Vertex *generate_cylinder_vertices(const unsigned segments, const float r
         const float x2 = radius * cosf(θ + step);
         const float z2 = radius * sinf(θ + step);
         
-        Vertex *vertex = vertices + i * 6u;
+        struct OB_Vertex *vertex = vertices + i * 6u;
 
         vertex->position[0] = x1;
         vertex->position[1] = height;
@@ -91,20 +91,20 @@ static Vertex *generate_cylinder_vertices(const unsigned segments, const float r
     return vertices;
 }
 
-bool Cylinder_create(Object *object, const float radius, const float height) {
+bool OB_Cylinder_create(struct OB_Object *object, float radius, float height) {
     assert(object != NULL);
 
     size_t size;
-    Vertex *cylinder_vertices = generate_cylinder_vertices(20u, radius, height, &size);
+    struct OB_Vertex *cylinder_vertices = OB_generate_cylinder_vertices(20u, radius, height, &size);
     if(cylinder_vertices == NULL) {
         return false;
     }
 
-    Object_init_move(object, cylinder_vertices, (unsigned)(size/sizeof(*cylinder_vertices)));
+    OB_Object_init_move(object, cylinder_vertices, (unsigned)(size/sizeof(*cylinder_vertices)));
     mat4 model;
     glm_mat4_identity(model);
-    Object_set_model(object, (float*)model);
-    Object_set_shininess(object, 32u);
+    OB_Object_set_model(object, (float*)model);
+    OB_Object_set_shininess(object, 32u);
 
     return true;
 }

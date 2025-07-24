@@ -2,19 +2,19 @@
 #include <stdlib.h>
 #include "VertexLayout.h"
 
-extern int MAX_VERTEX_ATTRIBS;
+extern int OB_MAX_VERTEX_ATTRIBS;
 
-void VertexLayout_init(VertexLayout *layout) {
+void OB_VertexLayout_init(struct OB_VertexLayout *layout) {
     assert(layout != NULL);
 
     layout->attributes_index = 0u;
     layout->stride = 0;
 }
 
-bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute) {
+bool OB_VertexLayout_push(struct OB_VertexLayout *layout, const struct OB_VertexAttribute attribute) {
     assert(layout != NULL);
 
-    if(layout->attributes_index == (unsigned)MAX_VERTEX_ATTRIBS) {
+    if(layout->attributes_index == (unsigned)OB_MAX_VERTEX_ATTRIBS) {
         return false;
     }
 

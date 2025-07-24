@@ -10,7 +10,7 @@
         "vertexarraybuffer.h": "c",
         "vertexbufferlayout.h": "c",
         "shader.h": "c",
-        "renderer.h": "c",
+        "Window.h": "c",
         "stdio.h": "c",
         "x86intrin.h": "c",
         "stdlib.h": "c",

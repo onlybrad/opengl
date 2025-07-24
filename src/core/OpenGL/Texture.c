@@ -7,7 +7,7 @@
 #include "Texture.h"
 #include "../Util/util.h"
 
-const char TEXTURE_UNIFORMS[32][10] = {
+const char OB_TEXTURE_UNIFORMS[32][10] = {
     "texture00",
     "texture01",
     "texture02",
@@ -42,12 +42,12 @@ const char TEXTURE_UNIFORMS[32][10] = {
     "texture31",
 };
 
-extern int MAX_TEXTURE_IMAGE_UNITS;
-extern int MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+extern int OB_MAX_TEXTURE_IMAGE_UNITS;
+extern int OB_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 
 static const unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
 
-static void generate_texture(Texture *texture) {
+static void OB_generate_texture(struct OB_Texture *texture) {
     assert(texture != NULL);
 
     GLenum format;
@@ -72,7 +72,7 @@ static void generate_texture(Texture *texture) {
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture_init(Texture *texture, const char *name, const char *path) {
+void OB_Texture_init(struct OB_Texture *texture, const char *name, const char *path) {
     assert(texture != NULL);
     assert(name != NULL);
     assert(path != NULL);
@@ -84,7 +84,7 @@ void Texture_init(Texture *texture, const char *name, const char *path) {
 
     if(data == NULL) {
         fprintf(stderr, "Couldn't load texture at %s\n", path);
-        Texture_color(texture, NULL, NULL);
+        OB_Texture_color(texture, NULL, NULL);
         return;
     }
 
@@ -93,24 +93,25 @@ void Texture_init(Texture *texture, const char *name, const char *path) {
     texture->height = height;
     texture->data = data;
     texture->name = name;
-    generate_texture(texture);
+    OB_generate_texture(texture);
 }
 
-void Texture_free(Texture *texture) {
+void OB_Texture_free(struct OB_Texture *texture) {
     assert(texture != NULL);
 
     stbi_image_free(texture->data);
     texture->data = NULL;
+    memset(texture, 0, sizeof(*texture));
 }
 
-void Texture_use(const Texture *texture, const unsigned slot) {
+void OB_Texture_use(const struct OB_Texture *texture, unsigned slot) {
     assert(texture != NULL);
 
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-bool Texture_color(Texture *texture, const char* name, const Color *color) {
+bool OB_Texture_color(struct OB_Texture *texture, const char* name, const struct OB_Color *color) {
     assert(texture != NULL);
     assert(name != NULL);
     assert(color != NULL);
@@ -129,7 +130,7 @@ bool Texture_color(Texture *texture, const char* name, const Color *color) {
     memcpy(texture->data, color == NULL ? DEFAULT_TEXTURE : (const unsigned char*)color, size);
     
     texture->name = NULL ? "default" : name;
-    generate_texture(texture);
+    OB_generate_texture(texture);
 
     return true;
 }
