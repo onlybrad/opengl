@@ -1,13 +1,13 @@
-#include "core/Renderer/Window.h"
-#include "core/Renderer/Camera.h"
-#include "core/Renderer/Scene3D.h"
-#include "core/OpenGL/Shader.h"
-#include "core/OpenGL/Texture.h"
-#include "core/Object/Object.h"
-#include "core/Object/Cube.h"
-#include "core/Object/Cylinder.h"
-#include "core/Util/Color.h"
-#include "app/callback.h"
+#include "../core/Renderer/Window.h"
+#include "../core/Renderer/Camera.h"
+#include "../core/Renderer/Scene3D.h"
+#include "../core/OpenGL/Shader.h"
+#include "../core/OpenGL/Texture.h"
+#include "../core/Object/Object.h"
+#include "../core/Object/Cube.h"
+#include "../core/Object/Cylinder.h"
+#include "../core/Util/Color.h"
+#include "callback.h"
 
 int main(void) {
     const int width = 800;

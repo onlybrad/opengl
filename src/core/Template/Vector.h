@@ -38,7 +38,7 @@ typedef struct VECTOR {
     size_t capacity;
 } VECTOR;
 
-void VECTOR_INIT(VECTOR *vector, const size_t capacity);
+void VECTOR_INIT(VECTOR *vector, size_t capacity);
 void VECTOR_INIT_MOVE(VECTOR *vector, T *buffer, size_t length);
 void VECTOR_INIT_COPY(VECTOR *vector, T *buffer, size_t length);
 void VECTOR_COPY(VECTOR *vector_dst, VECTOR *vector_src);
@@ -67,14 +67,14 @@ char *VECTOR_TO_STRING(const VECTOR *vector);
 //#include <math.h>
 #include <string.h>
 
-static void VECTOR_RESIZE(VECTOR *vector, const size_t new_capacity) {
+static void VECTOR_RESIZE(VECTOR *vector, size_t new_capacity) {
     T *buffer = realloc(vector->buffer, sizeof(T) * new_capacity);
     assert(buffer != NULL);
     vector->buffer = buffer;
     vector->capacity = new_capacity;
 }
 
-void VECTOR_INIT(VECTOR *vector, const size_t capacity) {
+void VECTOR_INIT(VECTOR *vector, size_t capacity) {
     vector->capacity = capacity == 0 ? VECTOR_DEFAULT_CAPACITY : capacity;
     vector->length = 0;
     vector->buffer = calloc(vector->capacity, sizeof(T));
