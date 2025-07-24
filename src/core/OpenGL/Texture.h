@@ -12,9 +12,9 @@ typedef struct Texture {
     int channels;
 } Texture;
 
-void Texture_init(Texture texture[static 1], const char *const name, const char path[static 1]);
-void Texture_free(Texture texture[static 1]);
-void Texture_use(const Texture texture[static 1], const unsigned int slot);
-void Texture_color(Texture texture[static 1], const char* const name, Color *const color);
+void Texture_init(Texture *texture, const char *name, const char *path);
+void Texture_free(Texture *texture);
+void Texture_use(const Texture *texture, const unsigned int slot);
+void Texture_color(Texture *texture, const char* name, const Color *color);
 
 #endif

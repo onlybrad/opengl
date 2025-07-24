@@ -52,7 +52,7 @@ static void vertex_layout_init(void) {
 
     VertexLayout_init(&OBJECT_VERTEX_LAYOUT);
 
-    for(int i=0; i<(int)ARRAY_LEN(attributes); i++) {
+    for(int i = 0; i<(int)ARRAY_LEN(attributes); i++) {
         VertexLayout_push(&OBJECT_VERTEX_LAYOUT, attributes[i]);
     }
 }

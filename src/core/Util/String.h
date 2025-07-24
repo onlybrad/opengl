@@ -9,8 +9,8 @@ typedef struct String {
     size_t length;
 } String;
 
-String String_init(const char c_str[static 1]);
-String String_init_copy(const char c_str[static 1]);
+String String_init(const char *c_str);
+String String_init_copy(const char *c_str);
 void String_free(String str);
 
 size_t string_hash_function(const char *key);

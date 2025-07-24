@@ -3,6 +3,6 @@
 
 #include "Object.h"
 
-void Cylinder_create(Object object[static 1], const float radius, const float height);
+void Cylinder_create(Object *object, const float radius, const float height);
 
 #endif

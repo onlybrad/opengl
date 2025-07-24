@@ -41,8 +41,8 @@
 #endif
 
 
-FILE *file_open(const char *__restrict__ filename, const char *__restrict__ mode);
-String file_get_contents(const char path[static 1]);
+FILE *file_open(const char *filename, const char *mode);
+String file_get_contents(const char *path);
 void *unconst(const void *const_var);
 
 #endif

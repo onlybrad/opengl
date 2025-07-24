@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "util.h"
 
-FILE *file_open(const char *__restrict__ filename, const char *__restrict__ mode) {
+FILE *file_open(const char *filename, const char *mode) {
     #if _WIN32
     wchar_t modew[64];
     wchar_t filenamew[1024];
@@ -21,7 +21,7 @@ FILE *file_open(const char *__restrict__ filename, const char *__restrict__ mode
     #endif
 }
 
-String file_get_contents(const char path[static 1]) {
+String file_get_contents(const char *path) {
     FILE *const file = file_open(path, "rb");
 
     if (!file) {

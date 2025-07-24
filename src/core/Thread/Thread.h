@@ -15,15 +15,15 @@ typedef struct Lock {
     pthread_mutex_t mutex;
 } Lock;
 
-void Thread_init(Thread thread[static 1], ThreadFunction func, void* arg);
-void Thread_self(Thread thread[static 1]);
-void Thread_start(Thread thread[static 1]);
-void Thread_join(const Thread thread[static 1]);
+void Thread_init(Thread *thread, ThreadFunction func, void* arg);
+void Thread_self(Thread *thread);
+void Thread_start(Thread *thread);
+void Thread_join(const Thread *thread);
 void Thread_exit(void);
 
-void Lock_init(Lock lock[static 1]);
-void Lock_free(Lock lock[static 1]);
-void Lock_lock(Lock lock[static 1]);
-void Lock_unlock(Lock lock[static 1]);
+void Lock_init(Lock *lock);
+void Lock_free(Lock *lock);
+void Lock_lock(Lock *lock);
+void Lock_unlock(Lock *lock);
 
 #endif

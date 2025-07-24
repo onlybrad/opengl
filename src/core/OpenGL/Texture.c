@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stb_image.h>
 #include <glad/glad.h>
 #include <stdlib.h>
@@ -46,7 +47,9 @@ extern int MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 
 static const unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
 
-static void generate_texture(Texture texture[static 1]) {
+static void generate_texture(Texture *texture) {
+    assert(texture != NULL);
+
     GLenum format;
     if(texture->channels == 3) {
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -69,7 +72,11 @@ static void generate_texture(Texture texture[static 1]) {
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture_init(Texture texture[static 1], const char *const name, const char path[static 1]) {
+void Texture_init(Texture *texture, const char *name, const char *path) {
+    assert(texture != NULL);
+    assert(name != NULL);
+    assert(path != NULL);
+
     int width, height, channels;
 
     stbi_set_flip_vertically_on_load(1);
@@ -89,24 +96,32 @@ void Texture_init(Texture texture[static 1], const char *const name, const char 
     generate_texture(texture);
 }
 
-void Texture_free(Texture texture[static 1]) {
+void Texture_free(Texture *texture) {
+    assert(texture != NULL);
+
     stbi_image_free(texture->data);
     texture->data = NULL;
 }
 
-void Texture_use(const Texture texture[static 1], const unsigned int slot) {
+void Texture_use(const Texture *texture, const unsigned int slot) {
+    assert(texture != NULL);
+
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-void Texture_color(Texture texture[static 1], const char* const name, Color *const color) {
+void Texture_color(Texture *texture, const char* name, const Color *color) {
+    assert(texture != NULL);
+    assert(name != NULL);
+    assert(color != NULL);
+
     texture->channels = 4;
     texture->width = 1;
     texture->height = 1;
 
     const size_t size = 4 * sizeof(unsigned char);
     texture->data = malloc(size);
-    memcpy(texture->data, color == NULL ? DEFAULT_TEXTURE : (unsigned char*)color, size);
+    memcpy(texture->data, color == NULL ? DEFAULT_TEXTURE : (const unsigned char*)color, size);
     
     texture->name = NULL ? "default" : name;
     generate_texture(texture);

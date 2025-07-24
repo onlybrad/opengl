@@ -43,7 +43,7 @@ static void vector_test(void) {
     Vector_int vector;
     Vector_int_init(&vector, 0);
 
-    for(int i=0; i<100; i++) {
+    for(int i = 0; i<100; i++) {
         Vector_int_push(&vector, i);
         assert(Vector_int_at(&vector, (size_t)i) == i);
     }
@@ -53,11 +53,11 @@ static void vector_test(void) {
         assert(val == i);
     }
 
-    for(int i=0; i<10; i++) {
+    for(int i = 0; i<10; i++) {
         Vector_int_push(&vector, i);
     }
     Vector_int_set(&vector, 5, 999);
-    for(size_t i=0; i<vector.length; i++) {
+    for(size_t i = 0; i<vector.length; i++) {
         if(i == 5) {
             assert(vector.buffer[i] == 999);
         } else {
@@ -67,7 +67,7 @@ static void vector_test(void) {
     Vector_int_set(&vector, 5, 5);
 
     Vector_int_set(&vector, 10, 888);
-    for(size_t i=0; i<vector.length; i++) {
+    for(size_t i = 0; i<vector.length; i++) {
         if(i == 10) {
             assert(vector.buffer[i] == 888);
         } else {
@@ -77,7 +77,7 @@ static void vector_test(void) {
     Vector_int_set(&vector, 10, 10);
 
     Vector_int_set(&vector, 50, 777);
-    for(size_t i=0; i<vector.length; i++) {
+    for(size_t i = 0; i<vector.length; i++) {
         if(i <= 10) {
             assert(vector.buffer[i] == (int)i);
         } else if(i != 50) {
@@ -89,7 +89,7 @@ static void vector_test(void) {
     Vector_int_set(&vector, 50, 0);
 
     Vector_int_set(&vector, 200, 666);
-    for(size_t i=0; i<vector.length; i++) {
+    for(size_t i = 0; i<vector.length; i++) {
         if(i <= 10) {
             assert(vector.buffer[i] == (int)i);
         } else if(i < 200) {
@@ -100,12 +100,12 @@ static void vector_test(void) {
     }
 
     vector.length = 0;
-    for(int i=0; i<10; i++) {
+    for(int i = 0; i<10; i++) {
         Vector_int_push(&vector, i);
     }
     Vector_int_remove(&vector, 5);
 
-    for(size_t i=0; i<vector.length; i++) {
+    for(size_t i = 0; i<vector.length; i++) {
         assert(i >= 5 
             ? vector.buffer[i] == (int)i+1 
             : vector.buffer[i] == (int)i
@@ -122,7 +122,7 @@ static void vector_test(void) {
     Vector_str vector2;
     Vector_str_init(&vector2, 0);
 
-    for(int i=0; i<100; i++) {
+    for(int i = 0; i<100; i++) {
         Vector_str_push(&vector2, vector_chars+i);
         assert(Vector_str_at(&vector2, (size_t)i) == vector_chars+i);
     }
@@ -132,11 +132,11 @@ static void vector_test(void) {
         assert(val[0] == vector_chars[i]);
     }
 
-    for(int i=0; i<10; i++) {
+    for(int i = 0; i<10; i++) {
         Vector_str_push(&vector2, vector_chars+i);
     }
     Vector_str_set(&vector2, 5, "999");
-    for(size_t i=0; i<vector2.length; i++) {
+    for(size_t i = 0; i<vector2.length; i++) {
         if(i == 5) {
             assert(strcmp(vector2.buffer[i],"999") == 0);
         } else {
@@ -146,7 +146,7 @@ static void vector_test(void) {
     Vector_str_set(&vector2, 5, "5");
 
     Vector_str_set(&vector2, 10, "888");
-    for(size_t i=0; i<vector2.length; i++) {
+    for(size_t i = 0; i<vector2.length; i++) {
         if(i == 10) {
             assert(strcmp(vector2.buffer[i],"888") == 0);
         } else {
@@ -156,7 +156,7 @@ static void vector_test(void) {
     Vector_str_set(&vector2, 10, "0");
 
     Vector_str_set(&vector2, 50, "777");
-    for(size_t i=0; i<vector2.length; i++) {
+    for(size_t i = 0; i<vector2.length; i++) {
         if(i <= 10) {
             assert(vector2.buffer[i][0] == vector_chars[i]);
         } else if(i != 50) {
@@ -168,7 +168,7 @@ static void vector_test(void) {
     Vector_str_set(&vector2, 50, NULL);
 
     Vector_str_set(&vector2, 200, "666");
-    for(size_t i=0; i<vector2.length; i++) {
+    for(size_t i = 0; i<vector2.length; i++) {
         if(i <= 10) {
             assert(vector2.buffer[i][0] == vector_chars[i]);
         } else if(i < 200) {
@@ -179,12 +179,12 @@ static void vector_test(void) {
     }
 
     vector2.length = 0;
-    for(int i=0; i<10; i++) {
+    for(int i = 0; i<10; i++) {
         Vector_str_push(&vector2, vector_chars + i);
     }
     Vector_str_remove(&vector2, 5);
 
-    for(size_t i=0; i<vector2.length; i++) {
+    for(size_t i = 0; i<vector2.length; i++) {
         assert(i >= 5 
             ? vector2.buffer[i][0] == vector_chars[i+1] 
             : vector2.buffer[i][0] == vector_chars[i]
@@ -193,7 +193,7 @@ static void vector_test(void) {
 
     vector2.length = 0;
     static str words[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-    for(int i=0; i<10; i++) {
+    for(int i = 0; i<10; i++) {
         Vector_str_push(&vector2, words[i]);
     }
 
@@ -261,11 +261,11 @@ static void hashmap_test(void) {
 
     static str hashmap_chars[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t"};
 
-    for(int i=0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
+    for(int i = 0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
         HashMap_str_int_insert(&hashmap, hashmap_chars[i], i);
     }
 
-    for(int i=0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
+    for(int i = 0; i<(int)ARRAY_LEN(hashmap_chars); i++) {
         value = HashMap_str_int_get(&hashmap, hashmap_chars[i], &success);
         assert(success && value == i);
     }
@@ -299,7 +299,7 @@ static void queue_test(void) {
 
     static str queue_words[] = {"Hello", "World", "A", "B", "C", "1", "2", "3", "ABC", "DEF", "XYZ", "IOP", "HELLO WORLD!", "SOME", "STRING", "WORD", "TEST", "QUEUE", "HI"};
 
-    for(int i=0; i<(int)ARRAY_LEN(queue_words); i++) {
+    for(int i = 0; i<(int)ARRAY_LEN(queue_words); i++) {
         Queue_str_enqueue(&queue, queue_words[i]);
     }
 
@@ -307,7 +307,7 @@ static void queue_test(void) {
     assert(strcmp(queue_str, "Hello -> World -> A -> B -> C -> 1 -> 2 -> 3 -> ABC -> DEF -> XYZ -> IOP -> HELLO WORLD! -> SOME -> STRING -> WORD -> TEST -> QUEUE -> HI") == 0);
     free(queue_str);
 
-    for(int i=0; i<(int)ARRAY_LEN(queue_words); i++) {
+    for(int i = 0; i<(int)ARRAY_LEN(queue_words); i++) {
         str result = Queue_str_dequeue(&queue, &success);
         assert(success && strcmp(result, queue_words[i]) == 0);
     }

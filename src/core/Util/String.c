@@ -2,14 +2,14 @@
 #include "String.h"
 #include "util.h"
 
-String String_init(const char c_str[static 1]) {
+String String_init(const char *c_str) {
     return (String){
         .buffer = c_str,
         .length = strlen(c_str)
     };
 }
 
-String String_init_copy(const char c_str[static 1]) {
+String String_init_copy(const char *c_str) {
     return (String) {
         .buffer = strdup(c_str),
         .length = strlen(c_str)
@@ -23,7 +23,7 @@ void String_free(String str) {
 size_t string_hash_function(const char *key) {
     size_t hash = 0xcbf29ce484222325;
     const size_t str_len = strlen(key);
-    for(size_t i=0; i < str_len; i++) {
+    for(size_t i = 0; i < str_len; i++) {
         hash = (hash ^ (size_t)key[i]) * 0x100000001b3;
     }
 

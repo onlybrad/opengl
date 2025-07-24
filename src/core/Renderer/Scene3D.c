@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 #include "Scene3D.h"
@@ -18,8 +19,11 @@
 extern VertexLayout OBJECT_VERTEX_LAYOUT;
 extern const char TEXTURE_UNIFORMS[32][10];
 
-static int find_texture_slot(Scene3D scene[static 1], Texture *const texture) {
-    for(unsigned int i=0u; i<scene->scene_objects.length; i++) {
+static int find_texture_slot(Scene3D *scene, Texture *texture) {
+    assert(scene != NULL);
+    assert(texture != NULL);
+
+    for(unsigned int i = 0u; i < scene->scene_objects.length; i++) {
         if(texture == scene->scene_objects.buffer[i].object->texture) {
             return (int)i+1;
         }
@@ -27,14 +31,21 @@ static int find_texture_slot(Scene3D scene[static 1], Texture *const texture) {
     return -1;
 }
 
-static void get_model(mat4 model, Transform *const transform) {
+static void get_model(mat4 model, Transform *transform) {
+    assert(model != NULL);
+    assert(transform != NULL);
+
     glm_mat4_identity(model);
     glm_translate(model, transform->translate);
     glm_rotate(model, transform->rotation_angle, transform->rotation_axis);
     glm_scale(model, transform->scale);
 }
 
-void Scene3D_init(Scene3D scene[static 1], Shader shader[static 1], PerspectiveCamera perspective_camera[static 1]) {
+void Scene3D_init(Scene3D *scene, Shader *shader, PerspectiveCamera *perspective_camera) {
+    assert(scene != NULL);
+    assert(shader != NULL);
+    assert(perspective_camera != NULL);
+
     VertexArrayObject_init(&scene->vao);
     scene->vertices_count = 0u;
     scene->texture_slot = 1u;
@@ -47,14 +58,19 @@ void Scene3D_init(Scene3D scene[static 1], Shader shader[static 1], PerspectiveC
     perspective_camera->camera.id = Shader_get_location(shader, "camera_position");
 }
 
-void Scene3D_free(Scene3D scene[static 1]) {
+void Scene3D_free(Scene3D *scene) {
+    assert(scene != NULL);
+
     VertexArrayObject_free(&scene->vao);
     VertexArrayBuffer_free(&scene->vab);
     Vector_SceneObject3D_free(&scene->scene_objects);
     Vector_uint_free(&scene->to_update);
 }
 
-bool Scene3D_add_object(Scene3D scene[static 1], Object object[static 1], const Transform *const transform) {
+bool Scene3D_add_object(Scene3D *scene, Object *object, const Transform *transform) {
+    assert(scene != NULL);
+    assert(object != NULL);
+    
     scene->vertices_count += object->vertices_count;
 
     Vector_SceneObject3D_push(&scene->scene_objects, (SceneObject3D){
@@ -79,7 +95,9 @@ bool Scene3D_add_object(Scene3D scene[static 1], Object object[static 1], const 
     return true;
 }
 
-void Scene3D_object_needs_update(Scene3D scene[static 1], const unsigned int object_index) {
+void Scene3D_object_needs_update(Scene3D *scene, const unsigned int object_index) {
+    assert(scene != NULL);
+    
     SceneObject3D *const scene_object = Scene3D_object_get(scene, object_index);
 
     Lock_lock(&scene->vab.lock); 
@@ -91,7 +109,10 @@ void Scene3D_object_needs_update(Scene3D scene[static 1], const unsigned int obj
     Lock_unlock(&scene->vab.lock);
 }
 
-void Scene3D_object_set_transform(Scene3D scene[static 1], const unsigned int object_index, Transform transform[static 1]) {
+void Scene3D_object_set_transform(Scene3D *scene, const unsigned int object_index, Transform *transform) {
+    assert(scene != NULL);
+    assert(transform != NULL);
+
     SceneObject3D *const scene_object = Scene3D_object_get(scene, object_index);
     scene_object->transform = *transform;
 
@@ -101,16 +122,23 @@ void Scene3D_object_set_transform(Scene3D scene[static 1], const unsigned int ob
     Scene3D_object_needs_update(scene, object_index);
 }
 
-void Scene3D_set_background(Scene3D scene[static 1], Object background[static 1]) {
+void Scene3D_set_background(Scene3D *scene, Object *background) {
+    assert(scene != NULL);
+    assert(background != NULL);
+
     scene->background = background;
     Object_set_texture_slot(background, 0u);
 }
 
-inline SceneObject3D *Scene3D_object_get(Scene3D scene[static 1], const unsigned int object_index) {
+inline SceneObject3D *Scene3D_object_get(Scene3D *scene, const unsigned int object_index) {
+    assert(scene != NULL);
+
     return &scene->scene_objects.buffer[object_index];
 }
 
-void Scene3D_start(Scene3D scene[static 1]) {
+void Scene3D_start(Scene3D *scene) {
+    assert(scene != NULL);
+
     unsigned int vab_size = 0u;
     unsigned int previous_offset = 0u;
     unsigned int previous_size = 0u;
@@ -120,7 +148,7 @@ void Scene3D_start(Scene3D scene[static 1]) {
         previous_size += scene->background->vertices_count;
     }
   
-    for(unsigned int i=0u; i < (unsigned int)scene->scene_objects.length; i++) {
+    for(unsigned int i = 0u; i < (unsigned int)scene->scene_objects.length; i++) {
         Object *const object = scene->scene_objects.buffer[i].object;
 
         vab_size += object->vertices_count * (unsigned int)sizeof(*object->vertices);
@@ -137,7 +165,7 @@ void Scene3D_start(Scene3D scene[static 1]) {
         Shader_set_int(scene->shader, TEXTURE_UNIFORMS[0], 0);
     }
 
-    for(unsigned int i=0u; i < (unsigned int)scene->scene_objects.length; i++) {
+    for(unsigned int i = 0u; i < (unsigned int)scene->scene_objects.length; i++) {
         Object *const object = scene->scene_objects.buffer[i].object;
 
         mat4 model;
@@ -156,13 +184,17 @@ void Scene3D_start(Scene3D scene[static 1]) {
     Shader_set_mat4_l(scene->shader, scene->projection_id, PerspectiveCamera_get_projection(scene->perspective_camera));
 }
 
-void Scene3D_end(Scene3D scene[static 1]) {
+void Scene3D_end(Scene3D *scene) {
+    assert(scene != NULL);
+
     VertexArrayObject_unbind(&scene->vao);
     VertexArrayBuffer_free(&scene->vab);
     VertexArrayBuffer_unbind(&scene->vab);
 }
 
-void Scene3D_draw_objects(Scene3D scene[static 1]) {
+void Scene3D_draw_objects(Scene3D *scene) {
+    assert(scene != NULL);
+
     OpenGL_clear();
 
     Lock_lock(&scene->perspective_camera->camera.lock);
@@ -180,9 +212,11 @@ void Scene3D_draw_objects(Scene3D scene[static 1]) {
     OpenGL_draw(first, (int)scene->vertices_count);
 }
 
-void Scene3D_update_objects(Scene3D scene[static 1]) {
+void Scene3D_update_objects(Scene3D *scene) {
+    assert(scene != NULL);
+
     Lock_lock(&scene->vab.lock);
-    for(unsigned int i=0u; i<(unsigned int)scene->to_update.length; i++) {
+    for(unsigned int i = 0u; i<(unsigned int)scene->to_update.length; i++) {
         SceneObject3D *const scene_object = &scene->scene_objects.buffer[scene->to_update.buffer[i]]; 
         VertexArrayBuffer_set(&scene->vab, scene_object->offset * sizeof(*scene_object->object->vertices), scene_object->object->vertices, scene_object->object->vertices_count * sizeof(*scene_object->object->vertices));
         scene_object->needs_update = true;

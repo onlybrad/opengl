@@ -14,7 +14,7 @@ typedef struct VertexLayout {
     int stride;
 } VertexLayout;
 
-void VertexLayout_init(VertexLayout layout[static 1]);
-bool VertexLayout_push(VertexLayout layout[static 1], const VertexAttribute attribute);
+void VertexLayout_init(VertexLayout *layout);
+bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute);
 
 #endif

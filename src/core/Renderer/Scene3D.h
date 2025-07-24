@@ -44,16 +44,16 @@ typedef struct Scene3D {
     Vector_uint to_update;
 } Scene3D;
 
-void Scene3D_init(Scene3D scene[static 1], Shader shader[static 1], PerspectiveCamera  perspective_camera[static 1]);
-void Scene3D_free(Scene3D scene[static 1]);
-bool Scene3D_add_object(Scene3D scene[static 1], Object object[static 1], const Transform *const transform);
-void Scene3D_object_set_transform(Scene3D scene[static 1], const unsigned int object_index, Transform transform[static 1]);
-void Scene3D_object_needs_update(Scene3D scene[static 1], const unsigned int object_index);
-void Scene3D_set_background(Scene3D scene[static 1], Object background[static 1]);
-SceneObject3D *Scene3D_object_get(Scene3D scene[static 1], const unsigned int object_index);
-void Scene3D_start(Scene3D scene[static 1]);
-void Scene3D_end(Scene3D scene[static 1]);
-void Scene3D_update_objects(Scene3D scene[static 1]);
-void Scene3D_draw_objects(Scene3D scene[static 1]);
+void Scene3D_init(Scene3D *scene, Shader *shader, PerspectiveCamera  *perspective_camera);
+void Scene3D_free(Scene3D *scene);
+bool Scene3D_add_object(Scene3D *scene, Object *object, const Transform *transform);
+void Scene3D_object_set_transform(Scene3D *scene, const unsigned int object_index, Transform *transform);
+void Scene3D_object_needs_update(Scene3D *scene, const unsigned int object_index);
+void Scene3D_set_background(Scene3D *scene, Object *background);
+SceneObject3D *Scene3D_object_get(Scene3D *scene, const unsigned int object_index);
+void Scene3D_start(Scene3D *scene);
+void Scene3D_end(Scene3D *scene);
+void Scene3D_update_objects(Scene3D *scene);
+void Scene3D_draw_objects(Scene3D *scene);
 
 #endif

@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <cglm/cglm.h>
 #include <stdlib.h>
 #include "Cylinder.h"
@@ -86,7 +87,9 @@ static Vertex *generate_cylinder_vertices(const unsigned int segments, const flo
     return vertices;
 }
 
-void Cylinder_create(Object object[static 1], const float radius, const float height) {
+void Cylinder_create(Object *object, const float radius, const float height) {
+    assert(object != NULL);
+
     size_t size;
     Vertex *cylinder_vertices = generate_cylinder_vertices(20u, radius, height, &size);
 

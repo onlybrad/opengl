@@ -1,13 +1,19 @@
+#include <assert.h>
+#include <stdlib.h>
 #include "VertexLayout.h"
 
 extern int MAX_VERTEX_ATTRIBS;
 
-void VertexLayout_init(VertexLayout layout[static 1]) {
+void VertexLayout_init(VertexLayout *layout) {
+    assert(layout != NULL);
+
     layout->attributes_index = 0u;
     layout->stride = 0;
 }
 
-bool VertexLayout_push(VertexLayout layout[static 1], const VertexAttribute attribute) {
+bool VertexLayout_push(VertexLayout *layout, const VertexAttribute attribute) {
+    assert(layout != NULL);
+
     if(layout->attributes_index == (unsigned int)MAX_VERTEX_ATTRIBS) {
         return false;
     }
@@ -16,7 +22,7 @@ bool VertexLayout_push(VertexLayout layout[static 1], const VertexAttribute attr
         layout->attributes[layout->attributes_index++] = attribute;
         layout->stride += (int)attribute.count * (int)sizeof(float);
     } else {
-        for(unsigned int i=0u; i < attribute.count / 4; i++) {
+        for(unsigned int i = 0u; i < attribute.count / 4; i++) {
             layout->attributes[layout->attributes_index++] = (VertexAttribute) {
                 .normalized = attribute.normalized,
                 .count = 4u

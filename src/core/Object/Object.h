@@ -25,16 +25,16 @@ typedef struct Object {
     unsigned int vertices_count;
 } Object;
 
-void Object_init(Object object[static 1], Vertex vertices[static 1], const unsigned int vertices_count);
-void Object_init_move(Object object[static 1], Vertex vertices[static 1], const unsigned int vertices_count);
-void Object_free(Object object[static 1]);
-void Object_set_texture(Object object[static 1], Texture texture[static 1]);
-void Object_set_rgba_color(Object object[static 1], Color color[static 1]);
-void Object_set_vec4_color(Object object[static 1], const vec4 color);
-void Object_set_texture_slot(Object object[static 1], const unsigned int texture_slot);
-void Object_set_shininess(Object object[static 1], const unsigned int shininess);
-void Object_set_model(Object object[static 1], const float model[static 16]);
-void Object_set_is_light(Object object[static 1], const bool is_light);
-unsigned int Object_get_texture_slot(Object object[static 1]);
+void Object_init(Object *object, Vertex *vertices, const unsigned int vertices_count);
+void Object_init_move(Object *object, Vertex *vertices, const unsigned int vertices_count);
+void Object_free(Object *object);
+void Object_set_texture(Object *object, Texture *texture);
+void Object_set_rgba_color(Object *object, Color *color);
+void Object_set_vec4_color(Object *object, const vec4 color);
+void Object_set_texture_slot(Object *object, const unsigned int texture_slot);
+void Object_set_shininess(Object *object, const unsigned int shininess);
+void Object_set_model(Object *object, const float model[16]);
+void Object_set_is_light(Object *object, const bool is_light);
+unsigned int Object_get_texture_slot(Object *object);
 
 #endif

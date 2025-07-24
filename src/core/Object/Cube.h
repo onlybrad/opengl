@@ -51,8 +51,8 @@
 
 #define BLACK_CUBE_VERTICES(SIDE) CUBE_VERTICES(SIDE, CURLY_BRACKETS({0.0f, 0.0f, 0.0f, 0.0f}))
 
-void Cube_create_background(Object object[static 1]);
-void Cube_create(Object object[static 1]);
-void Cube_create_light(Object object[static 1]);
+void Cube_create_background(Object *object);
+void Cube_create(Object *object);
+void Cube_create_light(Object *object);
 
 #endif

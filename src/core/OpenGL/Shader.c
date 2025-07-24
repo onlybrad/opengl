@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <glad/glad.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -68,7 +69,11 @@ static unsigned int create_shader(String vertex_shader_src, String fragment_shad
     return program;
 }
 
-bool Shader_init(Shader shader[static 1], const char vertex_shader_path[static 1], const char fragment_shader_path[static 1]) {
+bool Shader_init(Shader *shader, const char *vertex_shader_path, const char *fragment_shader_path) {
+    assert(shader != NULL);
+    assert(vertex_shader_path != NULL);
+    assert(fragment_shader_path != NULL);
+
     const String vertex_shader_src = file_get_contents(vertex_shader_path);
     if(vertex_shader_src.buffer == NULL) {
         return false;
@@ -95,18 +100,25 @@ bool Shader_init(Shader shader[static 1], const char vertex_shader_path[static 1
     return true;
 }
 
-void Shader_free(Shader shader[static 1]) {
+void Shader_free(Shader *shader) {
+    assert(shader != NULL);
+
     glDeleteProgram(shader->id);
     String_free(shader->vertex_shader_src);
     String_free(shader->fragment_shader_src);
     HashMap_str_int_free(&shader->location_cache);
 }
 
-void Shader_use(const Shader shader[static 1]) {
+void Shader_use(const Shader *shader) {
+    assert(shader != NULL);
+
     glUseProgram(shader->id);
 }
 
-int Shader_get_location(Shader shader[static 1], const char name[static 1]) {
+int Shader_get_location(Shader *shader, const char *name) {
+    assert(shader != NULL);
+    assert(name != NULL);
+
     bool success;
     const int result = HashMap_str_int_get(&shader->location_cache, name, &success);
 
@@ -125,7 +137,10 @@ int Shader_get_location(Shader shader[static 1], const char name[static 1]) {
     return location;
 }
 
-bool Shader_set_bool(Shader shader[static 1], const char name[static 1], const bool value) {
+bool Shader_set_bool(Shader *shader, const char *name, const bool value) {
+    assert(shader != NULL);
+    assert(name != NULL);
+
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -136,7 +151,10 @@ bool Shader_set_bool(Shader shader[static 1], const char name[static 1], const b
     return true;
 }
 
-bool Shader_set_int(Shader shader[static 1], const char name[static 1], const int value) {
+bool Shader_set_int(Shader *shader, const char *name, const int value) {
+    assert(shader != NULL);
+    assert(name != NULL);
+
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -147,7 +165,10 @@ bool Shader_set_int(Shader shader[static 1], const char name[static 1], const in
     return true;
 }
 
-bool Shader_set_float(Shader shader[static 1], const char name[static 1], const float value) {
+bool Shader_set_float(Shader *shader, const char *name, const float value) {
+    assert(shader != NULL);
+    assert(name != NULL);
+
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -158,7 +179,11 @@ bool Shader_set_float(Shader shader[static 1], const char name[static 1], const 
     return true;
 }
 
-bool Shader_set_mat4(Shader shader[static 1], const char name[static 1], const float *value) {
+bool Shader_set_mat4(Shader *shader, const char *name, const float *value) {
+    assert(shader != NULL);
+    assert(name != NULL);
+    assert(value != NULL);
+
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -169,7 +194,11 @@ bool Shader_set_mat4(Shader shader[static 1], const char name[static 1], const f
     return true;
 }
 
-bool Shader_set_vec3(Shader shader[static 1], const char name[static 1], const float *value) {
+bool Shader_set_vec3(Shader *shader, const char *name, const float *value) {
+    assert(shader != NULL);
+    assert(name != NULL);
+    assert(value != NULL);
+
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -180,7 +209,11 @@ bool Shader_set_vec3(Shader shader[static 1], const char name[static 1], const f
     return true; 
 }
 
-bool Shader_set_vec4(Shader shader[static 1], const char name[static 1], const float *value) {
+bool Shader_set_vec4(Shader *shader, const char *name, const float *value) {
+    assert(shader != NULL);
+    assert(name != NULL);
+    assert(value != NULL);
+
     int location;
     if((location = Shader_get_location(shader, name)) < 0) {
         return false;
@@ -191,32 +224,44 @@ bool Shader_set_vec4(Shader shader[static 1], const char name[static 1], const f
     return true; 
 }
 
-inline void Shader_set_bool_l(Shader shader[static 1], const int location, const bool value) {
+inline void Shader_set_bool_l(Shader *shader, const int location, const bool value) {
+    assert(shader != NULL);
+
     (void)shader;
     glUniform1i(location, (int)value);
 }
 
-inline void Shader_set_int_l(Shader shader[static 1], const int location, const int value) {
+inline void Shader_set_int_l(Shader *shader, const int location, const int value) {
+    assert(shader != NULL);
+
     (void)shader;
     glUniform1i(location, value);    
 }
 
-inline void Shader_set_float_l(Shader shader[static 1], const int location, const float value) {
+inline void Shader_set_float_l(Shader *shader, const int location, const float value) {
+    assert(shader != NULL);
+
     (void)shader;    
     glUniform1f(location, value);
 }
 
-inline void Shader_set_mat4_l(Shader shader[static 1], const int location, const float *value) {
+inline void Shader_set_mat4_l(Shader *shader, const int location, const float *value) {
+    assert(shader != NULL);
+
     (void)shader;
     glUniformMatrix4fv(location, 1, false, value);
 }
 
-inline void Shader_set_vec3_l(Shader shader[static 1], const int location, const float *value) {
+inline void Shader_set_vec3_l(Shader *shader, const int location, const float *value) {
+    assert(shader != NULL);
+
     (void)shader;
     glUniform3fv(location, 1, value);
 }
 
-inline void Shader_set_vec4_l(Shader shader[static 1], const int location, const float *value) {
+inline void Shader_set_vec4_l(Shader *shader, const int location, const float *value) {
+    assert(shader != NULL);
+    
     (void)shader;
     glUniform4fv(location, 1, value);
 }

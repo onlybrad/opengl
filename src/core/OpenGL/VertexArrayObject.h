@@ -9,10 +9,10 @@ typedef struct VertexArrayObject {
     unsigned int id;
 } VertexArrayObject;
 
-void VertexArrayObject_init(VertexArrayObject vao[static 1]);
-void VertexArrayObject_free(VertexArrayObject vao[static 1]);
-void VertexArrayObject_add_buffer(VertexArrayObject vao[static 1], const VertexArrayBuffer *const vab, const IndexBuffer *const ib, const VertexLayout *const layout);
-void VertexArrayObject_bind(const VertexArrayObject vao[static 1]);
-void VertexArrayObject_unbind(const VertexArrayObject vao[static 1]);
+void VertexArrayObject_init(VertexArrayObject *vao);
+void VertexArrayObject_free(VertexArrayObject *vao);
+void VertexArrayObject_add_buffer(VertexArrayObject *vao, const VertexArrayBuffer *vab, const IndexBuffer *ib, const VertexLayout *layout);
+void VertexArrayObject_bind(const VertexArrayObject *vao);
+void VertexArrayObject_unbind(const VertexArrayObject *vao);
 
 #endif

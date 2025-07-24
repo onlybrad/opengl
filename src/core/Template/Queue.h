@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "../Util/util.h"
@@ -33,16 +34,16 @@ typedef struct QUEUE {
     size_t capacity;
 } QUEUE;
 
-void QUEUE_INIT(QUEUE queue[static 1]);
-void QUEUE_FREE(QUEUE queue[static 1]);
-void QUEUE_ENQUEUE(QUEUE queue[static 1], T value);
-T QUEUE_DEQUEUE(QUEUE queue[static 1], bool *const success);
+void QUEUE_INIT(QUEUE *queue);
+void QUEUE_FREE(QUEUE *queue);
+void QUEUE_ENQUEUE(QUEUE *queue, T value);
+T QUEUE_DEQUEUE(QUEUE *queue, bool *success);
 
 #endif //QUEUE_IMPLEMENTATION
 
 #if defined QUEUE_PRINT_FORMAT && defined QUEUE_PRINT_ARGUMENTS
-void QUEUE_PRINT(const QUEUE queue[static 1]);
-char *QUEUE_TO_STRING(const QUEUE queue[static 1]);
+void QUEUE_PRINT(const QUEUE *queue);
+char *QUEUE_TO_STRING(const QUEUE *queue);
 #endif //QUEUE_PRINT_FORMAT QUEUE_PRINT_ARGUMENTS
 
 #if 0
@@ -51,16 +52,14 @@ char *QUEUE_TO_STRING(const QUEUE queue[static 1]);
 
 #ifdef QUEUE_IMPLEMENTATION 
 
-#include <assert.h>
-
-static void QUEUE_RESIZE(QUEUE queue[static 1], const size_t new_capacity) {
+static void QUEUE_RESIZE(QUEUE *queue, size_t new_capacity) {
     T *buffer = realloc(queue->buffer, sizeof(T) * new_capacity);
     assert(buffer != NULL);
     queue->buffer = buffer;
     queue->capacity = new_capacity;
 }
 
-void QUEUE_INIT(QUEUE queue[static 1]) {
+void QUEUE_INIT(QUEUE *queue) {
     queue->buffer = malloc(sizeof(T) * QUEUE_INITIAL_CAPACITY);
     assert(queue->buffer != NULL);
     queue->capacity = QUEUE_INITIAL_CAPACITY;
@@ -68,19 +67,19 @@ void QUEUE_INIT(QUEUE queue[static 1]) {
     queue->tail = 0;
 }
 
-void QUEUE_FREE(QUEUE queue[static 1]) {
+void QUEUE_FREE(QUEUE *queue) {
     free(queue->buffer);
     *queue = (QUEUE){0};
 }
 
-void QUEUE_ENQUEUE(QUEUE queue[static 1], T value) {
+void QUEUE_ENQUEUE(QUEUE *queue, T value) {
     if(queue->head == queue->capacity) {
         QUEUE_RESIZE(queue, queue->capacity * 2);
     }
     queue->buffer[queue->head++] = value;
 }
 
-T QUEUE_DEQUEUE(QUEUE queue[static 1], bool *const success) {
+T QUEUE_DEQUEUE(QUEUE *queue, bool *success) {
     if(queue->head == 0) {
         *success = false;
         return (T){0};
@@ -98,12 +97,12 @@ T QUEUE_DEQUEUE(QUEUE queue[static 1], bool *const success) {
 }
 
 #if defined QUEUE_PRINT_FORMAT && defined QUEUE_PRINT_ARGUMENTS
-void QUEUE_PRINT(const QUEUE queue[static 1]) {
+void QUEUE_PRINT(const QUEUE *queue) {
     if(queue->head == 0) {
         return;
     }
 
-    for(size_t i=queue->tail; i<queue->head - 1; i++) {
+    for(size_t i = queue->tail; i < queue->head - 1; i++) {
         printf(QUEUE_PRINT_FORMAT " -> ", QUEUE_PRINT_ARGUMENTS(queue->buffer[i]));
     }
 
@@ -114,9 +113,9 @@ void QUEUE_PRINT(const QUEUE queue[static 1]) {
     putchar('\n');
 }
 
-char *QUEUE_TO_STRING(const QUEUE queue[static 1]) {
+char *QUEUE_TO_STRING(const QUEUE *queue) {
     size_t length = 0;
-    for(size_t i=queue->tail; i<queue->head - 1; i++) {
+    for(size_t i = queue->tail; i < queue->head - 1; i++) {
         const int char_printed = snprintf(NULL, 0, QUEUE_PRINT_FORMAT " -> ", QUEUE_PRINT_ARGUMENTS(queue->buffer[i]));
         length += (size_t)char_printed;
     }
@@ -130,7 +129,7 @@ char *QUEUE_TO_STRING(const QUEUE queue[static 1]) {
     assert(queue_str != NULL);
 
     size_t offset = 0;
-    for(size_t i=queue->tail; i<queue->head - 1; i++) {
+    for(size_t i = queue->tail; i < queue->head - 1; i++) {
         const int char_printed = sprintf(queue_str + offset, QUEUE_PRINT_FORMAT " -> ", QUEUE_PRINT_ARGUMENTS(queue->buffer[i]));
         offset += (size_t)char_printed;
     }

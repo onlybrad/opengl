@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <GLFW/glfw3.h>
 #include "Mouse.h"
 
@@ -19,7 +20,9 @@ static void GLFW_mouse_scroll_callback(GLFWwindow *glfw_window, double x, double
     mouse.scroll_callback(mouse.window, x, y);
 }
 
-void Mouse_init(Window window[static 1]) {
+void Mouse_init(Window *window) {
+    assert(window != NULL);
+
     mouse.window = window;
 }
 
