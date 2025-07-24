@@ -14,7 +14,8 @@
 
 static unsigned OB_compile_shader(struct OB_String shader_source, GLenum shader_type) {
     const unsigned shader = glCreateShader(shader_type);
-    glShaderSource(shader, 1, &shader_source.buffer, (int *)&(shader_source.length));
+    int length = (int)shader_source.length;
+    glShaderSource(shader, 1, &shader_source.buffer, &length);
     glCompileShader(shader);
 
     int success;
@@ -31,7 +32,7 @@ static unsigned OB_compile_shader(struct OB_String shader_source, GLenum shader_
         }
 
         glGetShaderInfoLog(shader, 512, NULL, info_log);
-        fprintf(stderr,"ERROR::%s::COMPILATION_FAILED\n%s\n",shader_type_name, info_log);
+        fprintf(stderr,"ERROR::%s::COMPILATION_FAILED\n%s\n", shader_type_name, info_log);
         return 0u;
     }
 
@@ -60,7 +61,7 @@ static unsigned OB_create_shader(struct OB_String vertex_shader_src, struct OB_S
 
     if(!success) {
         glGetProgramInfoLog(program, 512, NULL, infoLog);
-        fprintf(stderr,"ERROR::PROGRAM::LINKING_FAILED\n%s\n",infoLog);
+        fprintf(stderr, "Shader Error: %s\n", infoLog);
         return 0u;
     }
 
@@ -96,7 +97,10 @@ bool OB_Shader_init(struct OB_Shader *shader, const char *vertex_shader_path, co
     shader->id = id;
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
-    Hashmap_str_int_init(&shader->location_cache, OB_String_hash_function, OB_String_compare);
+    if(!Hashmap_str_int_init(&shader->location_cache, OB_String_hash_function, OB_String_compare)) {
+        OB_Shader_free(shader);
+        return false;
+    }
 
     return true;
 }
@@ -123,19 +127,20 @@ int OB_Shader_get_location(struct OB_Shader *shader, const char *name) {
 
     bool success;
     const int result = Hashmap_str_int_get(&shader->location_cache, name, &success);
-
     if(success) {
         return result;
     }
 
-    int location = glGetUniformLocation(shader->id, name);
+    const int location = glGetUniformLocation(shader->id, name);
     if(location < 0) {
         fprintf(stderr, "Could not find \"%s\" uniform in shader\n", name);
         return location;
     }
 
-    Hashmap_str_int_insert(&shader->location_cache, name, location);
-    
+    if(!Hashmap_str_int_insert(&shader->location_cache, name, location)) {
+        return -1;
+    }
+
     return location;
 }
 
@@ -143,8 +148,8 @@ bool OB_Shader_set_bool(struct OB_Shader *shader, const char *name, bool value) 
     assert(shader != NULL);
     assert(name != NULL);
 
-    int location;
-    if((location = OB_Shader_get_location(shader, name)) < 0) {
+    const int location = OB_Shader_get_location(shader, name);
+    if(location < 0) {
         return false;
     }
 
@@ -157,11 +162,11 @@ bool OB_Shader_set_int(struct OB_Shader *shader, const char *name, int value) {
     assert(shader != NULL);
     assert(name != NULL);
 
-    int location;
-    if((location = OB_Shader_get_location(shader, name)) < 0) {
+    const int location = OB_Shader_get_location(shader, name);
+    if(location < 0) {
         return false;
     }
-    
+
     glUniform1i(location, value);
     
     return true;
@@ -171,8 +176,8 @@ bool OB_Shader_set_float(struct OB_Shader *shader, const char *name, float value
     assert(shader != NULL);
     assert(name != NULL);
 
-    int location;
-    if((location = OB_Shader_get_location(shader, name)) < 0) {
+    const int location = OB_Shader_get_location(shader, name);
+    if(location < 0) {
         return false;
     }
 
@@ -186,8 +191,8 @@ bool OB_Shader_set_mat4(struct OB_Shader *shader, const char *name, const float 
     assert(name != NULL);
     assert(value != NULL);
 
-    int location;
-    if((location = OB_Shader_get_location(shader, name)) < 0) {
+    const int location = OB_Shader_get_location(shader, name);
+    if(location < 0) {
         return false;
     }
 
@@ -201,8 +206,8 @@ bool OB_Shader_set_vec3(struct OB_Shader *shader, const char *name, const float 
     assert(name != NULL);
     assert(value != NULL);
 
-    int location;
-    if((location = OB_Shader_get_location(shader, name)) < 0) {
+    const int location = OB_Shader_get_location(shader, name);
+    if(location < 0) {
         return false;
     }
 
@@ -216,8 +221,8 @@ bool OB_Shader_set_vec4(struct OB_Shader *shader, const char *name, const float 
     assert(name != NULL);
     assert(value != NULL);
 
-    int location;
-    if((location = OB_Shader_get_location(shader, name)) < 0) {
+    const int location = OB_Shader_get_location(shader, name);
+    if(location < 0) {
         return false;
     }
 

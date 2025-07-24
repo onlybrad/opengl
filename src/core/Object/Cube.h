@@ -51,8 +51,8 @@
 
 #define OB_BLACK_CUBE_VERTICES(SIDE) OB_CUBE_VERTICES(SIDE, OB_CURLY_BRACKETS({0.0f, 0.0f, 0.0f, 0.0f}))
 
-void OB_Cube_create_background(struct OB_Object *object);
-void OB_Cube_create(struct OB_Object *object);
-void OB_Cube_create_light(struct OB_Object *object);
+bool OB_Cube_create_background(struct OB_Object *object);
+bool OB_Cube_create(struct OB_Object *object);
+bool OB_Cube_create_light(struct OB_Object *object);
 
 #endif

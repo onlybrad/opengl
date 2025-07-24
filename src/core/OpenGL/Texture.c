@@ -45,7 +45,7 @@ const char OB_TEXTURE_UNIFORMS[32][10] = {
 extern int OB_MAX_TEXTURE_IMAGE_UNITS;
 extern int OB_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 
-static const unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
+static unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
 
 static void OB_generate_texture(struct OB_Texture *texture) {
     assert(texture != NULL);
@@ -99,9 +99,11 @@ void OB_Texture_init(struct OB_Texture *texture, const char *name, const char *p
 void OB_Texture_free(struct OB_Texture *texture) {
     assert(texture != NULL);
 
-    stbi_image_free(texture->data);
-    texture->data = NULL;
+    if(texture->data != DEFAULT_TEXTURE) {
+        stbi_image_free(texture->data);
+    }
     memset(texture, 0, sizeof(*texture));
+    texture->data = NULL;
 }
 
 void OB_Texture_use(const struct OB_Texture *texture, unsigned slot) {
@@ -111,7 +113,7 @@ void OB_Texture_use(const struct OB_Texture *texture, unsigned slot) {
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-bool OB_Texture_color(struct OB_Texture *texture, const char* name, const struct OB_Color *color) {
+void OB_Texture_color(struct OB_Texture *texture, const char* name, const struct OB_Color *color) {
     assert(texture != NULL);
     assert(name != NULL);
     assert(color != NULL);
@@ -119,18 +121,21 @@ bool OB_Texture_color(struct OB_Texture *texture, const char* name, const struct
     texture->channels = 4;
     texture->width = 1;
     texture->height = 1;
+    texture->name = NULL ? "default" : name;
+
+    if(color == NULL) {
+        texture->data = DEFAULT_TEXTURE;
+        return;
+    }
 
     const size_t size = 4 * sizeof(unsigned char);
     texture->data = (unsigned char*)malloc(size);
 
     if(texture->data == NULL) {
-        return false;
+        texture->data = DEFAULT_TEXTURE;
+        return;
     }
 
-    memcpy(texture->data, color == NULL ? DEFAULT_TEXTURE : (const unsigned char*)color, size);
-    
-    texture->name = NULL ? "default" : name;
+    memcpy(texture->data, (const unsigned char*)color, size);
     OB_generate_texture(texture);
-
-    return true;
 }

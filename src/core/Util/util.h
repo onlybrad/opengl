@@ -6,14 +6,20 @@
 #include <stdio.h>
 #include "String.h"
 
-#if defined(__clang__) || defined(__GNUC__)
-#define OB_FALLTHROUGH {__attribute__((fallthrough));}
-#elif defined(_MSC_VER)
-#define OB_FALLTHROUGH {__fallthrough;}
-#elif defined(__INTEL_COMPILER)
-#define OB_FALLTHROUGH {[[fallthrough]];}
+#ifdef __cplusplus
+    #define OB_ZERO {}
 #else
-#define OB_FALLTHROUGH
+    #define OB_ZERO {0}
+#endif
+
+#if defined(__clang__) || defined(__GNUC__)
+    #define OB_FALLTHROUGH {__attribute__((fallthrough));}
+#elif defined(_MSC_VER)
+    #define OB_FALLTHROUGH {__fallthrough;}
+#elif defined(__INTEL_COMPILER)
+    #define OB_FALLTHROUGH {[[fallthrough]];}
+#else
+    #define OB_FALLTHROUGH
 #endif
 
 #if _WIN32

@@ -43,7 +43,7 @@ struct HASHMAP {
 bool HASHMAP_INIT(struct HASHMAP *hashmap, size_t (*hash_function)(HASHMAP_K), bool (*compare_function)(HASHMAP_K, HASHMAP_K));
 void HASHMAP_FREE(struct HASHMAP *hashmap);
 bool HASHMAP_EXISTS(struct HASHMAP *hashmap, HASHMAP_K key);
-void HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value);
+bool HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value);
 HASHMAP_V HASHMAP_GET(struct HASHMAP *hashmap, HASHMAP_K key, bool *success);
 bool HASHMAP_REMOVE(struct HASHMAP *hashmap, HASHMAP_K key);
 
@@ -129,17 +129,21 @@ bool HASHMAP_EXISTS(struct HASHMAP *hashmap, HASHMAP_K key) {
     return HASHMAP_GET_BUCKET(hashmap, key, true) != NULL;
 }
 
-void HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value) {
+bool HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value) {
     struct BUCKET *bucket = HASHMAP_GET_BUCKET(hashmap, key, false);
     
     if(bucket == NULL) {
-        HASHMAP_RESIZE(hashmap, 2 * hashmap->capacity);
+        if(!HASHMAP_RESIZE(hashmap, 2 * hashmap->capacity)) {
+            return false;
+        }
         bucket = HASHMAP_GET_BUCKET(hashmap, key, false);
     }
 
     bucket->key = key;
     bucket->value = value;
     bucket->used = true;
+
+    return true;
 }
 
 HASHMAP_V HASHMAP_GET(struct HASHMAP *hashmap, HASHMAP_K key, bool *success) {
