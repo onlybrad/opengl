@@ -6,15 +6,15 @@
 static struct OB_Vertex *OB_generate_cylinder_vertices(unsigned segments, float radius, float height, size_t *size) {
     const float π = 3.141593f;
     const float step = 2.0f * π / (float)segments;
+    const size_t vertex_count = (size_t)segments * 12;
 
-    *size = (size_t)segments * 12 * sizeof(struct OB_Vertex);
-    struct OB_Vertex *vertices = (struct OB_Vertex*)calloc((size_t)segments * 12, sizeof(struct OB_Vertex));
+    *size = vertex_count * sizeof(struct OB_Vertex);
+    struct OB_Vertex *vertices = (struct OB_Vertex*)calloc(vertex_count, sizeof(struct OB_Vertex));
     if(vertices == NULL) {
         return NULL;
     }
 
     struct OB_Vertex *vertex = vertices;
-
     for (unsigned i = 0u; i < segments; i++) {
         const float θ0 = (float)i * step;
         const float θ1 = (float)(i + 1) * step;
