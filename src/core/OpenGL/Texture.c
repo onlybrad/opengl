@@ -47,7 +47,7 @@ extern int OB_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 
 static unsigned char DEFAULT_TEXTURE[4] = {0, 0, 0, 255}; //Opaque black
 
-static void OB_generate_texture(struct OB_Texture *texture) {
+static bool OB_generate_texture(struct OB_Texture *texture) {
     assert(texture != NULL);
 
     GLenum format;
@@ -58,7 +58,7 @@ static void OB_generate_texture(struct OB_Texture *texture) {
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         format = GL_RGBA;
     } else {
-        return;
+        return false;
     }
 
     glGenTextures(1, &texture->id);
@@ -70,9 +70,11 @@ static void OB_generate_texture(struct OB_Texture *texture) {
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, texture->width, texture->height, 0, format, GL_UNSIGNED_BYTE, texture->data);
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    return true;
 }
 
-void OB_Texture_init(struct OB_Texture *texture, const char *name, const char *path) {
+bool OB_Texture_init(struct OB_Texture *texture, const char *name, const char *path) {
     assert(texture != NULL);
     assert(name != NULL);
     assert(path != NULL);
@@ -81,11 +83,10 @@ void OB_Texture_init(struct OB_Texture *texture, const char *name, const char *p
 
     stbi_set_flip_vertically_on_load(1);
     unsigned char *data = stbi_load(path, &width, &height, &channels, 0);
-
     if(data == NULL) {
         fprintf(stderr, "Couldn't load texture at %s\n", path);
         OB_Texture_color(texture, NULL, NULL);
-        return;
+        return false;
     }
 
     texture->channels = channels;
@@ -93,7 +94,8 @@ void OB_Texture_init(struct OB_Texture *texture, const char *name, const char *p
     texture->height = height;
     texture->data = data;
     texture->name = name;
-    OB_generate_texture(texture);
+
+    return OB_generate_texture(texture);
 }
 
 void OB_Texture_free(struct OB_Texture *texture) {
@@ -113,7 +115,7 @@ void OB_Texture_use(const struct OB_Texture *texture, unsigned slot) {
     glBindTexture(GL_TEXTURE_2D, texture->id);
 }
 
-void OB_Texture_color(struct OB_Texture *texture, const char* name, const struct OB_Color *color) {
+bool OB_Texture_color(struct OB_Texture *texture, const char* name, const struct OB_Color *color) {
     assert(texture != NULL);
     assert(name != NULL);
     assert(color != NULL);
@@ -125,7 +127,7 @@ void OB_Texture_color(struct OB_Texture *texture, const char* name, const struct
 
     if(color == NULL) {
         texture->data = DEFAULT_TEXTURE;
-        return;
+        return false;
     }
 
     const size_t size = 4 * sizeof(unsigned char);
@@ -133,9 +135,10 @@ void OB_Texture_color(struct OB_Texture *texture, const char* name, const struct
 
     if(texture->data == NULL) {
         texture->data = DEFAULT_TEXTURE;
-        return;
+        return true;
     }
 
     memcpy(texture->data, (const unsigned char*)color, size);
-    OB_generate_texture(texture);
+    
+    return OB_generate_texture(texture);
 }

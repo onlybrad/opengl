@@ -10,6 +10,8 @@
 #include "../core/Util/util.h"
 #include "callback.h"
 
+#define CHECK_ERROR(BOOL) do { if(!BOOL) {code = 1; goto cleanup;} } while(0) 
+
 static struct OB_Shader shader = OB_ZERO;
 static struct OB_PerspectiveCamera camera = OB_ZERO;
 static struct OB_Scene3D scene = OB_ZERO;
@@ -27,7 +29,8 @@ static vec4 vec4_light_color = OB_ZERO;
 
 static const vec4 camera_position = {0.0f, 0.0f, 3.0f};
 static const struct OB_Color light_color = {255, 255, 255, 255};
-static const struct OB_Transform cube_transform = {
+static const struct OB_Transform 
+cube_transform = {
     0.0f, 
     {0.0f, 0.0f, 0.0f},
     {0.0f, 2.0f, 0.0f},
@@ -64,10 +67,7 @@ int main(void) {
     OB_Mouse_set_scroll_callback(mouse_scroll_callback);
 
     //Shader
-    if(! OB_Shader_init(&shader, "./shaders/vertexShader.glsl", "./shaders/fragmentShader.glsl")) {
-        code = 1;
-        goto cleanup;        
-    }
+    CHECK_ERROR(OB_Shader_init(&shader, "./shaders/vertexShader.glsl", "./shaders/fragmentShader.glsl"));
     OB_Shader_use(&shader);
 
     //Camera
@@ -80,39 +80,39 @@ int main(void) {
     OB_PerspectiveCamera_set_far_z(&camera, 100.0f);
     
     //Texture
-    OB_Texture_init(&space_texture, "spaceTexture", "./textures/space.jpg");
-    OB_Texture_init(&wood_texture, "woodTexture", "./textures/wood.png");
+    CHECK_ERROR(OB_Texture_init(&space_texture, "spaceTexture", "./textures/space.jpg"));
+    CHECK_ERROR(OB_Texture_init(&wood_texture, "woodTexture", "./textures/wood.png"));
 
     //Scene
-    OB_Scene3D_init(&scene, &shader, &camera);
+    CHECK_ERROR(OB_Scene3D_init(&scene, &shader, &camera));
     
     //Background
-    OB_Cube_create_background(&background);
+    CHECK_ERROR(OB_Cube_create_background(&background));
     OB_Object_set_texture(&background, &space_texture);
     OB_Scene3D_set_background(&scene, &background);
 
     //Cube 1
-    OB_Cube_create(&cube);
+    CHECK_ERROR(OB_Cube_create(&cube));
     OB_Object_set_texture(&cube, &wood_texture);
     OB_Scene3D_add_object(&scene, &cube, NULL);
 
     //Cube 2
-    OB_Cube_create(&cube2);
+    CHECK_ERROR(OB_Cube_create(&cube2));
     OB_Object_set_texture(&cube2, &wood_texture);
     OB_Scene3D_add_object(&scene, &cube2, &cube_transform);
 
     //Cylinder
-    OB_Cylinder_create(&cylinder, 0.5f, 0.5f);
+    CHECK_ERROR(OB_Cylinder_create(&cylinder, 0.5f, 0.5f));
     OB_Object_set_texture(&cylinder, &wood_texture);
     OB_Scene3D_add_object(&scene, &cylinder, &cylinder_transform);
 
     //Light
-    OB_Cube_create_light(&light);
+    CHECK_ERROR(OB_Cube_create_light(&light));
     OB_Object_set_rgba_color(&light, &light_color);
-    OB_Scene3D_add_object(&scene, &light, &light_transform);
-    OB_Shader_set_vec3(&shader, "light_position", light_transform.translate);
-    OB_Shader_set_vec4(&shader, "light_color", OB_Color_to_vec4(&light_color, vec4_light_color));
-    OB_Shader_set_float(&shader, "ambiant_strength", 0.7f);
+    CHECK_ERROR(OB_Scene3D_add_object(&scene, &light, &light_transform));
+    CHECK_ERROR(OB_Shader_set_vec3(&shader, "light_position", light_transform.translate));
+    CHECK_ERROR(OB_Shader_set_vec4(&shader, "light_color", OB_Color_to_vec4(&light_color, vec4_light_color)));
+    CHECK_ERROR(OB_Shader_set_float(&shader, "ambiant_strength", 0.7f));
 
     //Add scene to windows then start the scene
     OB_Window_set_scene3D(&window, &scene);
