@@ -2,13 +2,13 @@
 #include "Cube.h"
 #include "../Util/util.h"
 
-static struct OB_Vertex background_vertices[] = OB_BLACK_CUBE_VERTICES(1.0f);
-static struct OB_Vertex cube_vertices[] = OB_CUBE_VERTICES(0.5f, OB_CURLY_BRACKETS({1.0f, 0.5f, 0.31f, 1.0f}));
+static struct OB_Vertex OB_BACKGROUND_VERTICES[] = OB_BLACK_RECTANGLE_VERTICES(1.0f);
+static struct OB_Vertex OB_CUBE_VERTICES[] = OB_CUBE_VERTICES(0.5f, OB_CURLY_BRACKETS({1.0f, 0.5f, 0.31f, 1.0f}));
 
 bool OB_Cube_create_background(struct OB_Object *object) {
     assert(object != NULL);
     
-    if(!OB_Object_init(object, background_vertices, (unsigned)OB_ARRAY_LEN(background_vertices))) {
+    if(!OB_Object_init(object, OB_BACKGROUND_VERTICES, (unsigned)OB_ARRAY_LEN(OB_BACKGROUND_VERTICES))) {
         return false;
     }
 
@@ -22,7 +22,7 @@ bool OB_Cube_create_background(struct OB_Object *object) {
 bool OB_Cube_create(struct OB_Object *object) {
     assert(object != NULL);
     
-    if(!OB_Object_init(object, cube_vertices, (unsigned)OB_ARRAY_LEN(cube_vertices))) {
+    if(!OB_Object_init(object, OB_CUBE_VERTICES, (unsigned)OB_ARRAY_LEN(OB_CUBE_VERTICES))) {
         return false;
     }
     

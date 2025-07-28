@@ -8,6 +8,7 @@ FLAGS := -Wall -Wextra -Wpedantic -Wconversion -Wstrict-overflow=5 -Wshadow -Wun
 SOURCE := ./lib/glad/src/*.c ./src/core/OpenGL/*.c ./src/core/Window/*.c ./src/core/Thread/*.c ./src/core/Object/*.c ./src/core/Input/*.c ./src/core/Util/*.c ./src/app/main.c
 STATIC_LIBS := -L./lib/ -l:libglfw3.a -l:stb_image.a -l:libcglm.a
 WINDOWS_DYNAMIC_LIBS := -lopengl32 -lgdi32
+
 ifeq ($(OS),Windows_NT)
 	CMAKE_TARGET := "MinGW Makefiles"
 else
@@ -19,9 +20,6 @@ main_debug.exe: $(SOURCE)
 
 main.exe: $(SOURCE)
 	$(CC) $(MACRO) $(RELEASE_MACRO) $(INCLUDES) $(FLAGS) $(STD) -s -O3 -o main $(SOURCE) -static $(STATIC_LIBS) $(WINDOWS_DYNAMIC_LIBS) -mwindows
-
-test.exe: ./src/test/test.c ./src/core/Template/*.h ./src/core/Util/String.c
-	$(CC) $(FLAGS) $(STD) -g -o test ./src/test/test.c ./src/core/Util/String.c ./src/core/Util/util.c
 
 dependencies:
 	make cglm && make glfw && make stb_image
