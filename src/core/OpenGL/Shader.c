@@ -97,7 +97,7 @@ bool OB_Shader_init(struct OB_Shader *shader, const char *vertex_shader_path, co
     shader->id = id;
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
-    if(!Hashmap_str_int_init(&shader->location_cache, OB_String_hash_function, OB_String_compare)) {
+    if(!Hashmap_str_int_init(&shader->location_cache, OB_String_hash, OB_String_compare)) {
         OB_Shader_free(shader);
         return false;
     }

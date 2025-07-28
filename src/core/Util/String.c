@@ -16,7 +16,7 @@ void OB_String_free(struct OB_String str) {
     free(OB_unconst(str.buffer));
 }
 
-size_t OB_String_hash_function(const char *key) {
+size_t OB_String_hash(const char *key) {
     size_t hash = 0xcbf29ce484222325;
     const size_t str_len = strlen(key);
     for(size_t i = 0; i < str_len; i++) {

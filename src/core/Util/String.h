@@ -13,7 +13,7 @@ struct OB_String String_init(const char *c_str);
 struct OB_String String_init_copy(const char *c_str);
 void OB_String_free(struct OB_String str);
 
-size_t OB_String_hash_function(const char *key);
+size_t OB_String_hash(const char *key);
 bool OB_String_compare(const char *str1, const char *str2);
 
 #endif

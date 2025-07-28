@@ -28,9 +28,12 @@ out Fragment fragment;
 uniform mat4 view;
 uniform mat4 projection;
 
+bool is_background() {
+   return a_is_light == 0.0 && a_texture_slot == 0.0;
+}
+
 void main() {
-   //background
-   if(a_is_light == 0.0 && a_texture_slot == 0.0) {
+   if(is_background()) {
       gl_Position = vec4(a_position, 1.0);
    } else {
       //Do the transpose inverse on the CPU for better performance
@@ -42,7 +45,7 @@ void main() {
       gl_Position = projection * view * a_model * vec4(a_position, 1.0);
    }
 
-   fragment.texture_coordinates = a_texture_coordinates;
    object.texture_slot = int(a_texture_slot);
    object.is_light = a_is_light != 0.0;
+   fragment.texture_coordinates = a_texture_coordinates;
 }
