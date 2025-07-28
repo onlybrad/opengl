@@ -61,9 +61,9 @@ struct OB_String OB_file_get_contents(const char *path) {
 void *OB_unconst(const void *const_var) {
     union {
         const void *const_var;
-        void *OB_unconst_var;
+        void *unconst_var;
     } var;
 
     var.const_var = const_var;
-    return var.OB_unconst_var;
+    return var.unconst_var;
 }
