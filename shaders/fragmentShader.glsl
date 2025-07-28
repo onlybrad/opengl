@@ -3,6 +3,7 @@
 struct Object {
    float shininess;
    vec3 normal;
+   vec4 color;
    int texture_slot;
    bool is_light;
 };
@@ -10,7 +11,6 @@ struct Object {
 struct Fragment {
    vec2 texture_coordinates;
    vec3 position;
-   vec4 color;
 };
 
 out vec4 frag_color;
@@ -74,7 +74,7 @@ void main() {
 
       frag_color = vec4((ambient + diffuse + specular), 1.0);
    } else {
-      frag_color = fragment.color;
+      frag_color = object.color;
    }
 }
 

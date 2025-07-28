@@ -3,6 +3,7 @@
 struct Object {
    float shininess;
    vec3 normal;
+   vec4 color;
    int texture_slot;
    bool is_light;
 };
@@ -10,7 +11,6 @@ struct Object {
 struct Fragment {
    vec2 texture_coordinates;
    vec3 position;
-   vec4 color;
 };
 
 layout (location = 0) in vec3 a_position;
@@ -37,7 +37,7 @@ void main() {
       //normal = normalize(mat3(transpose(inverse(a_model))) * a_normal);
       object.normal = normalize(a_normal);
       object.shininess = a_shininess;
-      fragment.color = a_color;
+      object.color = a_color;
       fragment.position = vec3(a_model * vec4(a_position, 1.0));
       gl_Position = projection * view * a_model * vec4(a_position, 1.0);
    }
