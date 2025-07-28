@@ -1,13 +1,21 @@
 #version 330 core
 
+struct Object {
+   float shininess;
+   vec3 normal;
+   int texture_slot;
+   bool is_light;
+};
+
+struct Fragment {
+   vec2 texture_coordinates;
+   vec3 position;
+   vec4 color;
+};
+
 out vec4 frag_color;
-in vec2 texture_coordinates;
-in vec3 frag_position;
-in vec4 color;
-flat in vec3 normal;
-flat in int texture_slot;
-flat in float shininess;
-flat in float is_light;
+flat in Object object;
+in Fragment fragment;
 
 uniform vec3 camera_position;
 uniform vec3 light_position;
@@ -51,22 +59,22 @@ vec4 get_texture(int index, vec2 texture_coordinates);
 
 void main() {
    //background
-   if(is_light == 0.0 && texture_slot == 0) {
-      frag_color = get_texture(0, texture_coordinates);
-   } else if(is_light == 0.0) {
-      vec3 light_direction = normalize(light_position - frag_position);
-      vec3 camera_direction = normalize(camera_position - frag_position);
-      vec3 reflect_direction = reflect(-light_direction, normal);
+   if(!object.is_light && object.texture_slot == 0) {
+      frag_color = get_texture(0, fragment.texture_coordinates);
+   } else if(!object.is_light) {
+      vec3 light_direction = normalize(light_position - fragment.position);
+      vec3 camera_direction = normalize(camera_position - fragment.position);
+      vec3 reflect_direction = reflect(-light_direction, object.normal);
 
-      vec4 diffuse_texture = get_texture(texture_slot, texture_coordinates);
+      vec4 diffuse_texture = get_texture(object.texture_slot, fragment.texture_coordinates);
 
       vec3 ambient = light_color.rgb * vec3(diffuse_texture) * ambiant_strength;
-      vec3 diffuse = light_color.rgb * max(dot(normal, light_direction), 0.0) * vec3(diffuse_texture);
-      vec3 specular = light_color.rgb * pow(max(dot(camera_direction, reflect_direction), 0.0), shininess) * vec3(diffuse_texture);
+      vec3 diffuse = light_color.rgb * max(dot(object.normal, light_direction), 0.0) * vec3(diffuse_texture);
+      vec3 specular = light_color.rgb * pow(max(dot(camera_direction, reflect_direction), 0.0), object.shininess) * vec3(diffuse_texture);
 
       frag_color = vec4((ambient + diffuse + specular), 1.0);
    } else {
-      frag_color = color;
+      frag_color = fragment.color;
    }
 }
 

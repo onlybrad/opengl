@@ -26,13 +26,13 @@ static unsigned OB_compile_shader(struct OB_String shader_source, GLenum shader_
     if(!success) {
         const char *shader_type_name;
         switch(shader_type) {
-            case GL_VERTEX_SHADER: shader_type_name = "VERTEX_SHADER"; break;
-            case GL_FRAGMENT_SHADER: shader_type_name = "FRAGMENT_SHADER"; break;
-            default: shader_type_name = "UNKNOWN_SHADER"; break;
+            case GL_VERTEX_SHADER: shader_type_name = "Vertex Shader"; break;
+            case GL_FRAGMENT_SHADER: shader_type_name = "Fragment Shader"; break;
+            default: shader_type_name = "Unknown Shader"; break;
         }
 
         glGetShaderInfoLog(shader, 512, NULL, info_log);
-        fprintf(stderr,"ERROR::%s::COMPILATION_FAILED\n%s\n", shader_type_name, info_log);
+        fprintf(stderr,"Error: failed to compile %s: \n%s\n", shader_type_name, info_log);
         return 0u;
     }
 
@@ -61,7 +61,7 @@ static unsigned OB_create_shader(struct OB_String vertex_shader_src, struct OB_S
 
     if(!success) {
         glGetProgramInfoLog(program, 512, NULL, infoLog);
-        fprintf(stderr, "Shader Error: %s\n", infoLog);
+        fprintf(stderr, "Error: shader error: \n%s\n", infoLog);
         return 0u;
     }
 
