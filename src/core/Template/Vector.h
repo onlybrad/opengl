@@ -40,11 +40,6 @@ VECTOR_T VECTOR_REMOVE(struct VECTOR *vector, size_t index);
 
 #endif //#ifndef VECTOR_IMPLEMENTATION
 
-//this is for testing (IDE highlighting purpose)
-#if 0
-#define VECTOR_IMPLEMENTATION
-#endif
-
 #ifdef VECTOR_IMPLEMENTATION 
 
 #include <assert.h>

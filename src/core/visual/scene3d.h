@@ -35,17 +35,17 @@ typedef unsigned uint;
 #include "../template/vector.h"
 
 typedef struct OB_Scene3D {
-    int projection_id;
-    int view_id;
-    unsigned texture_slot;
-    unsigned vertices_count;
-    struct OB_VertexArrayObject vao;
+    int projection_id;                         //projection location id for glsl, used to update the projection matrix
+    int view_id;                               //view location id for glsl, used to update the view matrix
+    unsigned texture_slot;                     //the last unused texture slot, used for binding textures to objects
+    unsigned vertices_count;                   //the number of vertices in the scene, used for drawing in opengl
+    struct OB_VertexArrayObject vao;  
     struct OB_VertexArrayBuffer vab;
-    struct OB_Camera *camera;
-    struct OB_Shader *shader;
-    struct OB_Object *background;
-    struct Vector_SceneObject3D scene_objects;
-    struct Vector_uint to_update;
+    struct OB_Camera *camera;                  //the camera associated with this scene
+    struct OB_Shader *shader;                  //the vertex and fragment shader associated with this cene
+    struct OB_Object *background;              //the background to be rendered in the scene
+    struct Vector_SceneObject3D scene_objects; //all the objects in the scene
+    struct Vector_uint to_update;              //whether or not the object at index i needs to be updated in the vertex buffer
 } Scene3D;
 
 bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct OB_Camera *camera);
