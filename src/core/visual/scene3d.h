@@ -10,8 +10,6 @@
 #include "../opengl/shader.h"
 #include "../object/object.h"
 
-
-
 struct OB_Transform {
     float rotation_angle;
     vec3 rotation_axis;
@@ -29,12 +27,12 @@ struct OB_SceneObject3D {
 //Vector_SceneObject3D
 typedef struct OB_SceneObject3D SceneObject3D;
 #define VECTOR_T SceneObject3D
-#include "../Template/Vector.h"
+#include "../template/vector.h"
 
 //Vector_uint
 typedef unsigned uint;
 #define VECTOR_T uint
-#include "../Template/Vector.h"
+#include "../template/vector.h"
 
 typedef struct OB_Scene3D {
     int projection_id;
