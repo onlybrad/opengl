@@ -1,9 +1,9 @@
 #ifndef OB_VERTEX_ARRAY_OBJECT_H
 #define OB_VERTEX_ARRAY_OBJECT_H
 
-#include "VertexArrayBuffer.h"
-#include "VertexLayout.h"
-#include "IndexBuffer.h"
+#include "vertexarraybuffer.h"
+#include "vertexlayout.h"
+#include "indexbuffer.h"
 
 struct OB_VertexArrayObject {
     unsigned id;

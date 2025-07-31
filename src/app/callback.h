@@ -1,14 +1,14 @@
 #include <assert.h>
 #include <cglm/cglm.h>
 #include <math.h>
-#include "../core/Object/Object.h"
-#include "../core/OpenGL/Shader.h"
-#include "../core/Window/Window.h"
-#include "../core/Window/Camera.h"
-#include "../core/Window/Scene3D.h"
-#include "../core/Input/Keyboard.h"
-#include "../core/Input/Mouse.h"
-#include "../core/Util/util.h"
+#include "../core/object/object.h"
+#include "../core/opengl/shader.h"
+#include "../core/visual/window.h"
+#include "../core/visual/camera.h"
+#include "../core/visual/scene3d.h"
+#include "../core/input/keyboard.h"
+#include "../core/input/mouse.h"
+#include "../core/util/util.h"
 
 static void input_callback(struct OB_Window *window) {
     assert(window != NULL);
@@ -44,7 +44,7 @@ static void input_callback(struct OB_Window *window) {
 static void drawing_callback(struct OB_Window *window) {
     assert(window != NULL);
 
-    const float time = OB_Window_time(window);
+    const float time = OB_Window_time();
     const vec4 new_color = {
         MAX(0.2f, sinf(time * 2.0f)), 
         MAX(0.2f, sinf(time * 0.7f)), 

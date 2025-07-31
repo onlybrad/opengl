@@ -1,7 +1,7 @@
 #ifndef OB_CUBE_H
 #define OB_CUBE_H
 
-#include "Object.h"
+#include "object.h"
 
 #define OB_CURLY_BRACKETS(...) __VA_ARGS__ 
 

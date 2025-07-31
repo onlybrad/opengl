@@ -1,5 +1,5 @@
 #include <string.h>
-#include "String.h"
+#include "string.h"
 #include "util.h"
 
 struct OB_String String_init(const char *c_str) {
@@ -14,6 +14,8 @@ struct OB_String String_init_copy(const char *c_str) {
 
 void OB_String_free(struct OB_String str) {
     free(OB_unconst(str.buffer));
+    str.buffer = NULL;
+    str.length = 0;
 }
 
 size_t OB_String_hash(const char *key) {

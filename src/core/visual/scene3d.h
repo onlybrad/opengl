@@ -2,13 +2,13 @@
 #define OB_SCENE_H
 
 #include <stdlib.h>
-#include "Camera.h"
-#include "../Util/util.h"
-#include "../OpenGL/VertexArrayBuffer.h"
-#include "../OpenGL/VertexArrayObject.h"
-#include "../OpenGL/VertexLayout.h"
-#include "../OpenGL/Shader.h"
-#include "../Object/Object.h"
+#include "camera.h"
+#include "../util/util.h"
+#include "../opengl/vertexarraybuffer.h"
+#include "../opengl/vertexarrayobject.h"
+#include "../opengl/vertexlayout.h"
+#include "../opengl/shader.h"
+#include "../object/object.h"
 
 typedef unsigned uint;
 

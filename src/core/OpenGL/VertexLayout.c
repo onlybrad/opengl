@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <stdlib.h>
-#include "VertexLayout.h"
+#include "vertexlayout.h"
 
 extern int OB_MAX_VERTEX_ATTRIBS;
 

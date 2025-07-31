@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "OpenGL.h"
-#include "VertexLayout.h"
-#include "../Util/util.h"
-#include "../Object/Object.h"
+#include "opengl.h"
+#include "vertexlayout.h"
+#include "../util/util.h"
+#include "../object/object.h"
 
 int OB_OpenGL_width;
 int OB_OpenGL_height;
@@ -46,57 +46,58 @@ static void OB_vertex_layout_init(void) {
     }
 }
 
-void OB_OpenGL_init(GLADloadproc proc_address, void (terminate)(void)) {
+bool OB_OpenGL_init(GLADloadproc proc_address) {
     if (! gladLoadGLLoader(proc_address)) {
-        fputs("Failed to load OpenGL functions",stderr);
-        terminate();
-        exit(1);
+        OB_DEBUG_ERROR("Failed to load OpenGL functions");
+        return false;
     }
 
     OB_opengl_defaults_init();
     OB_max_values_init();
     OB_vertex_layout_init();
+
+    return true;
 }
 
-inline void OB_OpenGL_set_width(int width) {
+void OB_OpenGL_set_width(int width) {
     OB_OpenGL_width = width;
     glViewport(0, 0, width, OB_OpenGL_height);
 }
 
-inline void OB_OpenGL_set_height(int height) {
+void OB_OpenGL_set_height(int height) {
     OB_OpenGL_height = height;
     glViewport(0, 0, OB_OpenGL_width, height);    
 }
 
-inline void OB_OpenGL_set_viewport(int width, int height) {
+void OB_OpenGL_set_viewport(int width, int height) {
     OB_OpenGL_width = width;
     OB_OpenGL_height = height;
     glViewport(0, 0, width, height);   
 }
 
-inline void OB_OpenGL_clear_color(float r, float g, float b, float a) {
+void OB_OpenGL_clear_color(float r, float g, float b, float a) {
     glClearColor(r, g, b, a);
 }
 
-inline void OB_OpenGL_clear(void) {
+void OB_OpenGL_clear(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-inline void OB_OpenGL_fill_mode(void) {
+void OB_OpenGL_fill_mode(void) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-inline void OB_OpenGL_wireframe_mode(void) {
+void OB_OpenGL_wireframe_mode(void) {
     glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 }
 
-inline void OB_OpenGL_draw_background(int first, int vertices_count) {
+void OB_OpenGL_draw_background(int first, int vertices_count) {
     glDisable(GL_DEPTH_TEST);
     glDrawArrays(GL_TRIANGLES, first, vertices_count);
     glEnable(GL_DEPTH_TEST);
 }
 
-inline void OB_OpenGL_draw(int first, int vertices_count) {
+void OB_OpenGL_draw(int first, int vertices_count) {
     glDrawArrays(GL_TRIANGLES, first, vertices_count);
 }
 

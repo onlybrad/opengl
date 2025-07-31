@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <glad/glad.h>
 #include <stdlib.h>
-#include "VertexArrayObject.h"
-#include "../Util/util.h"
+#include "vertexarrayobject.h"
+#include "../util/util.h"
 
 void OB_VertexArrayObject_init(struct OB_VertexArrayObject *vao) {
     assert(vao != NULL);

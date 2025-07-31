@@ -2,7 +2,7 @@
 #define OB_VERTEX_ARRAY_BUFFER_H
 
 #include <stdlib.h>
-#include "../Thread/Thread.h"
+#include "../thread/thread.h"
 
 struct OB_VertexArrayBuffer {
     unsigned id;

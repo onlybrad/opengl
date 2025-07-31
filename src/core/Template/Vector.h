@@ -1,11 +1,5 @@
 #include <stdlib.h>
-#include "../Util/util.h"
-
-//this is for testing (IDE highlighting purpose)
-#if 0
-typedef const char *str;
-#define VECTOR_T str 
-#endif
+#include "../util/util.h"
 
 #ifndef VECTOR_T
     #error "Missing parameter VECTOR_T"

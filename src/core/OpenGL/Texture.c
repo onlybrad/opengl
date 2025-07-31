@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "Texture.h"
-#include "../Util/util.h"
+#include "texture.h"
+#include "../util/util.h"
 
 const char OB_TEXTURE_UNIFORMS[32][10] = {
     "texture00",

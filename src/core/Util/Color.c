@@ -1,5 +1,5 @@
 #include <math.h>
-#include "Color.h"
+#include "color.h"
 
 float *OB_Color_to_vec4(const struct OB_Color *color, vec4 vec4_color) {
     vec4_color[0] = (float)(color->r)/255.0f;

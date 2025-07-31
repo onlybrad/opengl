@@ -1,13 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "../Util/util.h"
-
-#if 0
-typedef const char *str;
-#define HASHMAP_K str
-#define HASHMAP_V int 
-#endif
+#include "../util/util.h"
 
 #if !defined HASHMAP_K || !defined HASHMAP_V
     #error "Missing parameter HASHMAP_K or HASHMAP_V"

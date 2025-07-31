@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <string.h>
 #include <glad/glad.h>
-#include "IndexBuffer.h"
+#include "indexbuffer.h"
 
 void OB_IndexBuffer_init(struct OB_IndexBuffer *index_buffer, const unsigned *data, unsigned count) {
     assert(index_buffer != NULL);

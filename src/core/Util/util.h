@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "String.h"
+#include "string.h"
 
 #ifdef __cplusplus
     #define OB_ZERO {}
@@ -39,6 +39,14 @@
 #endif
 #ifndef MAX
 #define MAX(a,b) (((a)>(b))?(a):(b))
+#endif
+
+#ifndef NDEBUG
+    #define OB_DEBUG_ERRORF(...) fprintf(stderr, __VA_ARGS__)
+    #define OB_DEBUG_ERROR(...) fputs(__VA_ARGS__, stderr)
+#else
+    #define OB_DEBUG_ERRORF
+    #define OB_DEBUG_ERROR
 #endif
 
 FILE *OB_file_open(const char *filename, const char *mode);

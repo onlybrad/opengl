@@ -2,7 +2,7 @@
 #define OB_TEXTURE_H
 
 #include <stdbool.h>
-#include "../Util/Color.h"
+#include "../util/color.h"
 
 struct OB_Texture {
     unsigned id;

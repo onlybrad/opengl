@@ -2,7 +2,7 @@
 #define OB_CAMERA_H
 
 #include <cglm/cglm.h>
-#include "../Thread/Thread.h"
+#include "../thread/thread.h"
 
 struct OB_Camera {
     int id;

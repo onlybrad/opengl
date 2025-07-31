@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Shader.h"
-#include "../Util/util.h"
+#include "shader.h"
+#include "../util/util.h"
 
 //Hashmap_str_int
 #define HASHMAP_K str
 #define HASHMAP_V int
 #define HASHMAP_IMPLEMENTATION
-#include "../Template/Hashmap.h"
+#include "../template/hashmap.h"
 
 static unsigned OB_compile_shader(struct OB_String shader_source, GLenum shader_type) {
     const unsigned shader = glCreateShader(shader_type);
@@ -32,7 +32,7 @@ static unsigned OB_compile_shader(struct OB_String shader_source, GLenum shader_
         }
 
         glGetShaderInfoLog(shader, 512, NULL, info_log);
-        fprintf(stderr,"Error: failed to compile %s: \n%s\n", shader_type_name, info_log);
+        OB_DEBUG_ERRORF("Failed to compile %s: \n%s\n", shader_type_name, info_log);
         return 0u;
     }
 
@@ -61,7 +61,7 @@ static unsigned OB_create_shader(struct OB_String vertex_shader_src, struct OB_S
 
     if(!success) {
         glGetProgramInfoLog(program, 512, NULL, infoLog);
-        fprintf(stderr, "Error: shader error: \n%s\n", infoLog);
+        OB_DEBUG_ERRORF("Shader error: \n%s\n", infoLog);
         return 0u;
     }
 
@@ -78,11 +78,13 @@ bool OB_Shader_init(struct OB_Shader *shader, const char *vertex_shader_path, co
 
     const struct OB_String vertex_shader_src = OB_file_get_contents(vertex_shader_path);
     if(vertex_shader_src.buffer == NULL) {
+        OB_DEBUG_ERRORF("Could not get content of %s\n", vertex_shader_path);
         return false;
     }
 
     const struct OB_String fragment_shader_src = OB_file_get_contents(fragment_shader_path);
     if(fragment_shader_src.buffer == NULL) {
+        OB_DEBUG_ERRORF("Could not get content of %s\n", fragment_shader_path);
         OB_String_free(vertex_shader_src);
         return false;
     }
@@ -98,6 +100,7 @@ bool OB_Shader_init(struct OB_Shader *shader, const char *vertex_shader_path, co
     shader->vertex_shader_src = vertex_shader_src;
     shader->fragment_shader_src = fragment_shader_src;
     if(!Hashmap_str_int_init(&shader->location_cache, OB_String_hash, OB_String_compare)) {
+        OB_DEBUG_ERROR("Out of memory\n");
         OB_Shader_free(shader);
         return false;
     }
@@ -133,7 +136,7 @@ int OB_Shader_get_location(struct OB_Shader *shader, const char *name) {
 
     const int location = glGetUniformLocation(shader->id, name);
     if(location < 0) {
-        fprintf(stderr, "Could not find \"%s\" uniform in shader\n", name);
+        OB_DEBUG_ERRORF("Could not find \"%s\" uniform in shader\n", name);
         return location;
     }
 
@@ -231,42 +234,42 @@ bool OB_Shader_set_vec4(struct OB_Shader *shader, const char *name, const float 
     return true; 
 }
 
-inline void OB_Shader_set_bool_l(struct OB_Shader *shader, int location, bool value) {
+void OB_Shader_set_bool_l(struct OB_Shader *shader, int location, bool value) {
     assert(shader != NULL);
 
     (void)shader;
     glUniform1i(location, (int)value);
 }
 
-inline void OB_Shader_set_int_l(struct OB_Shader *shader, int location, int value) {
+void OB_Shader_set_int_l(struct OB_Shader *shader, int location, int value) {
     assert(shader != NULL);
 
     (void)shader;
     glUniform1i(location, value);    
 }
 
-inline void OB_Shader_set_float_l(struct OB_Shader *shader, int location, float value) {
+void OB_Shader_set_float_l(struct OB_Shader *shader, int location, float value) {
     assert(shader != NULL);
 
     (void)shader;    
     glUniform1f(location, value);
 }
 
-inline void OB_Shader_set_mat4_l(struct OB_Shader *shader, int location, const float *value) {
+void OB_Shader_set_mat4_l(struct OB_Shader *shader, int location, const float *value) {
     assert(shader != NULL);
 
     (void)shader;
     glUniformMatrix4fv(location, 1, false, value);
 }
 
-inline void OB_Shader_set_vec3_l(struct OB_Shader *shader, int location, const float *value) {
+void OB_Shader_set_vec3_l(struct OB_Shader *shader, int location, const float *value) {
     assert(shader != NULL);
 
     (void)shader;
     glUniform3fv(location, 1, value);
 }
 
-inline void OB_Shader_set_vec4_l(struct OB_Shader *shader, int location, const float *value) {
+void OB_Shader_set_vec4_l(struct OB_Shader *shader, int location, const float *value) {
     assert(shader != NULL);
     
     (void)shader;

@@ -5,7 +5,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/test.exe",
+            "program": "${workspaceRoot}/main_debug.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

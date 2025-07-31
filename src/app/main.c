@@ -1,13 +1,13 @@
-#include "../core/Window/Window.h"
-#include "../core/Window/Camera.h"
-#include "../core/Window/Scene3D.h"
-#include "../core/OpenGL/Shader.h"
-#include "../core/OpenGL/Texture.h"
-#include "../core/Object/Object.h"
-#include "../core/Object/Cube.h"
-#include "../core/Object/Cylinder.h"
-#include "../core/Util/Color.h"
-#include "../core/Util/util.h"
+#include "../core/visual/window.h"
+#include "../core/visual/camera.h"
+#include "../core/visual/scene3d.h"
+#include "../core/opengl/shader.h"
+#include "../core/opengl/texture.h"
+#include "../core/object/object.h"
+#include "../core/object/cube.h"
+#include "../core/object/cylinder.h"
+#include "../core/util/color.h"
+#include "../core/util/util.h"
 #include "callback.h"
 
 #define CHECK_ERROR(BOOL) do { if(!BOOL) {code = 1; goto cleanup;} } while(0) 
@@ -24,7 +24,6 @@ static struct OB_Object
     cube2 = OB_ZERO,
     cylinder = OB_ZERO,
     light = OB_ZERO;
-static struct OB_Window window = OB_ZERO;
 static vec4 vec4_light_color = OB_ZERO;
 
 static const vec4 camera_position = {0.0f, 0.0f, 3.0f};
@@ -53,21 +52,21 @@ int main(void) {
     const int height = 600;
 
     //Window
-    OB_Window_init(&window, width, height, "LearnOpenGL");
-    OB_Window_set_vsync(&window, true);
-    OB_Window_set_updates_per_second(&window, 60);
-    OB_Window_set_input_callback(&window, input_callback);
+    OB_Window_init(width, height, "LearnOpenGL");
+    OB_Window_set_vsync(true);
+    OB_Window_set_updates_per_second(60);
+    OB_Window_set_input_callback(input_callback);
 
     //Keyboard
-    OB_Keyboard_init(&window);
+    OB_Keyboard_init();
 
     //Mouse
-    OB_Mouse_init(&window);
+    OB_Mouse_init();
     OB_Mouse_set_cursor_callback(mouse_cursor_callback);
     OB_Mouse_set_scroll_callback(mouse_scroll_callback);
 
     //Shader
-    CHECK_ERROR(OB_Shader_init(&shader, "./shaders/vertexShader.glsl", "./shaders/fragmentShader.glsl"));
+    CHECK_ERROR(OB_Shader_init(&shader, "./shaders/vertex.glsl", "./shaders/fragment.glsl"));
     OB_Shader_use(&shader);
 
     //Camera
@@ -115,10 +114,10 @@ int main(void) {
     CHECK_ERROR(OB_Shader_set_float(&shader, "ambiant_strength", 0.7f));
 
     //Add scene to windows then start the scene
-    OB_Window_set_scene3D(&window, &scene);
+    OB_Window_set_scene3D(&scene);
     OB_Scene3D_start(&scene);
-    OB_Window_logic_loop(&window, logic_callback);
-    OB_Window_drawing_loop(&window, drawing_callback);
+    OB_Window_logic_loop(logic_callback);
+    OB_Window_drawing_loop(drawing_callback);
     OB_Scene3D_end(&scene);
 
 cleanup:
@@ -131,7 +130,7 @@ cleanup:
     OB_Shader_free(&shader);
     OB_Scene3D_free(&scene);
     OB_PerspectiveCamera_free(&camera);
-    OB_Window_free(&window);
+    OB_Window_free();
     
     return code;
 }

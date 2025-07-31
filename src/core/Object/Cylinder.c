@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <cglm/cglm.h>
 #include <stdlib.h>
-#include "Cylinder.h"
+#include "cylinder.h"
 
 static struct OB_Vertex *OB_generate_cylinder_vertices(unsigned segments, float radius, float height, size_t *size) {
     const float π = 3.141593f;

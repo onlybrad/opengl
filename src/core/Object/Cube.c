@@ -1,6 +1,6 @@
 #include <assert.h>
-#include "Cube.h"
-#include "../Util/util.h"
+#include "cube.h"
+#include "../util/util.h"
 
 static struct OB_Vertex OB_BACKGROUND_VERTICES[] = OB_BLACK_RECTANGLE_VERTICES(1.0f);
 static struct OB_Vertex OB_CUBE_VERTICES[] = OB_CUBE_VERTICES(0.5f, OB_CURLY_BRACKETS({1.0f, 0.5f, 0.31f, 1.0f}));

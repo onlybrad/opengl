@@ -1,9 +1,10 @@
 #ifndef OB_OPENGL_H
 #define OB_OPENGL_H
 
+#include <stdbool.h>
 #include <glad/glad.h>
 
-void OB_OpenGL_init(GLADloadproc proc_address, void (terminate)(void));
+bool OB_OpenGL_init(GLADloadproc proc_address);
 void OB_OpenGL_set_width(int width);
 void OB_OpenGL_set_height(int height);
 void OB_OpenGL_set_viewport(int width, int height);

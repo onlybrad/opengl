@@ -3,7 +3,7 @@
 
 #include <cglm/cglm.h>
 #include <stdbool.h>
-#include "../Util/String.h"
+#include "../util/string.h"
 
 typedef struct Location {
     int location;
@@ -14,7 +14,8 @@ typedef struct Location {
 typedef const char *str;
 #define HASHMAP_K str
 #define HASHMAP_V int
-#include "../Template/Hashmap.h"
+#include "../template/hashmap.h"
+
 struct OB_Shader {
     unsigned id;
     struct OB_String vertex_shader_src;

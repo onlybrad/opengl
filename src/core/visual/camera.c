@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <string.h>
-#include "Camera.h"
+#include "camera.h"
 
 static vec3 FRONT = {0.0f, 0.0f, -1.0f};
 static vec3 UP = {0.0f, 1.0f, 0.0f};
@@ -48,26 +48,26 @@ static void OB_Camera_free(struct OB_Camera *camera) {
     memset(camera, 0, sizeof(*camera));
 }
 
-inline static void OB_Camera_set_id(struct OB_Camera *camera, int id) {
+static void OB_Camera_set_id(struct OB_Camera *camera, int id) {
     assert(camera != NULL);
 
     camera->id = id;
 }
 
-inline static void OB_Camera_set_speed(struct OB_Camera *camera, float speed) {
+static void OB_Camera_set_speed(struct OB_Camera *camera, float speed) {
     assert(camera != NULL);
 
     camera->speed = speed;
 }
 
-inline static void OB_Camera_set_position(struct OB_Camera *camera, const vec3 position) {
+static void OB_Camera_set_position(struct OB_Camera *camera, const vec3 position) {
     assert(camera != NULL);
 
     memcpy(camera->position, position, sizeof(vec3));
     OB_update_view(camera);
 }
 
-inline static void OB_Camera_set_front(struct OB_Camera *camera, const vec3 front) {
+static void OB_Camera_set_front(struct OB_Camera *camera, const vec3 front) {
     assert(camera != NULL);
 
     memcpy(camera->front, front, sizeof(vec3));
@@ -204,19 +204,19 @@ static void OB_Camera_move_left(struct OB_Camera *camera) {
     OB_update_view(camera);
 }
 
-inline static float *OB_Camera_get_view(struct OB_Camera *camera) {
+static float *OB_Camera_get_view(struct OB_Camera *camera) {
     assert(camera != NULL);
 
     return (float*)camera->view;
 }
 
-inline static float *OB_Camera_get_projection(struct OB_Camera *camera) {
+static float *OB_Camera_get_projection(struct OB_Camera *camera) {
     assert(camera != NULL);
 
     return (float*)camera->projection;
 }
 
-inline void OB_PerspectiveCamera_init(struct OB_PerspectiveCamera *perspective_camera, float x, float y) {
+void OB_PerspectiveCamera_init(struct OB_PerspectiveCamera *perspective_camera, float x, float y) {
     assert(perspective_camera != NULL);
 
     memset(perspective_camera, 0, sizeof(*perspective_camera));
@@ -224,7 +224,7 @@ inline void OB_PerspectiveCamera_init(struct OB_PerspectiveCamera *perspective_c
     OB_update_perspective_projection(perspective_camera);
 }
 
-inline void OB_PerspectiveCamera_free(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_free(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_free(&perspective_camera->camera);
@@ -281,103 +281,103 @@ void OB_PerspectiveCamera_set_id(struct OB_PerspectiveCamera *perspective_camera
     OB_Camera_set_id(&perspective_camera->camera, id);
 }
 
-inline void OB_PerspectiveCamera_set_speed(struct OB_PerspectiveCamera *perspective_camera, float speed) {
+void OB_PerspectiveCamera_set_speed(struct OB_PerspectiveCamera *perspective_camera, float speed) {
     assert(perspective_camera != NULL);
 
     OB_Camera_set_speed(&perspective_camera->camera, speed);
 }
 
-inline void OB_PerspectiveCamera_set_position(struct OB_PerspectiveCamera *perspective_camera, const vec3 position) {
+void OB_PerspectiveCamera_set_position(struct OB_PerspectiveCamera *perspective_camera, const vec3 position) {
     assert(perspective_camera != NULL);
 
     OB_Camera_set_position(&perspective_camera->camera, position);
 }
 
-inline void OB_PerspectiveCamera_set_looking_at(struct OB_PerspectiveCamera *perspective_camera, const vec3 looking_at) {
+void OB_PerspectiveCamera_set_looking_at(struct OB_PerspectiveCamera *perspective_camera, const vec3 looking_at) {
     assert(perspective_camera != NULL);
 
     OB_Camera_set_front(&perspective_camera->camera, looking_at);
 }
 
-inline void OB_PerspectiveCamera_set_angles(struct OB_PerspectiveCamera *perspective_camera, float yaw, float pitch) {
+void OB_PerspectiveCamera_set_angles(struct OB_PerspectiveCamera *perspective_camera, float yaw, float pitch) {
     assert(perspective_camera != NULL);
 
     OB_Camera_set_angles(&perspective_camera->camera, yaw, pitch);
 }
 
-inline void OB_PerspectiveCamera_change_direction(struct OB_PerspectiveCamera *perspective_camera, float x, float y) {
+void OB_PerspectiveCamera_change_direction(struct OB_PerspectiveCamera *perspective_camera, float x, float y) {
     assert(perspective_camera != NULL);
 
     OB_Camera_change_direction(&perspective_camera->camera, x, y);
 }
 
-inline void OB_PerspectiveCamera_move_straight_up(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_straight_up(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_straight_up(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_straight_down(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_straight_down(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_straight_down(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_straight_front(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_straight_front(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_straight_front(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_straight_back(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_straight_back(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_straight_back(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_straight_right(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_straight_right(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_straight_right(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_straight_left(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_straight_left(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_straight_left(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_front(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_front(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_front(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_back(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_back(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_back(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_right(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_right(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_right(&perspective_camera->camera);
 }
 
-inline void OB_PerspectiveCamera_move_left(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_left(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     OB_Camera_move_left(&perspective_camera->camera);
 }
 
-inline float *OB_PerspectiveCamera_get_view(struct OB_PerspectiveCamera *perspective_camera) {
+float *OB_PerspectiveCamera_get_view(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     return OB_Camera_get_view(&perspective_camera->camera);
 }
 
-inline float *OB_PerspectiveCamera_get_projection(struct OB_PerspectiveCamera *perspective_camera) {
+float *OB_PerspectiveCamera_get_projection(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
     return OB_Camera_get_projection(&perspective_camera->camera);

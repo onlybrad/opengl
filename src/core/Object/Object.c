@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Object.h"
-#include "../Util/util.h"
+#include "object.h"
+#include "../util/util.h"
 
 bool OB_Object_init(struct OB_Object *object, struct OB_Vertex *vertices, const unsigned vertices_count) {
     assert(object != NULL);
@@ -39,7 +39,7 @@ void OB_Object_free(struct OB_Object *object) {
     memset(object, 0, sizeof(*object));
 }
 
-inline void OB_Object_set_texture(struct OB_Object *object, struct OB_Texture *texture) {
+void OB_Object_set_texture(struct OB_Object *object, struct OB_Texture *texture) {
     assert(object != NULL);
 
     object->texture = texture;
@@ -81,6 +81,6 @@ void OB_Object_set_is_light(struct OB_Object *object, bool is_light) {
     }
 }
 
-inline unsigned OB_Object_get_texture_slot(struct OB_Object *object) {
+unsigned OB_Object_get_texture_slot(struct OB_Object *object) {
     return (unsigned)object->vertices[0].texture_slot[0];
 }

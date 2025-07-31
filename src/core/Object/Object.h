@@ -3,10 +3,10 @@
 
 #include <stdbool.h>
 #include <cglm/cglm.h>
-#include "../OpenGL/VertexLayout.h"
-#include "../OpenGL/Texture.h"
-#include "../OpenGL/VertexArrayBuffer.h"
-#include "../Util/Color.h"
+#include "../opengl/vertexlayout.h"
+#include "../opengl/texture.h"
+#include "../opengl/vertexarraybuffer.h"
+#include "../util/color.h"
 
 struct OB_Vertex {
     float position[3];

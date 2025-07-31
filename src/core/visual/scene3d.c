@@ -1,20 +1,20 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include "Scene3D.h"
-#include "Camera.h"
-#include "../OpenGL/OpenGL.h"
-#include "../OpenGL/VertexLayout.h"
-#include "../Thread/Thread.h"
-#include "../Util/util.h"
+#include "scene3d.h"
+#include "camera.h"
+#include "../opengl/opengl.h"
+#include "../opengl/vertexlayout.h"
+#include "../thread/thread.h"
+#include "../util/util.h"
 
 #define VECTOR_T SceneObject3D
 #define VECTOR_IMPLEMENTATION
-#include "../Template/Vector.h"
+#include "../template/vector.h"
 
 #define VECTOR_T uint
 #define VECTOR_IMPLEMENTATION
-#include "../Template/Vector.h"
+#include "../template/vector.h"
 
 extern struct OB_VertexLayout OB_OBJECT_VERTEX_LAYOUT;
 extern const char OB_TEXTURE_UNIFORMS[32][10];
@@ -149,7 +149,7 @@ void OB_Scene3D_set_background(struct OB_Scene3D *scene, struct OB_Object *backg
     OB_Object_set_texture_slot(background, 0u);
 }
 
-inline struct OB_SceneObject3D *OB_Scene3D_object_get(struct OB_Scene3D *scene, unsigned object_index) {
+struct OB_SceneObject3D *OB_Scene3D_object_get(struct OB_Scene3D *scene, unsigned object_index) {
     assert(scene != NULL);
 
     return &scene->scene_objects.buffer[object_index];

@@ -1,37 +1,31 @@
 #include <assert.h>
 #include <GLFW/glfw3.h>
-#include "Mouse.h"
+#include "mouse.h"
 
-struct OB_Mouse {
-    struct OB_Window *window;
-    OB_MouseCallback cursor_callback;
-    OB_MouseCallback scroll_callback;
-};
+static OB_Mouse_Callback cursor_callback;
+static OB_Mouse_Callback scroll_callback;
 
-static struct OB_Mouse mouse;
-
-static void OB_GLFW_mouse_cursor_callback(GLFWwindow *glfw_window, double x, double y) {
-    (void)glfw_window;
-    mouse.cursor_callback(mouse.window, x, y);
+static void OB_Mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos) {
+    (void)window;
+    cursor_callback(OB_Window_get(), xpos, ypos);
 }
 
-static void OB_GLFW_mouse_scroll_callback(GLFWwindow *glfw_window, double x, double y) {
-    (void)glfw_window;
-    mouse.scroll_callback(mouse.window, x, y);
+static void OB_Mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    (void)window;
+    scroll_callback(OB_Window_get(), xoffset, yoffset);
 }
 
-void OB_Mouse_init(struct OB_Window *window) {
-    assert(window != NULL);
-
-    mouse.window = window;
+void OB_Mouse_init(void) {
+    cursor_callback = NULL;
+    scroll_callback = NULL;
 }
 
-void OB_Mouse_set_cursor_callback(OB_MouseCallback cursor_callback) {
-    mouse.cursor_callback = cursor_callback;
-    glfwSetCursorPosCallback(mouse.window->glfw_window, OB_GLFW_mouse_cursor_callback);
+void OB_Mouse_set_cursor_callback(OB_Mouse_Callback cb) {
+    cursor_callback = cb;
+    glfwSetCursorPosCallback(OB_Window_get()->glfw_window, OB_Mouse_cursor_callback);
 }
 
-void OB_Mouse_set_scroll_callback(OB_MouseCallback scroll_callback) {
-    mouse.scroll_callback = scroll_callback;
-    glfwSetScrollCallback(mouse.window->glfw_window, OB_GLFW_mouse_scroll_callback); 
+void OB_Mouse_set_scroll_callback(OB_Mouse_Callback cb) {
+    scroll_callback = cb;
+    glfwSetScrollCallback(OB_Window_get()->glfw_window, OB_Mouse_scroll_callback); 
 }
