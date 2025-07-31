@@ -42,7 +42,7 @@ typedef struct OB_Scene3D {
     struct OB_VertexArrayObject vao;  
     struct OB_VertexArrayBuffer vab;
     struct OB_Camera *camera;                  //the camera associated with this scene
-    struct OB_Shader *shader;                  //the vertex and fragment shader associated with this cene
+    struct OB_Shader *shader;                  //the vertex and fragment shader associated with this scene
     struct OB_Object *background;              //the background to be rendered in the scene
     struct Vector_SceneObject3D scene_objects; //all the objects in the scene
     struct Vector_uint to_update;              //whether or not the object at index i needs to be updated in the vertex buffer
