@@ -85,9 +85,8 @@ bool OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, c
     
     scene->vertices_count += object->vertices_count;
 
-    struct OB_Transform t;
+    struct OB_Transform t = OB_ZERO;
     if(transform == NULL) {
-        memset(&t, 0, sizeof(t));
         t.scale[0] = 1.0;
         t.scale[1] = 1.0;
         t.scale[2] = 1.0;
