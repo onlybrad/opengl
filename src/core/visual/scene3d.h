@@ -10,7 +10,7 @@
 #include "../opengl/shader.h"
 #include "../object/object.h"
 
-typedef unsigned uint;
+
 
 struct OB_Transform {
     float rotation_angle;
@@ -31,6 +31,8 @@ typedef struct OB_SceneObject3D SceneObject3D;
 #define VECTOR_T SceneObject3D
 #include "../Template/Vector.h"
 
+//Vector_uint
+typedef unsigned uint;
 #define VECTOR_T uint
 #include "../Template/Vector.h"
 
