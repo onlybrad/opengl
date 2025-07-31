@@ -103,8 +103,7 @@ bool OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, c
         const int texture_slot = OB_find_texture_slot(scene, object->texture);
 
         if(texture_slot == -1) {
-            OB_Object_set_texture_slot(object, scene->texture_slot);
-            scene->texture_slot++;
+            OB_Object_set_texture_slot(object, scene->texture_slot++);
         } else {
             OB_Object_set_texture_slot(object, (unsigned)texture_slot);
         }
