@@ -41,14 +41,14 @@ typedef struct OB_Scene3D {
     unsigned vertices_count;
     struct OB_VertexArrayObject vao;
     struct OB_VertexArrayBuffer vab;
-    struct OB_PerspectiveCamera *perspective_camera;
+    struct OB_Camera *camera;
     struct OB_Shader *shader;
     struct OB_Object *background;
     struct Vector_SceneObject3D scene_objects;
     struct Vector_uint to_update;
 } Scene3D;
 
-bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct OB_PerspectiveCamera *perspective_camera);
+bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct OB_Camera *camera);
 void OB_Scene3D_free(struct OB_Scene3D *scene);
 bool OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, const struct OB_Transform *transform);
 void OB_Scene3D_object_set_transform(struct OB_Scene3D *scene, unsigned object_index, struct OB_Transform *transform);

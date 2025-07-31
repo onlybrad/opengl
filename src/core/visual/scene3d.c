@@ -41,15 +41,15 @@ static void OB_get_model(mat4 model, struct OB_Transform *transform) {
     glm_scale(model, transform->scale);
 }
 
-bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct OB_PerspectiveCamera *perspective_camera) {
+bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct OB_Camera *camera) {
     assert(scene != NULL);
     assert(shader != NULL);
-    assert(perspective_camera != NULL);
+    assert(camera != NULL);
 
     OB_VertexArrayObject_init(&scene->vao);
     scene->vertices_count = 0u;
     scene->texture_slot = 1u;
-    scene->perspective_camera = perspective_camera;
+    scene->camera = camera;
     scene->shader = shader;
 
     if(!Vector_SceneObject3D_init(&scene->scene_objects, 128)) {
@@ -63,7 +63,7 @@ bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct 
 
     scene->view_id = OB_Shader_get_location(shader, "view");
     scene->projection_id = OB_Shader_get_location(shader, "projection");
-    perspective_camera->camera.id = OB_Shader_get_location(shader, "camera_position");
+    camera->id = OB_Shader_get_location(shader, "camera_position");
 
     return true;
 }
@@ -200,7 +200,7 @@ void OB_Scene3D_start(struct OB_Scene3D *scene) {
     }
 
     OB_VertexArrayObject_add_buffer(&scene->vao, &scene->vab, NULL, &OB_OBJECT_VERTEX_LAYOUT);
-    OB_Shader_set_mat4_l(scene->shader, scene->projection_id,OB_PerspectiveCamera_get_projection(scene->perspective_camera));
+    OB_Shader_set_mat4_l(scene->shader, scene->projection_id,OB_Camera_get_projection(scene->camera));
 }
 
 void OB_Scene3D_end(struct OB_Scene3D *scene) {
@@ -216,11 +216,11 @@ void OB_Scene3D_draw_objects(struct OB_Scene3D *scene) {
 
     OB_OpenGL_clear();
 
-    OB_Lock_lock(&scene->perspective_camera->camera.lock);
-    OB_Shader_set_mat4_l(scene->shader, scene->projection_id, OB_PerspectiveCamera_get_projection(scene->perspective_camera));
-    OB_Shader_set_mat4_l(scene->shader, scene->view_id, OB_PerspectiveCamera_get_view(scene->perspective_camera));
-    OB_Shader_set_vec3_l(scene->shader, scene->perspective_camera->camera.id, scene->perspective_camera->camera.position);
-    OB_Lock_unlock(&scene->perspective_camera->camera.lock);
+    OB_Lock_lock(&scene->camera->lock);
+    OB_Shader_set_mat4_l(scene->shader, scene->projection_id, OB_Camera_get_projection(scene->camera));
+    OB_Shader_set_mat4_l(scene->shader, scene->view_id, OB_Camera_get_view(scene->camera));
+    OB_Shader_set_vec3_l(scene->shader, scene->camera->id, scene->camera->position);
+    OB_Lock_unlock(&scene->camera->lock);
 
     int first = 0;
     if(scene->background != NULL) {

@@ -72,7 +72,7 @@ void OB_Window_set_vsync(bool on) {
 
 void OB_Window_set_scene3D(struct OB_Scene3D *scene) {
     window.scene = scene;
-    glfwSetCursorPos(window.glfw_window, scene->perspective_camera->camera.x, scene->perspective_camera->camera.y);
+    glfwSetCursorPos(window.glfw_window, scene->camera->x, scene->camera->y);
 }
 
 void OB_Window_set_updates_per_second(unsigned updates_per_seconds) {

@@ -13,7 +13,7 @@
 #define CHECK_ERROR(BOOL) do { if(!BOOL) {code = 1; goto cleanup;} } while(0) 
 
 static struct OB_Shader shader = OB_ZERO;
-static struct OB_PerspectiveCamera camera = OB_ZERO;
+static struct OB_Camera camera = OB_ZERO;
 static struct OB_Scene3D scene = OB_ZERO;
 static struct OB_Texture 
     space_texture = OB_ZERO, 
@@ -70,13 +70,13 @@ int main(void) {
     OB_Shader_use(&shader);
 
     //Camera
-    OB_PerspectiveCamera_init(&camera, (float)width/2.0f, (float)height/2.0f);
-    OB_PerspectiveCamera_set_speed(&camera, 0.05f);
-    OB_PerspectiveCamera_set_position(&camera, camera_position);
-    OB_PerspectiveCamera_set_fov(&camera, glm_rad(45.0f));
-    OB_PerspectiveCamera_set_aspect(&camera, (float)width/(float)height);
-    OB_PerspectiveCamera_set_near_z(&camera, 0.1f);
-    OB_PerspectiveCamera_set_far_z(&camera, 100.0f);
+    OB_Camera_init(&camera, (float)width/2.0f, (float)height/2.0f);
+    OB_Camera_set_speed(&camera, 0.05f);
+    OB_Camera_set_position(&camera, camera_position);
+    OB_Camera_set_fov(&camera, glm_rad(45.0f));
+    OB_Camera_set_aspect(&camera, (float)width/(float)height);
+    OB_Camera_set_near_z(&camera, 0.1f);
+    OB_Camera_set_far_z(&camera, 100.0f);
     
     //Texture
     CHECK_ERROR(OB_Texture_init(&space_texture, "spaceTexture", "./textures/space.jpg"));
@@ -129,7 +129,7 @@ cleanup:
     OB_Object_free(&background);
     OB_Shader_free(&shader);
     OB_Scene3D_free(&scene);
-    OB_PerspectiveCamera_free(&camera);
+    OB_Camera_free(&camera);
     OB_Window_free();
     
     return code;
