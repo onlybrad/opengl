@@ -8,7 +8,7 @@
 #endif
 
 #define HASHMAP_CAPACITY  16
-#define ENTRY             OB_MAKE_NAME(Bucket,  OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
+#define ENTRY             OB_MAKE_NAME(Entry,  OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
 #define HASHMAP           OB_MAKE_NAME(Hashmap, OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
 #define HASHMAP_RESIZE    OB_MAKE_NAME(HASHMAP, resize)
 #define HASHMAP_GET_ENTRY OB_MAKE_NAME(HASHMAP, get_entry)
