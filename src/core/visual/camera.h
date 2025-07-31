@@ -40,16 +40,16 @@ void OB_PerspectiveCamera_set_position(struct OB_PerspectiveCamera *perspective_
 void OB_PerspectiveCamera_set_looking_at(struct OB_PerspectiveCamera *perspective_camera, const vec3 looking_at);
 void OB_PerspectiveCamera_set_angles(struct OB_PerspectiveCamera *perspective_camera, float yaw, float pitch);
 void OB_PerspectiveCamera_change_direction(struct OB_PerspectiveCamera *perspective_camera, float x, float y);
-void OB_PerspectiveCamera_move_straight_up(struct OB_PerspectiveCamera *perspective_camera);
-void OB_PerspectiveCamera_move_straight_down(struct OB_PerspectiveCamera *perspective_camera);
-void OB_PerspectiveCamera_move_straight_front(struct OB_PerspectiveCamera *perspective_camera);
-void OB_PerspectiveCamera_move_straight_back(struct OB_PerspectiveCamera *perspective_camera);
-void OB_PerspectiveCamera_move_straight_right(struct OB_PerspectiveCamera *perspective_camera);
-void OB_PerspectiveCamera_move_straight_left(struct OB_PerspectiveCamera *perspective_camera);
+void OB_PerspectiveCamera_move_up(struct OB_PerspectiveCamera *perspective_camera);
+void OB_PerspectiveCamera_move_down(struct OB_PerspectiveCamera *perspective_camera);
 void OB_PerspectiveCamera_move_front(struct OB_PerspectiveCamera *perspective_camera);
 void OB_PerspectiveCamera_move_back(struct OB_PerspectiveCamera *perspective_camera);
 void OB_PerspectiveCamera_move_right(struct OB_PerspectiveCamera *perspective_camera);
 void OB_PerspectiveCamera_move_left(struct OB_PerspectiveCamera *perspective_camera);
+void OB_PerspectiveCamera_move_forward(struct OB_PerspectiveCamera *perspective_camera);
+void OB_PerspectiveCamera_move_backward(struct OB_PerspectiveCamera *perspective_camera);
+void OB_PerspectiveCamera_strafe_right(struct OB_PerspectiveCamera *perspective_camera);
+void OB_PerspectiveCamera_strafe_left(struct OB_PerspectiveCamera *perspective_camera);
 float *OB_PerspectiveCamera_get_view(struct OB_PerspectiveCamera *perspective_camera);
 float *OB_PerspectiveCamera_get_projection(struct OB_PerspectiveCamera *perspective_camera);
 

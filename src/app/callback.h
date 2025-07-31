@@ -16,27 +16,27 @@ static void input_callback(struct OB_Window *window) {
     struct OB_PerspectiveCamera *const camera = window->scene->perspective_camera;
     
     if (OB_Keyboard_is_pressed(OB_KEY_UP)) {
-        OB_PerspectiveCamera_move_front(camera);
+        OB_PerspectiveCamera_move_forward(camera);
     } 
     
     if (OB_Keyboard_is_pressed(OB_KEY_DOWN)) {
-        OB_PerspectiveCamera_move_back(camera);
+        OB_PerspectiveCamera_move_backward(camera);
     }
 
     if (OB_Keyboard_is_pressed(OB_KEY_RIGHT)) {
-        OB_PerspectiveCamera_move_right(camera);
+        OB_PerspectiveCamera_strafe_right(camera);
     }
 
     if (OB_Keyboard_is_pressed(OB_KEY_LEFT)) {
-        OB_PerspectiveCamera_move_left(camera);
+        OB_PerspectiveCamera_strafe_left(camera);
     }
 
     if(OB_Keyboard_is_pressed(OB_KEY_KP_8) && !OB_Keyboard_numlock()) {
-        OB_PerspectiveCamera_move_straight_up(camera);
+        OB_PerspectiveCamera_move_up(camera);
     }
 
     if(OB_Keyboard_is_pressed(OB_KEY_KP_2) && !OB_Keyboard_numlock()) {
-        OB_PerspectiveCamera_move_straight_down(camera);
+        OB_PerspectiveCamera_move_down(camera);
     }
 }
 

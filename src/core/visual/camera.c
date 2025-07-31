@@ -102,7 +102,7 @@ static void OB_Camera_change_direction(struct OB_Camera *camera, float x, float 
     OB_Camera_set_angles(camera, yaw, pitch);
 }
 
-static void OB_Camera_move_straight_up(struct OB_Camera *camera) {
+static void OB_Camera_move_up(struct OB_Camera *camera) {
     assert(camera != NULL);
 
     vec3 translate;
@@ -111,56 +111,12 @@ static void OB_Camera_move_straight_up(struct OB_Camera *camera) {
     OB_update_view(camera);
 }
 
-static void OB_Camera_move_straight_down(struct OB_Camera *camera) {
+static void OB_Camera_move_down(struct OB_Camera *camera) {
     assert(camera != NULL);
 
     vec3 translate;
     glm_vec3_scale(UP, camera->speed, translate);
     glm_vec3_sub(camera->position, translate, camera->position);
-    OB_update_view(camera);
-}
-
-static void OB_Camera_move_straight_front(struct OB_Camera *camera) {
-    assert(camera != NULL);
-
-    vec3 translate;
-    glm_vec3_scale(camera->front, camera->speed, translate);
-    glm_vec3_add(camera->position, translate, camera->position);
-    camera->position[Y] = 0.0f;
-    OB_update_view(camera);
-}
-
-static void OB_Camera_move_straight_back(struct OB_Camera *camera) {
-    assert(camera != NULL);
-
-    vec3 translate;
-    glm_vec3_scale(camera->front, camera->speed, translate);
-    glm_vec3_sub(camera->position, translate, camera->position);
-    camera->position[Y] = 0.0f;
-    OB_update_view(camera);
-}
-
-static void OB_Camera_move_straight_right(struct OB_Camera *camera) {
-    assert(camera != NULL);
-
-    vec3 translate;
-    glm_cross(camera->front, UP, translate);
-    glm_normalize(translate);
-    glm_vec3_scale(translate, camera->speed, translate);
-    glm_vec3_add(camera->position, translate, camera->position);
-    camera->position[Y] = 0.0f;
-    OB_update_view(camera);
-}
-
-static void OB_Camera_move_straight_left(struct OB_Camera *camera) {
-    assert(camera != NULL);
-
-    vec3 translate;
-    glm_cross(camera->front, UP, translate);
-    glm_normalize(translate);
-    glm_vec3_scale(translate, camera->speed, translate);
-    glm_vec3_sub(camera->position, translate, camera->position);
-    camera->position[Y] = 0.0f;
     OB_update_view(camera);
 }
 
@@ -170,6 +126,7 @@ static void OB_Camera_move_front(struct OB_Camera *camera) {
     vec3 translate;
     glm_vec3_scale(camera->front, camera->speed, translate);
     glm_vec3_add(camera->position, translate, camera->position);
+    camera->position[Y] = 0.0f;
     OB_update_view(camera);
 }
 
@@ -179,6 +136,7 @@ static void OB_Camera_move_back(struct OB_Camera *camera) {
     vec3 translate;
     glm_vec3_scale(camera->front, camera->speed, translate);
     glm_vec3_sub(camera->position, translate, camera->position);
+    camera->position[Y] = 0.0f;
     OB_update_view(camera);
 }
 
@@ -190,10 +148,52 @@ static void OB_Camera_move_right(struct OB_Camera *camera) {
     glm_normalize(translate);
     glm_vec3_scale(translate, camera->speed, translate);
     glm_vec3_add(camera->position, translate, camera->position);
+    camera->position[Y] = 0.0f;
     OB_update_view(camera);
 }
 
 static void OB_Camera_move_left(struct OB_Camera *camera) {
+    assert(camera != NULL);
+
+    vec3 translate;
+    glm_cross(camera->front, UP, translate);
+    glm_normalize(translate);
+    glm_vec3_scale(translate, camera->speed, translate);
+    glm_vec3_sub(camera->position, translate, camera->position);
+    camera->position[Y] = 0.0f;
+    OB_update_view(camera);
+}
+
+static void OB_Camera_move_forward(struct OB_Camera *camera) {
+    assert(camera != NULL);
+
+    vec3 translate;
+    glm_vec3_scale(camera->front, camera->speed, translate);
+    glm_vec3_add(camera->position, translate, camera->position);
+    OB_update_view(camera);
+}
+
+static void OB_Camera_move_backward(struct OB_Camera *camera) {
+    assert(camera != NULL);
+
+    vec3 translate;
+    glm_vec3_scale(camera->front, camera->speed, translate);
+    glm_vec3_sub(camera->position, translate, camera->position);
+    OB_update_view(camera);
+}
+
+static void OB_Camera_strafe_right(struct OB_Camera *camera) {
+    assert(camera != NULL);
+
+    vec3 translate;
+    glm_cross(camera->front, UP, translate);
+    glm_normalize(translate);
+    glm_vec3_scale(translate, camera->speed, translate);
+    glm_vec3_add(camera->position, translate, camera->position);
+    OB_update_view(camera);
+}
+
+static void OB_Camera_strafe_left(struct OB_Camera *camera) {
     assert(camera != NULL);
 
     vec3 translate;
@@ -311,40 +311,16 @@ void OB_PerspectiveCamera_change_direction(struct OB_PerspectiveCamera *perspect
     OB_Camera_change_direction(&perspective_camera->camera, x, y);
 }
 
-void OB_PerspectiveCamera_move_straight_up(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_up(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
-    OB_Camera_move_straight_up(&perspective_camera->camera);
+    OB_Camera_move_up(&perspective_camera->camera);
 }
 
-void OB_PerspectiveCamera_move_straight_down(struct OB_PerspectiveCamera *perspective_camera) {
+void OB_PerspectiveCamera_move_down(struct OB_PerspectiveCamera *perspective_camera) {
     assert(perspective_camera != NULL);
 
-    OB_Camera_move_straight_down(&perspective_camera->camera);
-}
-
-void OB_PerspectiveCamera_move_straight_front(struct OB_PerspectiveCamera *perspective_camera) {
-    assert(perspective_camera != NULL);
-
-    OB_Camera_move_straight_front(&perspective_camera->camera);
-}
-
-void OB_PerspectiveCamera_move_straight_back(struct OB_PerspectiveCamera *perspective_camera) {
-    assert(perspective_camera != NULL);
-
-    OB_Camera_move_straight_back(&perspective_camera->camera);
-}
-
-void OB_PerspectiveCamera_move_straight_right(struct OB_PerspectiveCamera *perspective_camera) {
-    assert(perspective_camera != NULL);
-
-    OB_Camera_move_straight_right(&perspective_camera->camera);
-}
-
-void OB_PerspectiveCamera_move_straight_left(struct OB_PerspectiveCamera *perspective_camera) {
-    assert(perspective_camera != NULL);
-
-    OB_Camera_move_straight_left(&perspective_camera->camera);
+    OB_Camera_move_down(&perspective_camera->camera);
 }
 
 void OB_PerspectiveCamera_move_front(struct OB_PerspectiveCamera *perspective_camera) {
@@ -369,6 +345,30 @@ void OB_PerspectiveCamera_move_left(struct OB_PerspectiveCamera *perspective_cam
     assert(perspective_camera != NULL);
 
     OB_Camera_move_left(&perspective_camera->camera);
+}
+
+void OB_PerspectiveCamera_move_forward(struct OB_PerspectiveCamera *perspective_camera) {
+    assert(perspective_camera != NULL);
+
+    OB_Camera_move_forward(&perspective_camera->camera);
+}
+
+void OB_PerspectiveCamera_move_backward(struct OB_PerspectiveCamera *perspective_camera) {
+    assert(perspective_camera != NULL);
+
+    OB_Camera_move_backward(&perspective_camera->camera);
+}
+
+void OB_PerspectiveCamera_strafe_right(struct OB_PerspectiveCamera *perspective_camera) {
+    assert(perspective_camera != NULL);
+
+    OB_Camera_strafe_right(&perspective_camera->camera);
+}
+
+void OB_PerspectiveCamera_strafe_left(struct OB_PerspectiveCamera *perspective_camera) {
+    assert(perspective_camera != NULL);
+
+    OB_Camera_strafe_left(&perspective_camera->camera);
 }
 
 float *OB_PerspectiveCamera_get_view(struct OB_PerspectiveCamera *perspective_camera) {
