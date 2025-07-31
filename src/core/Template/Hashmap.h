@@ -7,16 +7,16 @@
     #error "Missing parameter HASHMAP_K or HASHMAP_V"
 #endif
 
-#define HASHMAP_INITIAL_CAPACITY 16
-#define ENTRY OB_MAKE_NAME(Bucket, OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
-#define HASHMAP OB_MAKE_NAME(Hashmap, OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
-#define HASHMAP_RESIZE OB_MAKE_NAME(HASHMAP, resize)
+#define HASHMAP_CAPACITY  16
+#define ENTRY             OB_MAKE_NAME(Bucket,  OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
+#define HASHMAP           OB_MAKE_NAME(Hashmap, OB_MAKE_NAME(HASHMAP_K,HASHMAP_V))
+#define HASHMAP_RESIZE    OB_MAKE_NAME(HASHMAP, resize)
 #define HASHMAP_GET_ENTRY OB_MAKE_NAME(HASHMAP, get_entry)
-#define HASHMAP_INIT OB_MAKE_NAME(HASHMAP, init)
-#define HASHMAP_FREE OB_MAKE_NAME(HASHMAP, free)
-#define HASHMAP_EXISTS OB_MAKE_NAME(HASHMAP, exists)
-#define HASHMAP_INSERT OB_MAKE_NAME(HASHMAP, insert)
-#define HASHMAP_GET OB_MAKE_NAME(HASHMAP, get)
+#define HASHMAP_INIT      OB_MAKE_NAME(HASHMAP, init)
+#define HASHMAP_FREE      OB_MAKE_NAME(HASHMAP, free)
+#define HASHMAP_EXISTS    OB_MAKE_NAME(HASHMAP, exists)
+#define HASHMAP_INSERT    OB_MAKE_NAME(HASHMAP, insert)
+#define HASHMAP_GET       OB_MAKE_NAME(HASHMAP, get)
 
 #ifndef HASHMAP_IMPLEMENTATION
 
@@ -33,11 +33,11 @@ struct HASHMAP {
     bool (*compare_function)(HASHMAP_K, HASHMAP_K);
 };
 
-bool HASHMAP_INIT(struct HASHMAP *hashmap, size_t (*hash_function)(HASHMAP_K), bool (*compare_function)(HASHMAP_K, HASHMAP_K));
-void HASHMAP_FREE(struct HASHMAP *hashmap);
-bool HASHMAP_EXISTS(struct HASHMAP *hashmap, HASHMAP_K key);
-bool HASHMAP_INSERT(struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value);
-HASHMAP_V HASHMAP_GET(struct HASHMAP *hashmap, HASHMAP_K key, bool *success);
+bool HASHMAP_INIT     (struct HASHMAP *hashmap, size_t (*hash_function)(HASHMAP_K), bool (*compare_function)(HASHMAP_K, HASHMAP_K));
+void HASHMAP_FREE     (struct HASHMAP *hashmap);
+bool HASHMAP_EXISTS   (struct HASHMAP *hashmap, HASHMAP_K key);
+bool HASHMAP_INSERT   (struct HASHMAP *hashmap, HASHMAP_K key, HASHMAP_V value);
+HASHMAP_V HASHMAP_GET (struct HASHMAP *hashmap, HASHMAP_K key, bool *success);
 
 #endif //HASHMAP_IMPLEMENTATION
 
@@ -94,10 +94,10 @@ bool HASHMAP_INIT(struct HASHMAP *hashmap, size_t (*hash_function)(HASHMAP_K), b
     assert(hash_function != NULL);
     assert(compare_function != NULL);
 
-    hashmap->capacity = HASHMAP_INITIAL_CAPACITY;
+    hashmap->capacity = HASHMAP_CAPACITY;
     hashmap->hash_function = hash_function;
     hashmap->compare_function = compare_function;
-    hashmap->entries = (struct ENTRY*)calloc(HASHMAP_INITIAL_CAPACITY, sizeof(struct ENTRY));
+    hashmap->entries = (struct ENTRY*)calloc(HASHMAP_CAPACITY, sizeof(struct ENTRY));
 
     return hashmap->entries != NULL;
 }
@@ -144,7 +144,7 @@ HASHMAP_V HASHMAP_GET(struct HASHMAP *hashmap, HASHMAP_K key, bool *success) {
 
 #undef HASHMAP_K
 #undef HASHMAP_V
-#undef HASHMAP_INITIAL_CAPACITY
+#undef HASHMAP_CAPACITY
 #undef HASHMAP
 #undef ENTRY
 #undef HASHMAP_GET_ENTRY

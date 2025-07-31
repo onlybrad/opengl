@@ -5,19 +5,19 @@
     #error "Missing parameter VECTOR_T"
 #endif
 
-#define VECTOR_DEFAULT_CAPACITY 16
-#define VECTOR OB_MAKE_NAME(Vector, VECTOR_T)
-#define VECTOR_RESIZE OB_MAKE_NAME(VECTOR, resize)
-#define VECTOR_INIT OB_MAKE_NAME(VECTOR, init)
+#define VECTOR_CAPACITY  16
+#define VECTOR           OB_MAKE_NAME(Vector, VECTOR_T)
+#define VECTOR_RESIZE    OB_MAKE_NAME(VECTOR, resize)
+#define VECTOR_INIT      OB_MAKE_NAME(VECTOR, init)
 #define VECTOR_INIT_MOVE OB_MAKE_NAME(VECTOR, init_move)
 #define VECTOR_INIT_COPY OB_MAKE_NAME(VECTOR, init_copy)
-#define VECTOR_COPY OB_MAKE_NAME(VECTOR, copy)
-#define VECTOR_FREE OB_MAKE_NAME(VECTOR, free)
-#define VECTOR_PUSH OB_MAKE_NAME(VECTOR, push)
-#define VECTOR_POP OB_MAKE_NAME(VECTOR, pop)
-#define VECTOR_AT OB_MAKE_NAME(VECTOR, at)
-#define VECTOR_SET OB_MAKE_NAME(VECTOR, set)
-#define VECTOR_REMOVE OB_MAKE_NAME(VECTOR, remove)
+#define VECTOR_COPY      OB_MAKE_NAME(VECTOR, copy)
+#define VECTOR_FREE      OB_MAKE_NAME(VECTOR, free)
+#define VECTOR_PUSH      OB_MAKE_NAME(VECTOR, push)
+#define VECTOR_POP       OB_MAKE_NAME(VECTOR, pop)
+#define VECTOR_AT        OB_MAKE_NAME(VECTOR, at)
+#define VECTOR_SET       OB_MAKE_NAME(VECTOR, set)
+#define VECTOR_REMOVE    OB_MAKE_NAME(VECTOR, remove)
 
 #ifndef VECTOR_IMPLEMENTATION
 
@@ -27,15 +27,15 @@ struct VECTOR {
     size_t capacity;
 };
 
-bool VECTOR_INIT(struct VECTOR *vector, size_t capacity);
-void VECTOR_INIT_MOVE(struct VECTOR *vector, VECTOR_T *buffer, size_t length);
-bool VECTOR_INIT_COPY(struct VECTOR *vector, VECTOR_T *buffer, size_t length);
-bool VECTOR_COPY(struct VECTOR *vector_dst, struct VECTOR *vector_src);
-void VECTOR_FREE(struct VECTOR *vector);
-bool VECTOR_PUSH(struct VECTOR *vector, VECTOR_T value);
-VECTOR_T VECTOR_POP(struct VECTOR *vector);
-VECTOR_T VECTOR_AT(const struct VECTOR *vector, size_t index);
-bool VECTOR_SET(struct VECTOR *vector, size_t index, VECTOR_T value);
+bool VECTOR_INIT      (struct VECTOR *vector, size_t capacity);
+void VECTOR_INIT_MOVE (struct VECTOR *vector, VECTOR_T *buffer, size_t length);
+bool VECTOR_INIT_COPY (struct VECTOR *vector, VECTOR_T *buffer, size_t length);
+bool VECTOR_COPY      (struct VECTOR *vector_dst, struct VECTOR *vector_src);
+void VECTOR_FREE      (struct VECTOR *vector);
+bool VECTOR_PUSH      (struct VECTOR *vector, VECTOR_T value);
+VECTOR_T VECTOR_POP   (struct VECTOR *vector);
+VECTOR_T VECTOR_AT    (const struct VECTOR *vector, size_t index);
+bool VECTOR_SET       (struct VECTOR *vector, size_t index, VECTOR_T value);
 VECTOR_T VECTOR_REMOVE(struct VECTOR *vector, size_t index);
 
 #endif //#ifndef VECTOR_IMPLEMENTATION
@@ -59,7 +59,7 @@ static bool VECTOR_RESIZE(struct VECTOR *vector, size_t new_capacity) {
 }
 
 bool VECTOR_INIT(struct VECTOR *vector, size_t capacity) {
-    vector->capacity = capacity == 0 ? VECTOR_DEFAULT_CAPACITY : capacity;
+    vector->capacity = capacity == 0 ? VECTOR_CAPACITY : capacity;
     vector->length = 0;
     vector->buffer = (VECTOR_T*)calloc(vector->capacity, sizeof(VECTOR_T));
     
@@ -166,7 +166,7 @@ VECTOR_T VECTOR_REMOVE(struct VECTOR *vector, size_t index) {
 #endif //#ifdef VECTOR_IMPLEMENTATION
 
 #undef VECTOR_T
-#undef VECTOR_DEFAULT_CAPACITY
+#undef VECTOR_CAPACITY
 #undef VECTOR
 #undef PREFIX
 #undef VECTOR_INIT
