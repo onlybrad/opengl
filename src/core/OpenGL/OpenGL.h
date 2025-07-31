@@ -13,7 +13,7 @@ void OB_OpenGL_clear(void);
 void OB_OpenGL_fill_mode(void);
 void OB_OpenGL_wireframe_mode(void);
 void OB_OpenGL_draw_background(int first, int vertices_count);
-void OB_OpenGL_draw(int first, const int vertices_count);
+void OB_OpenGL_draw(int first, int vertices_count);
 void OB_OpenGL_print_errors(void);
 
 #endif

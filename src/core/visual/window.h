@@ -26,7 +26,7 @@ void OB_Window_free(void);
 struct OB_Window *OB_Window_get(void);
 void OB_Window_set_vsync(bool on);
 void OB_Window_set_scene3D(struct OB_Scene3D *scene);
-void OB_Window_set_updates_per_second(const unsigned updates_per_seconds);
+void OB_Window_set_updates_per_second(unsigned updates_per_seconds);
 void OB_Window_drawing_loop(OB_Window_Callback drawing_callback);
 void OB_Window_logic_loop(OB_Window_Callback logic_callback);
 void OB_Window_set_input_callback(OB_Window_Callback input_callback);

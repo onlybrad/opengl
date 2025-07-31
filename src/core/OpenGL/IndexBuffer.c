@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include "indexbuffer.h"
 
-void OB_IndexBuffer_init(struct OB_IndexBuffer *index_buffer, const unsigned *data, unsigned count) {
+void OB_IndexBuffer_init(struct OB_IndexBuffer *index_buffer, unsigned *data, unsigned count) {
     assert(index_buffer != NULL);
     
     index_buffer->count = count;

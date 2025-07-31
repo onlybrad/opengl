@@ -4,7 +4,7 @@
 #include "object.h"
 #include "../util/util.h"
 
-bool OB_Object_init(struct OB_Object *object, struct OB_Vertex *vertices, const unsigned vertices_count) {
+bool OB_Object_init(struct OB_Object *object, struct OB_Vertex *vertices, unsigned vertices_count) {
     assert(object != NULL);
     assert(vertices != NULL);
 
@@ -22,7 +22,7 @@ bool OB_Object_init(struct OB_Object *object, struct OB_Vertex *vertices, const 
     return true;
 }
 
-void OB_Object_init_move(struct OB_Object *object, struct OB_Vertex *vertices, const unsigned vertices_count) {
+void OB_Object_init_move(struct OB_Object *object, struct OB_Vertex *vertices, unsigned vertices_count) {
     assert(object != NULL);
     assert(vertices != NULL);
 
