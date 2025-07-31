@@ -22,14 +22,14 @@
 #ifndef VECTOR_IMPLEMENTATION
 
 struct VECTOR {
-    VECTOR_T *buffer;
+    VECTOR_T *data;
     size_t length;
     size_t capacity;
 };
 
 bool VECTOR_INIT      (struct VECTOR *vector, size_t capacity);
-void VECTOR_INIT_MOVE (struct VECTOR *vector, VECTOR_T *buffer, size_t length);
-bool VECTOR_INIT_COPY (struct VECTOR *vector, VECTOR_T *buffer, size_t length);
+void VECTOR_INIT_MOVE (struct VECTOR *vector, VECTOR_T *data, size_t length);
+bool VECTOR_INIT_COPY (struct VECTOR *vector, VECTOR_T *data, size_t length);
 bool VECTOR_COPY      (struct VECTOR *vector_dst, struct VECTOR *vector_src);
 void VECTOR_FREE      (struct VECTOR *vector);
 bool VECTOR_PUSH      (struct VECTOR *vector, VECTOR_T value);
@@ -47,12 +47,12 @@ VECTOR_T VECTOR_REMOVE(struct VECTOR *vector, size_t index);
 #include <string.h>
 
 static bool VECTOR_RESIZE(struct VECTOR *vector, size_t new_capacity) {
-    VECTOR_T *buffer = (VECTOR_T*)realloc(vector->buffer, sizeof(VECTOR_T) * new_capacity);
-    if(buffer == NULL) {
+    VECTOR_T *data = (VECTOR_T*)realloc(vector->data, sizeof(VECTOR_T) * new_capacity);
+    if(data == NULL) {
         return false;
     }
 
-    vector->buffer = buffer;
+    vector->data = data;
     vector->capacity = new_capacity;
 
     return true;
@@ -61,44 +61,44 @@ static bool VECTOR_RESIZE(struct VECTOR *vector, size_t new_capacity) {
 bool VECTOR_INIT(struct VECTOR *vector, size_t capacity) {
     vector->capacity = capacity == 0 ? VECTOR_CAPACITY : capacity;
     vector->length = 0;
-    vector->buffer = (VECTOR_T*)calloc(vector->capacity, sizeof(VECTOR_T));
+    vector->data = (VECTOR_T*)calloc(vector->capacity, sizeof(VECTOR_T));
     
-    return vector->buffer != NULL;
+    return vector->data != NULL;
 }
 
-void VECTOR_INIT_MOVE(struct VECTOR *vector, VECTOR_T *buffer, size_t length) {
+void VECTOR_INIT_MOVE(struct VECTOR *vector, VECTOR_T *data, size_t length) {
     vector->capacity = length;
     vector->length = length;
-    vector->buffer = buffer;
+    vector->data = data;
 }
 
-bool VECTOR_INIT_COPY(struct VECTOR *vector, VECTOR_T *buffer, size_t length) {
+bool VECTOR_INIT_COPY(struct VECTOR *vector, VECTOR_T *data, size_t length) {
     vector->capacity = length;
     vector->length = length;
-    vector->buffer = (VECTOR_T*)malloc(sizeof(VECTOR_T) * length);
+    vector->data = (VECTOR_T*)malloc(sizeof(VECTOR_T) * length);
     
-    if(vector->buffer == NULL) {
+    if(vector->data == NULL) {
         return false;
     }
 
-    memcpy(vector->buffer, buffer, sizeof(VECTOR_T) * length);
+    memcpy(vector->data, data, sizeof(VECTOR_T) * length);
 
     return true;
 }
 
 void VECTOR_FREE(struct VECTOR *vector) {
-    free(vector->buffer);
+    free(vector->data);
     memset(vector, 0, sizeof(*vector));
 }
 
 bool VECTOR_COPY(struct VECTOR *vector_dst, struct VECTOR *vector_src) {
-    vector_dst->buffer = (VECTOR_T*)malloc(sizeof(VECTOR_T) * vector_src->capacity);
+    vector_dst->data = (VECTOR_T*)malloc(sizeof(VECTOR_T) * vector_src->capacity);
 
-    if(vector_dst->buffer == NULL) {
+    if(vector_dst->data == NULL) {
         return false;
     }
 
-    memcpy(vector_dst->buffer, vector_src->buffer, sizeof(VECTOR_T) * vector_src->capacity);
+    memcpy(vector_dst->data, vector_src->data, sizeof(VECTOR_T) * vector_src->capacity);
     vector_dst->capacity = vector_src->capacity;
     vector_dst->length = vector_src->length;
 
@@ -111,7 +111,7 @@ bool VECTOR_PUSH(struct VECTOR *vector, VECTOR_T value) {
             return false;
         }
     }
-    vector->buffer[vector->length++] = value;
+    vector->data[vector->length++] = value;
 
     return true;
 }
@@ -119,18 +119,18 @@ bool VECTOR_PUSH(struct VECTOR *vector, VECTOR_T value) {
 VECTOR_T VECTOR_POP(struct VECTOR *vector) {
     assert(vector->length > 0);
 
-    return vector->buffer[--vector->length];
+    return vector->data[--vector->length];
 }
 
 VECTOR_T VECTOR_AT(const struct VECTOR *vector, size_t index) {
     assert(index < vector->length);
 
-    return vector->buffer[index];
+    return vector->data[index];
 }
 
 bool VECTOR_SET(struct VECTOR *vector, size_t index, VECTOR_T value) {
     if(index < vector->length) {
-        vector->buffer[index] = value;
+        vector->data[index] = value;
         return true;
     }
 
@@ -146,9 +146,9 @@ bool VECTOR_SET(struct VECTOR *vector, size_t index, VECTOR_T value) {
         }
     }
 
-    memset(vector->buffer + vector->length, 0, sizeof(VECTOR_T) * (index - vector->length));
+    memset(vector->data + vector->length, 0, sizeof(VECTOR_T) * (index - vector->length));
     vector->length = index + 1;
-    vector->buffer[index] = value;
+    vector->data[index] = value;
 
     return true;
 }
@@ -156,8 +156,8 @@ bool VECTOR_SET(struct VECTOR *vector, size_t index, VECTOR_T value) {
 VECTOR_T VECTOR_REMOVE(struct VECTOR *vector, size_t index) {
     assert(index < vector->length);
 
-    VECTOR_T ret = vector->buffer[index];
-    memmove(vector->buffer + index, vector->buffer + index + 1, sizeof(VECTOR_T) * (vector->length - index));
+    VECTOR_T ret = vector->data[index];
+    memmove(vector->data + index, vector->data + index + 1, sizeof(VECTOR_T) * (vector->length - index));
     vector->length--;
 
     return ret;
