@@ -40,8 +40,7 @@ static void OB_internal_keyboard_callback(int key, int action, int mods) {
     }
 }
 
-static void OB_empty_keyboard_callback(struct OB_Window *window, int key, int scancode, int action, int mods) {
-    (void)window;
+static void OB_empty_keyboard_callback(int key, int scancode, int action, int mods) {
     (void)key;
     (void)scancode;
     (void)action;
@@ -51,7 +50,7 @@ static void OB_empty_keyboard_callback(struct OB_Window *window, int key, int sc
 static void OB_GLFW_keyboard_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     (void)window;
     OB_internal_keyboard_callback(key, action, mods);
-    callback(OB_Window_get(), key, scancode, action, mods);
+    callback(key, scancode, action, mods);
 }
 
 void OB_Keyboard_init(void) {

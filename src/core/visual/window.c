@@ -87,7 +87,7 @@ void OB_Window_drawing_loop(OB_Window_Callback drawing_function) {
         const double previous_time = window.current_time;
         window.current_time = glfwGetTime();
         window.delta_time = (float)(window.current_time - previous_time);
-        drawing_function(&window);
+        drawing_function();
         glfwSwapBuffers(window.glfw_window);
         glfwPollEvents();
     }
@@ -106,8 +106,8 @@ static void *logic_loop(void *arg) {
 
     while(! window.should_close) {    
         if(next_update < glfwGetTime()) {
-            window.input_callback(&window);
-            logic_function(&window);
+            window.input_callback();
+            logic_function();
             next_update += tick;
         }
     }
@@ -115,7 +115,7 @@ static void *logic_loop(void *arg) {
     return NULL;
 }
 
-void OB_Window_logic_loop(void(*logic_function)(struct OB_Window *const)) {
+void OB_Window_logic_loop(OB_Window_Callback logic_function) {
     assert(logic_function != NULL);
 
     static struct OB_Window_CallbackWrapper logic_wrapper;

@@ -3,7 +3,7 @@
 
 #include "../visual/window.h"
 
-typedef void(*OB_Mouse_Callback)(struct OB_Window *, double x, double y);
+typedef void(*OB_Mouse_Callback)(double x, double y);
 
 void OB_Mouse_init(void);
 void OB_Mouse_set_cursor_callback(OB_Mouse_Callback cursor_callback);

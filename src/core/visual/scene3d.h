@@ -50,10 +50,9 @@ typedef struct OB_Scene3D {
 
 bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct OB_Camera *camera);
 void OB_Scene3D_free(struct OB_Scene3D *scene);
-bool OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, const struct OB_Transform *transform);
+int OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, const struct OB_Transform *transform);
 void OB_Scene3D_object_set_transform(struct OB_Scene3D *scene, unsigned object_index, struct OB_Transform *transform);
 void OB_Scene3D_object_needs_update(struct OB_Scene3D *scene, unsigned object_index);
-void OB_Scene3D_set_background(struct OB_Scene3D *scene, struct OB_Object *background);
 struct OB_SceneObject3D *OB_Scene3D_object_get(struct OB_Scene3D *scene, unsigned object_index);
 void OB_Scene3D_start(struct OB_Scene3D *scene);
 void OB_Scene3D_end(struct OB_Scene3D *scene);

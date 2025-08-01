@@ -1,45 +1,3 @@
-#include <assert.h>
-#include <cglm/cglm.h>
-#include <math.h>
-#include "../core/object/object.h"
-#include "../core/opengl/shader.h"
-#include "../core/visual/window.h"
-#include "../core/visual/camera.h"
-#include "../core/visual/scene3d.h"
-#include "../core/input/keyboard.h"
-#include "../core/input/mouse.h"
-#include "../core/util/util.h"
-
-static void input_callback(struct OB_Window *window) {
-    assert(window != NULL);
-
-    struct OB_Camera *const camera = window->scene->camera;
-    
-    if (OB_Keyboard_is_pressed(OB_KEY_UP)) {
-        OB_Camera_move_forward(camera);
-    } 
-    
-    if (OB_Keyboard_is_pressed(OB_KEY_DOWN)) {
-        OB_Camera_move_backward(camera);
-    }
-
-    if (OB_Keyboard_is_pressed(OB_KEY_RIGHT)) {
-        OB_Camera_strafe_right(camera);
-    }
-
-    if (OB_Keyboard_is_pressed(OB_KEY_LEFT)) {
-        OB_Camera_strafe_left(camera);
-    }
-
-    if(OB_Keyboard_is_pressed(OB_KEY_KP_8) && !OB_Keyboard_numlock()) {
-        OB_Camera_move_up(camera);
-    }
-
-    if(OB_Keyboard_is_pressed(OB_KEY_KP_2) && !OB_Keyboard_numlock()) {
-        OB_Camera_move_down(camera);
-    }
-}
-
 //all opengl calls must be done in here
 static void drawing_callback(struct OB_Window *window) {
     assert(window != NULL);
@@ -82,15 +40,3 @@ static void logic_callback(struct OB_Window *window) {
     OB_Scene3D_object_set_transform(window->scene, light_index, &light_transform);
 }
 
-static void mouse_cursor_callback(struct OB_Window *window, double x, double y) {
-    assert(window != NULL);
-
-    OB_Camera_change_direction(window->scene->camera, (float)x, (float)y);
-}
-
-static void mouse_scroll_callback(struct OB_Window *window, double _, double yoffset) {
-    assert(window != NULL);
-    (void)_;
-
-    OB_Camera_zoom(window->scene->camera, (float)yoffset);
-}

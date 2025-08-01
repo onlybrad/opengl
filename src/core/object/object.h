@@ -10,7 +10,8 @@
 
 enum OB_Object_Type {
     OB_OBJECT_SHAPE = 0,
-    OB_OBJECT_LIGHT = 1
+    OB_OBJECT_LIGHT = 1,
+    OB_OBJECT_BACKGROUND = 2 
 };
 
 struct OB_Object_Vertex {
@@ -40,6 +41,7 @@ void OB_Object_set_texture_slot(struct OB_Object *object, unsigned texture_slot)
 void OB_Object_set_shininess(struct OB_Object *object, unsigned shininess);
 void OB_Object_set_model(struct OB_Object *object, const float model[16]);
 void OB_Object_set_type(struct OB_Object *object, enum OB_Object_Type type);
+enum OB_Object_Type OB_Object_get_type(struct OB_Object *object);
 unsigned OB_Object_get_texture_slot(struct OB_Object *object);
 
 #endif

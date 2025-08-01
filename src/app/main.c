@@ -1,136 +1,16 @@
+#include <stdbool.h>
+#include "space.h"
 #include "../core/visual/window.h"
-#include "../core/visual/camera.h"
-#include "../core/visual/scene3d.h"
-#include "../core/opengl/shader.h"
-#include "../core/opengl/texture.h"
-#include "../core/object/object.h"
-#include "../core/object/cube.h"
-#include "../core/object/cylinder.h"
-#include "../core/util/color.h"
-#include "../core/util/util.h"
-#include "callback.h"
-
-#define CHECK_ERROR(BOOL) do { if(!BOOL) {code = 1; goto cleanup;} } while(0) 
-
-static struct OB_Shader shader = OB_ZERO;
-static struct OB_Camera camera = OB_ZERO;
-static struct OB_Scene3D scene = OB_ZERO;
-static struct OB_Texture 
-    space_texture = OB_ZERO, 
-    wood_texture = OB_ZERO;
-static struct OB_Object 
-    background = OB_ZERO,
-    cube = OB_ZERO,
-    cube2 = OB_ZERO,
-    cylinder = OB_ZERO,
-    light = OB_ZERO;
-static vec4 vec4_light_color = OB_ZERO;
-
-static const vec4 camera_position = {0.0f, 0.0f, 3.0f};
-static const struct OB_Color light_color = {255, 255, 255, 255};
-static const struct OB_Transform 
-cube_transform = {
-    0.0f, 
-    {0.0f, 0.0f, 0.0f},
-    {0.0f, 2.0f, 0.0f},
-    {1.0f, 1.0f, 1.0f}
-}, cylinder_transform = {
-    0.0f,
-    {0.0f, 0.0f, 0.0f},
-    {2.0f, 0.0f, 0.0f},
-    {1.0f, 1.0f, 1.0f}
-}, light_transform = {
-    0.0,
-    {1.0f, 1.0f, 0.0f},
-    {2.0f, 0.0f, 1.0f},
-    {0.2f, 0.2f, 0.2f}, 
-};
+#include "../core/input/keyboard.h"
+#include "../core/input/mouse.h"
 
 int main(void) {
-    int code = 0;
-    const int width = 800;
-    const int height = 600;
-
-    //Window
-    OB_Window_init(width, height, "LearnOpenGL");
+    OB_Window_init(800, 600, "LearnOpenGL");
     OB_Window_set_vsync(true);
     OB_Window_set_updates_per_second(60);
-    OB_Window_set_input_callback(input_callback);
 
-    //Keyboard
-    OB_Keyboard_init();
+    const int code = space_init();
+    space_free();
 
-    //Mouse
-    OB_Mouse_init();
-    OB_Mouse_set_cursor_callback(mouse_cursor_callback);
-    OB_Mouse_set_scroll_callback(mouse_scroll_callback);
-
-    //Shader
-    CHECK_ERROR(OB_Shader_init(&shader, "./shaders/vertex.glsl", "./shaders/fragment.glsl"));
-    OB_Shader_use(&shader);
-
-    //Camera
-    OB_Camera_init(&camera, (float)width/2.0f, (float)height/2.0f);
-    OB_Camera_set_speed(&camera, 0.05f);
-    OB_Camera_set_position(&camera, camera_position);
-    OB_Camera_set_fov(&camera, glm_rad(45.0f));
-    OB_Camera_set_aspect(&camera, (float)width/(float)height);
-    OB_Camera_set_near_z(&camera, 0.1f);
-    OB_Camera_set_far_z(&camera, 100.0f);
-    
-    //Texture
-    CHECK_ERROR(OB_Texture_init(&space_texture, "spaceTexture", "./textures/space.jpg"));
-    CHECK_ERROR(OB_Texture_init(&wood_texture, "woodTexture", "./textures/wood.png"));
-
-    //Scene
-    CHECK_ERROR(OB_Scene3D_init(&scene, &shader, &camera));
-    
-    //Background
-    CHECK_ERROR(OB_Cube_create_background(&background));
-    OB_Object_set_texture(&background, &space_texture);
-    OB_Scene3D_set_background(&scene, &background);
-
-    //Cube 1
-    CHECK_ERROR(OB_Cube_create(&cube));
-    OB_Object_set_texture(&cube, &wood_texture);
-    OB_Scene3D_add_object(&scene, &cube, NULL);
-
-    //Cube 2
-    CHECK_ERROR(OB_Cube_create(&cube2));
-    OB_Object_set_texture(&cube2, &wood_texture);
-    OB_Scene3D_add_object(&scene, &cube2, &cube_transform);
-
-    //Cylinder
-    CHECK_ERROR(OB_Cylinder_create(&cylinder, 0.5f, 0.5f));
-    OB_Object_set_texture(&cylinder, &wood_texture);
-    OB_Scene3D_add_object(&scene, &cylinder, &cylinder_transform);
-
-    //Light
-    CHECK_ERROR(OB_Cube_create_light(&light));
-    OB_Object_set_rgba_color(&light, &light_color);
-    CHECK_ERROR(OB_Scene3D_add_object(&scene, &light, &light_transform));
-    CHECK_ERROR(OB_Shader_set_vec3(&shader, "light_position", light_transform.translate));
-    CHECK_ERROR(OB_Shader_set_vec4(&shader, "light_color", OB_Color_to_vec4(&light_color, vec4_light_color)));
-    CHECK_ERROR(OB_Shader_set_float(&shader, "ambiant_strength", 0.7f));
-
-    //Add scene to windows then start the scene
-    OB_Window_set_scene3D(&scene);
-    OB_Scene3D_start(&scene);
-    OB_Window_logic_loop(logic_callback);
-    OB_Window_drawing_loop(drawing_callback);
-    OB_Scene3D_end(&scene);
-
-cleanup:
-    OB_Texture_free(&space_texture);
-    OB_Texture_free(&wood_texture);
-    OB_Object_free(&cube);
-    OB_Object_free(&cylinder);
-    OB_Object_free(&light);
-    OB_Object_free(&background);
-    OB_Shader_free(&shader);
-    OB_Scene3D_free(&scene);
-    OB_Camera_free(&camera);
-    OB_Window_free();
-    
     return code;
 }

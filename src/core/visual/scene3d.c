@@ -23,7 +23,7 @@ static int OB_find_texture_slot(Scene3D *scene, struct OB_Texture *texture) {
     assert(scene != NULL);
     assert(texture != NULL);
 
-    for(unsigned i = 0u; i < scene->scene_objects.length; i++) {
+    for(unsigned i = 1u; i < scene->scene_objects.length; i++) {
         if(texture == scene->scene_objects.data[i].object->texture) {
             return (int)i+1;
         }
@@ -56,6 +56,8 @@ bool OB_Scene3D_init(struct OB_Scene3D *scene, struct OB_Shader *shader, struct 
         return false;
     }
 
+    scene->scene_objects.length = 1;
+
     if(!Vector_uint_init(&scene->to_update, 128)) {
         Vector_SceneObject3D_free(&scene->scene_objects);
         return false;
@@ -79,37 +81,50 @@ void OB_Scene3D_free(struct OB_Scene3D *scene) {
     memset(scene, 0, sizeof(*scene));
 }
 
-bool OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, const struct OB_Transform *transform) {
+int OB_Scene3D_add_object(struct OB_Scene3D *scene, struct OB_Object *object, const struct OB_Transform *transform) {
     assert(scene != NULL);
     assert(object != NULL);
     
-    scene->vertices_count += object->vertices_count;
-
-    struct OB_Transform t = OB_ZERO;
-    if(transform == NULL) {
-        t.scale[0] = 1.0;
-        t.scale[1] = 1.0;
-        t.scale[2] = 1.0;
-    } else {
-        t = *transform;
-    }
-
-    const struct OB_SceneObject3D object3D = {object, t, 0u, true};
-    if(!Vector_SceneObject3D_push(&scene->scene_objects, object3D)) {
-        return false;
-    }
-
-    if(object->texture != NULL) {
-        const int texture_slot = OB_find_texture_slot(scene, object->texture);
-
-        if(texture_slot == -1) {
-            OB_Object_set_texture_slot(object, scene->texture_slot++);
+    switch(OB_Object_get_type(object)) {
+    case OB_OBJECT_SHAPE:
+    case OB_OBJECT_LIGHT: {
+        struct OB_Transform t = OB_ZERO;
+        if(transform == NULL) {
+            t.scale[0] = 1.0;
+            t.scale[1] = 1.0;
+            t.scale[2] = 1.0;
         } else {
-            OB_Object_set_texture_slot(object, (unsigned)texture_slot);
+            t = *transform;
         }
+
+        const struct OB_SceneObject3D object3D = {object, t, 0u, true};
+        if(!Vector_SceneObject3D_push(&scene->scene_objects, object3D)) {
+            return -1;
+        }
+
+        if(object->texture != NULL) {
+            const int texture_slot = OB_find_texture_slot(scene, object->texture);
+
+            if(texture_slot == -1) {
+                OB_Object_set_texture_slot(object, scene->texture_slot++);
+            } else {
+                OB_Object_set_texture_slot(object, (unsigned)texture_slot);
+            }
+        }
+
+        scene->vertices_count += object->vertices_count;
+
+        return (int)scene->scene_objects.length - 1;
     }
 
-    return true;
+    case OB_OBJECT_BACKGROUND: {
+        scene->background = object;
+        OB_Object_set_texture_slot(object, 0u);
+        return 0;
+    }
+    }
+
+    return -1;
 }
 
 void OB_Scene3D_object_needs_update(struct OB_Scene3D *scene, unsigned object_index) {
@@ -139,14 +154,6 @@ void OB_Scene3D_object_set_transform(struct OB_Scene3D *scene, unsigned object_i
     OB_Scene3D_object_needs_update(scene, object_index);
 }
 
-void OB_Scene3D_set_background(struct OB_Scene3D *scene, struct OB_Object *background) {
-    assert(scene != NULL);
-    assert(background != NULL);
-
-    scene->background = background;
-    OB_Object_set_texture_slot(background, 0u);
-}
-
 struct OB_SceneObject3D *OB_Scene3D_object_get(struct OB_Scene3D *scene, unsigned object_index) {
     assert(scene != NULL);
 
@@ -165,7 +172,7 @@ void OB_Scene3D_start(struct OB_Scene3D *scene) {
         previous_size += scene->background->vertices_count;
     }
   
-    for(unsigned i = 0u; i < (unsigned)scene->scene_objects.length; i++) {
+    for(unsigned i = 1u; i < (unsigned)scene->scene_objects.length; i++) {
         struct OB_Object *const object = scene->scene_objects.data[i].object;
 
         vab_size += object->vertices_count * (unsigned)sizeof(*object->vertices);
@@ -182,8 +189,8 @@ void OB_Scene3D_start(struct OB_Scene3D *scene) {
         OB_Shader_set_int(scene->shader, OB_TEXTURE_UNIFORMS[0], 0);
     }
 
-    for(unsigned i = 0u; i < (unsigned)scene->scene_objects.length; i++) {
-       struct OB_Object *const object = scene->scene_objects.data[i].object;
+    for(unsigned i = 1u; i < (unsigned)scene->scene_objects.length; i++) {
+        struct OB_Object *const object = scene->scene_objects.data[i].object;
 
         mat4 model;
         OB_get_model(model, &scene->scene_objects.data[i].transform);

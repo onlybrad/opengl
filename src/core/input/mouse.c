@@ -7,12 +7,12 @@ static OB_Mouse_Callback scroll_callback;
 
 static void OB_Mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos) {
     (void)window;
-    cursor_callback(OB_Window_get(), xpos, ypos);
+    cursor_callback(xpos, ypos);
 }
 
 static void OB_Mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     (void)window;
-    scroll_callback(OB_Window_get(), xoffset, yoffset);
+    scroll_callback(xoffset, yoffset);
 }
 
 void OB_Mouse_init(void) {

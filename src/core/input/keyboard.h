@@ -6,7 +6,7 @@
 #include "../visual/window.h"
 #include "Keys.h"
 
-typedef void (*OB_Keyboard_Callback)(struct OB_Window *window, int key, int scancode, int action, int mods);
+typedef void (*OB_Keyboard_Callback)(int key, int scancode, int action, int mods);
 
 void OB_Keyboard_init(void);
 void OB_Keyboard_set_callback(OB_Keyboard_Callback callback);

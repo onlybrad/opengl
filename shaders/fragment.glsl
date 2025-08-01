@@ -2,6 +2,7 @@
 
 #define SHAPE 0
 #define LIGHT 1
+#define BACKGROUND 2
 
 struct Object {
    float shininess;
@@ -61,10 +62,8 @@ uniform sampler2D texture31;
 vec4 get_texture(int index, vec2 texture_coordinates);
 
 void main() {
-   //background
-   if(object.type != LIGHT && object.texture_slot == 0) {
-      frag_color = get_texture(0, fragment.texture_coordinates);
-   } else if(object.type != LIGHT) {
+   switch(object.type) {
+   case SHAPE: {
       vec3 light_direction = normalize(light_position - fragment.position);
       vec3 camera_direction = normalize(camera_position - fragment.position);
       vec3 reflect_direction = reflect(-light_direction, object.normal);
@@ -76,8 +75,19 @@ void main() {
       vec3 specular = light_color.rgb * pow(max(dot(camera_direction, reflect_direction), 0.0), object.shininess) * vec3(diffuse_texture);
 
       frag_color = vec4((ambient + diffuse + specular), 1.0);
-   } else {
+      break;
+   }
+
+   case LIGHT: {
       frag_color = object.color;
+      break;
+   }
+
+   case BACKGROUND: {
+      frag_color = get_texture(0, fragment.texture_coordinates);
+      break;
+   }
+
    }
 }
 

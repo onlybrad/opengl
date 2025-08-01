@@ -6,7 +6,7 @@
 
 struct OB_Window;
 
-typedef void (*OB_Window_Callback)(struct OB_Window*);
+typedef void (*OB_Window_Callback)(void);
 
 struct OB_Window {
     bool should_close;

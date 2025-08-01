@@ -1,10 +1,12 @@
-#ifndef _UTIL_H
-#define _UTIL_H
+#ifndef OB_UTIL_H
+#define OB_UTIL_H
 
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "string.h"
+
+#define OB_CURLY_BRACKETS(...) __VA_ARGS__ 
 
 #ifdef __cplusplus
     #define OB_ZERO {}

@@ -81,6 +81,10 @@ void OB_Object_set_type(struct OB_Object *object, enum OB_Object_Type type) {
     }
 }
 
+enum OB_Object_Type OB_Object_get_type(struct OB_Object *object) {
+    return (enum OB_Object_Type)object->vertices[0].type[0];
+}
+
 unsigned OB_Object_get_texture_slot(struct OB_Object *object) {
     return (unsigned)object->vertices[0].texture_slot[0];
 }

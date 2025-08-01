@@ -2,6 +2,7 @@
 
 #define SHAPE 0
 #define LIGHT 1
+#define BACKGROUND 2
 
 struct Object {
    float shininess;
@@ -31,12 +32,12 @@ out Fragment fragment;
 uniform mat4 view;
 uniform mat4 projection;
 
-bool is_background() {
-   return a_type == 0.0 && a_texture_slot == 0.0;
-}
-
 void main() {
-   if(is_background()) {
+   object.texture_slot = int(a_texture_slot);
+   object.type = int(a_type);
+   fragment.texture_coordinates = a_texture_coordinates;
+
+   if(object.type == BACKGROUND) {
       gl_Position = vec4(a_position, 1.0);
    } else {
       //Do the transpose inverse on the CPU for better performance
@@ -47,8 +48,4 @@ void main() {
       fragment.position = vec3(a_model * vec4(a_position, 1.0));
       gl_Position = projection * view * a_model * vec4(a_position, 1.0);
    }
-
-   object.texture_slot = int(a_texture_slot);
-   object.type = int(a_type);
-   fragment.texture_coordinates = a_texture_coordinates;
 }
