@@ -43,7 +43,6 @@ VECTOR_T VECTOR_REMOVE(struct VECTOR *vector, size_t index);
 #ifdef VECTOR_IMPLEMENTATION 
 
 #include <assert.h>
-//#include <math.h>
 #include <string.h>
 
 static bool VECTOR_RESIZE(struct VECTOR *vector, size_t new_capacity) {
