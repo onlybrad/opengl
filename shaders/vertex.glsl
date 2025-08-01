@@ -1,11 +1,14 @@
 #version 330 core
 
+#define SHAPE 0
+#define LIGHT 1
+
 struct Object {
    float shininess;
    vec3 normal;
    vec4 color;
    int texture_slot;
-   bool is_light;
+   int type;
 };
 
 struct Fragment {
@@ -19,7 +22,7 @@ layout (location = 2) in vec4 a_color;
 layout (location = 3) in vec2 a_texture_coordinates;
 layout (location = 4) in float a_texture_slot;
 layout (location = 5) in float a_shininess;
-layout (location = 6) in float a_is_light;
+layout (location = 6) in float a_type;
 layout (location = 7) in mat4 a_model;
 
 flat out Object object;
@@ -29,7 +32,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 bool is_background() {
-   return a_is_light == 0.0 && a_texture_slot == 0.0;
+   return a_type == 0.0 && a_texture_slot == 0.0;
 }
 
 void main() {
@@ -46,6 +49,6 @@ void main() {
    }
 
    object.texture_slot = int(a_texture_slot);
-   object.is_light = a_is_light != 0.0;
+   object.type = int(a_type);
    fragment.texture_coordinates = a_texture_coordinates;
 }

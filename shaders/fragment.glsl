@@ -1,11 +1,14 @@
 #version 330 core
 
+#define SHAPE 0
+#define LIGHT 1
+
 struct Object {
    float shininess;
    vec3 normal;
    vec4 color;
    int texture_slot;
-   bool is_light;
+   int type;
 };
 
 struct Fragment {
@@ -59,9 +62,9 @@ vec4 get_texture(int index, vec2 texture_coordinates);
 
 void main() {
    //background
-   if(!object.is_light && object.texture_slot == 0) {
+   if(object.type != LIGHT && object.texture_slot == 0) {
       frag_color = get_texture(0, fragment.texture_coordinates);
-   } else if(!object.is_light) {
+   } else if(object.type != LIGHT) {
       vec3 light_direction = normalize(light_position - fragment.position);
       vec3 camera_direction = normalize(camera_position - fragment.position);
       vec3 reflect_direction = reflect(-light_direction, object.normal);

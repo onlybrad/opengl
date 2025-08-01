@@ -4,25 +4,25 @@
 #include "object.h"
 #include "../util/util.h"
 
-bool OB_Object_init(struct OB_Object *object, struct OB_Vertex *vertices, unsigned vertices_count) {
+bool OB_Object_init(struct OB_Object *object, struct OB_Object_Vertex *vertices, unsigned vertices_count) {
     assert(object != NULL);
     assert(vertices != NULL);
 
     object->texture = NULL;
     object->vertices_count = vertices_count;
 
-    struct OB_Vertex *vertices_copy = (struct OB_Vertex*)calloc((size_t)vertices_count, sizeof(struct OB_Vertex));
+    struct OB_Object_Vertex *vertices_copy = (struct OB_Object_Vertex*)calloc((size_t)vertices_count, sizeof(struct OB_Object_Vertex));
     if(vertices_copy == NULL) {
         return false;
     }
 
-    memcpy(vertices_copy, vertices, sizeof(struct OB_Vertex) * (size_t)vertices_count);
+    memcpy(vertices_copy, vertices, sizeof(struct OB_Object_Vertex) * (size_t)vertices_count);
     object->vertices = vertices_copy;
 
     return true;
 }
 
-void OB_Object_init_move(struct OB_Object *object, struct OB_Vertex *vertices, unsigned vertices_count) {
+void OB_Object_init_move(struct OB_Object *object, struct OB_Object_Vertex *vertices, unsigned vertices_count) {
     assert(object != NULL);
     assert(vertices != NULL);
 
@@ -71,13 +71,13 @@ void OB_Object_set_shininess(struct OB_Object *object, unsigned shininess) {
 
 void OB_Object_set_model(struct OB_Object *object, const float model[16]) {
     for(unsigned i = 0u; i < object->vertices_count; i++) {
-        memcpy(&object->vertices[i].model, model, OB_MEMBER_SIZE(struct OB_Vertex, model));
+        memcpy(&object->vertices[i].model, model, OB_MEMBER_SIZE(struct OB_Object_Vertex, model));
     }  
 }
 
-void OB_Object_set_is_light(struct OB_Object *object, bool is_light) {
+void OB_Object_set_type(struct OB_Object *object, enum OB_Object_Type type) {
     for(unsigned i = 0u; i < object->vertices_count; i++) {
-        object->vertices[i].is_light[0] = is_light ? 1.0f : 0.0f;
+        object->vertices[i].type[0] = (float)type;
     }
 }
 

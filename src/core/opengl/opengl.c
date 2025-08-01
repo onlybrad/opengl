@@ -29,14 +29,14 @@ static void OB_max_values_init(void) {
 
 static void OB_vertex_layout_init(void) {
     struct OB_VertexAttribute attributes[] = {
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, position), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, normal), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, color), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, texture_coordinate), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, texture_slot), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, shininess), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, is_light), false},
-        {OB_ARRAY_MEMBER_LEN(struct OB_Vertex, model), false}
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, position), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, normal), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, color), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, texture_coordinate), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, texture_slot), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, shininess), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, type), false},
+        {OB_ARRAY_MEMBER_LEN(struct OB_Object_Vertex, model), false}
     };
 
     OB_VertexLayout_init(&OB_OBJECT_VERTEX_LAYOUT);
